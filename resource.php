@@ -14,8 +14,10 @@
 +--------------------------------------------------------*/
 
 require_once 'resource.civix.php';
+
 // phpcs:disable
 use CRM_Resource_ExtensionUtil as E;
+
 // phpcs:enable
 
 /**
@@ -23,8 +25,9 @@ use CRM_Resource_ExtensionUtil as E;
  *
  * @link https://docs.civicrm.org/dev/en/latest/hooks/hook_civicrm_config/
  */
-function resource_civicrm_config(&$config) {
-  _resource_civix_civicrm_config($config);
+function resource_civicrm_config(&$config)
+{
+    _resource_civix_civicrm_config($config);
 }
 
 /**
@@ -32,8 +35,9 @@ function resource_civicrm_config(&$config) {
  *
  * @link https://docs.civicrm.org/dev/en/latest/hooks/hook_civicrm_xmlMenu
  */
-function resource_civicrm_xmlMenu(&$files) {
-  _resource_civix_civicrm_xmlMenu($files);
+function resource_civicrm_xmlMenu(&$files)
+{
+    _resource_civix_civicrm_xmlMenu($files);
 }
 
 /**
@@ -41,8 +45,9 @@ function resource_civicrm_xmlMenu(&$files) {
  *
  * @link https://docs.civicrm.org/dev/en/latest/hooks/hook_civicrm_install
  */
-function resource_civicrm_install() {
-  _resource_civix_civicrm_install();
+function resource_civicrm_install()
+{
+    _resource_civix_civicrm_install();
 }
 
 /**
@@ -50,8 +55,9 @@ function resource_civicrm_install() {
  *
  * @link https://docs.civicrm.org/dev/en/latest/hooks/hook_civicrm_postInstall
  */
-function resource_civicrm_postInstall() {
-  _resource_civix_civicrm_postInstall();
+function resource_civicrm_postInstall()
+{
+    _resource_civix_civicrm_postInstall();
 }
 
 /**
@@ -59,8 +65,9 @@ function resource_civicrm_postInstall() {
  *
  * @link https://docs.civicrm.org/dev/en/latest/hooks/hook_civicrm_uninstall
  */
-function resource_civicrm_uninstall() {
-  _resource_civix_civicrm_uninstall();
+function resource_civicrm_uninstall()
+{
+    _resource_civix_civicrm_uninstall();
 }
 
 /**
@@ -68,8 +75,9 @@ function resource_civicrm_uninstall() {
  *
  * @link https://docs.civicrm.org/dev/en/latest/hooks/hook_civicrm_enable
  */
-function resource_civicrm_enable() {
-  _resource_civix_civicrm_enable();
+function resource_civicrm_enable()
+{
+    _resource_civix_civicrm_enable();
 }
 
 /**
@@ -77,8 +85,9 @@ function resource_civicrm_enable() {
  *
  * @link https://docs.civicrm.org/dev/en/latest/hooks/hook_civicrm_disable
  */
-function resource_civicrm_disable() {
-  _resource_civix_civicrm_disable();
+function resource_civicrm_disable()
+{
+    _resource_civix_civicrm_disable();
 }
 
 /**
@@ -86,8 +95,9 @@ function resource_civicrm_disable() {
  *
  * @link https://docs.civicrm.org/dev/en/latest/hooks/hook_civicrm_upgrade
  */
-function resource_civicrm_upgrade($op, CRM_Queue_Queue $queue = NULL) {
-  return _resource_civix_civicrm_upgrade($op, $queue);
+function resource_civicrm_upgrade($op, CRM_Queue_Queue $queue = null)
+{
+    return _resource_civix_civicrm_upgrade($op, $queue);
 }
 
 /**
@@ -98,8 +108,9 @@ function resource_civicrm_upgrade($op, CRM_Queue_Queue $queue = NULL) {
  *
  * @link https://docs.civicrm.org/dev/en/latest/hooks/hook_civicrm_managed
  */
-function resource_civicrm_managed(&$entities) {
-  _resource_civix_civicrm_managed($entities);
+function resource_civicrm_managed(&$entities)
+{
+    _resource_civix_civicrm_managed($entities);
 }
 
 /**
@@ -109,8 +120,9 @@ function resource_civicrm_managed(&$entities) {
  *
  * @link https://docs.civicrm.org/dev/en/latest/hooks/hook_civicrm_caseTypes
  */
-function resource_civicrm_caseTypes(&$caseTypes) {
-  _resource_civix_civicrm_caseTypes($caseTypes);
+function resource_civicrm_caseTypes(&$caseTypes)
+{
+    _resource_civix_civicrm_caseTypes($caseTypes);
 }
 
 /**
@@ -120,9 +132,10 @@ function resource_civicrm_caseTypes(&$caseTypes) {
  *
  * @link https://docs.civicrm.org/dev/en/latest/hooks/hook_civicrm_angularModules
  */
-function resource_civicrm_angularModules(&$angularModules) {
-  // Auto-add module files from ./ang/*.ang.php
-  _resource_civix_civicrm_angularModules($angularModules);
+function resource_civicrm_angularModules(&$angularModules)
+{
+    // Auto-add module files from ./ang/*.ang.php
+    _resource_civix_civicrm_angularModules($angularModules);
 }
 
 /**
@@ -130,8 +143,9 @@ function resource_civicrm_angularModules(&$angularModules) {
  *
  * @link https://docs.civicrm.org/dev/en/latest/hooks/hook_civicrm_alterSettingsFolders
  */
-function resource_civicrm_alterSettingsFolders(&$metaDataFolders = NULL) {
-  _resource_civix_civicrm_alterSettingsFolders($metaDataFolders);
+function resource_civicrm_alterSettingsFolders(&$metaDataFolders = null)
+{
+    _resource_civix_civicrm_alterSettingsFolders($metaDataFolders);
 }
 
 /**
@@ -141,15 +155,42 @@ function resource_civicrm_alterSettingsFolders(&$metaDataFolders = NULL) {
  *
  * @link https://docs.civicrm.org/dev/en/latest/hooks/hook_civicrm_entityTypes
  */
-function resource_civicrm_entityTypes(&$entityTypes) {
-  _resource_civix_civicrm_entityTypes($entityTypes);
+function resource_civicrm_entityTypes(&$entityTypes)
+{
+    _resource_civix_civicrm_entityTypes($entityTypes);
+    $entityTypes[] = [
+        'name'  => 'Resource',
+        'class' => 'CRM_Resource_DAO_Resource',
+        'table' => 'civicrm_resource',
+    ];
+    $entityTypes[] = [
+        'name'  => 'ResourceAssignment',
+        'class' => 'CRM_Resource_DAO_ResourceAssignment',
+        'table' => 'civicrm_resource_assignment',
+    ];
+    $entityTypes[] = [
+        'name'  => 'ResourceDemand',
+        'class' => 'CRM_Resource_DAO_ResourceDemand',
+        'table' => 'civicrm_resource_demand',
+    ];
+    $entityTypes[] = [
+        'name'  => 'ResourceDemandCondition',
+        'class' => 'CRM_Resource_DAO_ResourceDemandCondition',
+        'table' => 'civicrm_resource_demand_condition',
+    ];
+    $entityTypes[] = [
+        'name'  => 'ResourceUnavailability',
+        'class' => 'CRM_Resource_DAO_ResourceUnavailability',
+        'table' => 'civicrm_resource_unavailability',
+    ];
 }
 
 /**
  * Implements hook_civicrm_themes().
  */
-function resource_civicrm_themes(&$themes) {
-  _resource_civix_civicrm_themes($themes);
+function resource_civicrm_themes(&$themes)
+{
+    _resource_civix_civicrm_themes($themes);
 }
 
 // --- Functions below this ship commented out. Uncomment as required. ---
