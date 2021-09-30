@@ -15,11 +15,46 @@
 # noinspection SqlNoDataSourceInspectionForFile
 
 CREATE TABLE IF NOT EXISTS `civicrm_resource` (
-     `id`           int unsigned  NOT NULL AUTO_INCREMENT  COMMENT 'Unique Resource ID',
-     `label`        varchar(255)                           COMMENT 'Resource Label',
-     `entity_id`    int unsigned  NOT NULL                 COMMENT 'Resource - linked entity ID',
-     `entity_table` varchar(64)   NOT NULL                 COMMENT 'Resource - linked entity table name' ,
+    `id`           int unsigned  NOT NULL AUTO_INCREMENT  COMMENT 'Unique Resource ID',
+    `label`        varchar(255)                           COMMENT 'Resource Label',
+    `entity_id`    int unsigned  NOT NULL                 COMMENT 'Resource - linked entity ID',
+    `entity_table` varchar(64)   NOT NULL                 COMMENT 'Resource - linked entity table name' ,
     PRIMARY KEY (`id`)
 ) ENGINE=InnoDB;
 
- 
+CREATE TABLE `civicrm_resource_demand` (
+    `id`               int unsigned   NOT NULL AUTO_INCREMENT  COMMENT 'Unique Resource Demand ID',
+    `label`            varchar(255)                            COMMENT 'Resource Label',
+    `entity_id`        int unsigned   NOT NULL                 COMMENT 'Resource linked entity ID',
+    `entity_table`     varchar(64)    NOT NULL                 COMMENT 'Resource linked entity table name',
+    `is_template`      tinyint        DEFAULT 0                COMMENT 'Marks demand templates',
+    PRIMARY KEY (`id`)
+) ENGINE=InnoDB;
+
+CREATE TABLE IF NOT EXISTS `civicrm_resource_assignment` (
+    `id`           int unsigned  NOT NULL AUTO_INCREMENT  COMMENT 'Unique Resource Demand ID',
+    `label`        varchar(255)                           COMMENT 'Resource Label',
+    `entity_id`    int unsigned  NOT NULL                 COMMENT 'Resource linked entity ID',
+    `entity_table` varchar(64)   NOT NULL                 COMMENT 'Resource linked entity table name',
+    `is_template`  tinyint      DEFAULT 0                 COMMENT 'Marks demand templates',
+    PRIMARY KEY (`id`)
+) ENGINE=InnoDB;
+
+CREATE TABLE `civicrm_resource_demand_condition` (
+    `id`                  int unsigned   NOT NULL AUTO_INCREMENT  COMMENT 'Unique Resource Demand Condition ID',
+    `resource_demand_id`  int unsigned   NOT NULL                 COMMENT 'Resource Demand ID',
+    `class_name`          varchar(127)                            COMMENT 'Class name of the implementation, a subclass of CRM_Resource_BAO_Resource_Unavailability',
+    `parameters`          varchar(255)                            COMMENT 'A json encoded data blob to store the parameters of this specific unavailability',
+    PRIMARY KEY (`id`),
+    CONSTRAINT FK_civicrm_resource_demand_condition_resource_demand_id FOREIGN KEY (`resource_demand_id`) REFERENCES `civicrm_resource_demand`(`id`) ON DELETE CASCADE
+)  ENGINE=InnoDB;
+
+
+CREATE TABLE `civicrm_resource_unavailability` (
+   `id`                int unsigned   NOT NULL AUTO_INCREMENT  COMMENT 'Unique Resource Unavailability ID',
+   `resource_id`       int unsigned   NOT NULL                 COMMENT 'Resource Demand ID',
+   `class_name`        varchar(127)                            COMMENT 'Class name of the implementation, a subclass of CRM_Resource_BAO_Resource_Unavailability',
+   `parameters`        varchar(255)                            COMMENT 'A json encoded data blob to store the parameters of this specific unavailability',
+   PRIMARY KEY (`id`),
+   CONSTRAINT FK_civicrm_resource_unavailability_resource_id FOREIGN KEY (`resource_id`) REFERENCES `civicrm_resource`(`id`) ON DELETE CASCADE
+) ENGINE=InnoDB;

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="iso-8859-1" ?>
+
+<table>
+  <base>CRM/Resource</base>
+  <class>ResourceDemandCondition</class>
+  <name>civicrm_resource_demand_condition</name>
+  <comment>Resource Demand Condition</comment>
+  <log>true</log>
+
+  <field>
+    <name>id</name>
+    <type>int unsigned</type>
+    <required>true</required>
+    <comment>Unique Resource Demand Condition ID</comment>
+    <html>
+      <type>Number</type>
+    </html>
+  </field>
+  <primaryKey>
+    <name>id</name>
+    <autoincrement>true</autoincrement>
+  </primaryKey>
+
+  <field>
+    <name>resource_demand_id</name>
+    <type>int unsigned</type>
+    <required>true</required>
+    <comment>Resource Demand ID</comment>
+    <html>
+      <type>Number</type>
+    </html>
+  </field>
+  <foreignKey>
+    <name>resource_demand_id</name>
+    <table>civicrm_resource_demand</table>
+    <key>id</key>
+    <onDelete>CASCADE</onDelete>
+  </foreignKey>
+
+  <field>
+    <name>class_name</name>
+    <title>Implementation Class Name</title>
+    <type>varchar</type>
+    <length>127</length>
+    <html>
+      <type>Text</type>
+    </html>
+    <comment>Class name of the implementation, a subclass of CRM_Resource_BAO_Resource_Unavailability</comment>
+  </field>
+
+  <field>
+    <name>parameters</name>
+    <title>Parameters for the unavailability</title>
+    <type>varchar</type>
+    <length>255</length>
+    <html>
+      <type>Text</type>
+    </html>
+    <comment>A json encoded data blob to store the parameters of this specific unavailability</comment>
+  </field>
+</table>

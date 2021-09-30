@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="iso-8859-1" ?>
+
+<table>
+  <base>CRM/Resource</base>
+  <class>ResourceAssignment</class>
+  <name>civicrm_resource_assignment</name>
+  <comment>Resource Assignment</comment>
+  <log>true</log>
+
+  <field>
+    <name>id</name>
+    <type>int unsigned</type>
+    <required>true</required>
+    <comment>Unique Resource Assignment ID</comment>
+    <html>
+      <type>Number</type>
+    </html>
+  </field>
+  <primaryKey>
+    <name>id</name>
+    <autoincrement>true</autoincrement>
+  </primaryKey>
+
+  <field>
+    <name>resource_id</name>
+    <type>int unsigned</type>
+    <required>true</required>
+    <comment>Resource Demand ID</comment>
+    <html>
+      <type>Number</type>
+    </html>
+  </field>
+  <foreignKey>
+    <name>resource_id</name>
+    <table>civicrm_resource</table>
+    <key>id</key>
+    <onDelete>CASCADE</onDelete>
+  </foreignKey>
+
+  <field>
+    <name>resource_demand_id</name>
+    <type>int unsigned</type>
+    <required>true</required>
+    <comment>Resource Demand ID</comment>
+    <html>
+      <type>Number</type>
+    </html>
+  </field>
+  <foreignKey>
+    <name>resource_demand_id</name>
+    <table>civicrm_resource_demand</table>
+    <key>id</key>
+    <onDelete>CASCADE</onDelete>
+  </foreignKey>
+
+
+  <field>
+    <name>status</name>
+    <type>int unsigned</type>
+    <required>true</required>
+    <comment>Resource Demand Status: 1=proposed, 2=denied, 3=confirmed</comment>
+    <html>
+      <type>Number</type>
+    </html>
+  </field>
+</table>
