@@ -25,7 +25,7 @@
     <name>resource_id</name>
     <type>int unsigned</type>
     <required>true</required>
-    <comment>Resource Demand ID</comment>
+    <comment>Resource ID</comment>
     <html>
       <type>Number</type>
     </html>

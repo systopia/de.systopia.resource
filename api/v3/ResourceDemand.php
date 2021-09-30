@@ -23,7 +23,7 @@ use CRM_Resource_ExtensionUtil as E;
  *
  * @see https://docs.civicrm.org/dev/en/latest/framework/api-architecture/
  */
-function _civicrm_api3_resource_create_spec(&$spec)
+function _civicrm_api3_resource_demand_create_spec(&$spec)
 {
     // $spec['some_parameter']['api.required'] = 1;
 }
@@ -38,9 +38,9 @@ function _civicrm_api3_resource_create_spec(&$spec)
  *
  * @throws API_Exception
  */
-function civicrm_api3_resource_create($params)
+function civicrm_api3_resource_demand_create($params)
 {
-    return _civicrm_api3_basic_create(_civicrm_api3_get_BAO(__FUNCTION__), $params, 'Resource');
+    return _civicrm_api3_basic_create(_civicrm_api3_get_BAO(__FUNCTION__), $params, 'ResourceDemand');
 }
 
 /**
@@ -53,7 +53,7 @@ function civicrm_api3_resource_create($params)
  *
  * @throws API_Exception
  */
-function civicrm_api3_resource_delete($params)
+function civicrm_api3_resource_demand_delete($params)
 {
     return _civicrm_api3_basic_delete(_civicrm_api3_get_BAO(__FUNCTION__), $params);
 }
@@ -68,7 +68,7 @@ function civicrm_api3_resource_delete($params)
  *
  * @throws API_Exception
  */
-function civicrm_api3_resource_get($params)
+function civicrm_api3_resource_demand_get($params)
 {
-    return _civicrm_api3_basic_get(_civicrm_api3_get_BAO(__FUNCTION__), $params, true, 'Resource');
+    return _civicrm_api3_basic_get(_civicrm_api3_get_BAO(__FUNCTION__), $params, true, 'ResourceDemand');
 }
