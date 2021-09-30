@@ -22,7 +22,7 @@ CREATE TABLE IF NOT EXISTS `civicrm_resource` (
     PRIMARY KEY (`id`)
 ) ENGINE=InnoDB;
 
-CREATE TABLE `civicrm_resource_demand` (
+CREATE TABLE IF NOT EXISTS  `civicrm_resource_demand` (
     `id`               int unsigned   NOT NULL AUTO_INCREMENT  COMMENT 'Unique Resource Demand ID',
     `label`            varchar(255)                            COMMENT 'Resource Label',
     `entity_id`        int unsigned   NOT NULL                 COMMENT 'Resource linked entity ID',
@@ -32,15 +32,14 @@ CREATE TABLE `civicrm_resource_demand` (
 ) ENGINE=InnoDB;
 
 CREATE TABLE IF NOT EXISTS `civicrm_resource_assignment` (
-    `id`           int unsigned  NOT NULL AUTO_INCREMENT  COMMENT 'Unique Resource Demand ID',
-    `label`        varchar(255)                           COMMENT 'Resource Label',
-    `entity_id`    int unsigned  NOT NULL                 COMMENT 'Resource linked entity ID',
-    `entity_table` varchar(64)   NOT NULL                 COMMENT 'Resource linked entity table name',
-    `is_template`  tinyint      DEFAULT 0                 COMMENT 'Marks demand templates',
-    PRIMARY KEY (`id`)
+  `id`                   int unsigned NOT NULL AUTO_INCREMENT  COMMENT 'Unique Resource Assignment ID',
+  `resource_id`          int unsigned NOT NULL                 COMMENT 'Resource ID',
+  `resource_demand_id`   int unsigned NOT NULL                 COMMENT 'Resource Demand ID',
+  `status`               tinyint      NOT NULL                 COMMENT 'Resource Demand Status: 1=proposed, 2=denied, 3=confirmed',
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB;
 
-CREATE TABLE `civicrm_resource_demand_condition` (
+CREATE TABLE IF NOT EXISTS  `civicrm_resource_demand_condition` (
     `id`                  int unsigned   NOT NULL AUTO_INCREMENT  COMMENT 'Unique Resource Demand Condition ID',
     `resource_demand_id`  int unsigned   NOT NULL                 COMMENT 'Resource Demand ID',
     `class_name`          varchar(127)                            COMMENT 'Class name of the implementation, a subclass of CRM_Resource_BAO_Resource_Unavailability',
@@ -50,7 +49,7 @@ CREATE TABLE `civicrm_resource_demand_condition` (
 )  ENGINE=InnoDB;
 
 
-CREATE TABLE `civicrm_resource_unavailability` (
+CREATE TABLE IF NOT EXISTS  `civicrm_resource_unavailability` (
    `id`                int unsigned   NOT NULL AUTO_INCREMENT  COMMENT 'Unique Resource Unavailability ID',
    `resource_id`       int unsigned   NOT NULL                 COMMENT 'Resource Demand ID',
    `class_name`        varchar(127)                            COMMENT 'Class name of the implementation, a subclass of CRM_Resource_BAO_Resource_Unavailability',
