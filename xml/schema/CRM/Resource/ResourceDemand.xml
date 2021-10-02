@@ -23,11 +23,11 @@
 
   <field>
     <name>label</name>
-    <title>Resource Label</title>
+    <title>Resource Demand Label</title>
     <type>varchar</type>
     <length>255</length>
     <localizable>true</localizable>
-    <comment>Resource Label</comment>
+    <comment>Resource Demand Label</comment>
   </field>
 
   <field>
