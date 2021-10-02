@@ -64,13 +64,14 @@ class api_v3_ResourceTest extends \PHPUnit\Framework\TestCase implements Headles
     // Put some data in, read it back out, and delete it.
 
     $created = $this->callAPISuccess('Resource', 'create', [
-      'contact_id' => 1,
+      'entity_id' => 1,
+      'entity_table' => 'civicrm_contact',
     ]);
     $this->assertTrue(is_numeric($created['id']));
 
     $get = $this->callAPISuccess('Resource', 'get', []);
     $this->assertEquals(1, $get['count']);
-    $this->assertEquals(1, $get['values'][$created['id']]['contact_id']);
+    $this->assertEquals(1, $get['values'][$created['id']]['entity_id']);
 
     $this->callAPISuccess('Resource', 'delete', [
       'id' => $created['id'],
