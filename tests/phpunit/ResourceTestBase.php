@@ -67,8 +67,68 @@ class ResourceTestBase extends TestCase implements HeadlessInterface, HookInterf
         parent::tearDown();
     }
 
-
     // HELPER FUNCTIONS
+
+    /**
+     * Will call the API with the given parameters.
+     * However, it will call APIv3 _and_ APIv4 in parallel,
+     * and assert that the results are identical unless it's a
+     * 'create'
+     *
+     * @param $entity string API entity
+     * @param $action string API action
+     * @param $params array API parameters
+     *
+     */
+    public function callAPI34($entity, $action, $params)
+    {
+        if ($action == 'create') {
+            if (empty($params['version']) || $params['version'] == 3) {
+                // create with APIv3
+                return $this->traitCallAPISuccess($entity, $action, $params);
+            } else {
+                // create with APIv4
+                try {
+                    return civicrm_api4($entity, $action, $params);
+                } catch (API_Exception $ex) {
+                    $this->fail("APIv4 error: ", $ex->getMessage());
+                }
+            }
+        }
+
+        // run both:
+        $params['version'] = 3;
+        $result_v3 = $this->traitCallAPISuccess($entity, $action, $params);
+        $params['version'] = 4;
+        $result_v4 = $this->traitCallAPISuccess($entity, $action, $params);
+
+        // compare top level
+        $skip_keys = ['xdebug', 'values'];
+        $this->assertApiValuesEqual($result_v3, $result_v4, $skip_keys);
+        // compare values
+        if (isset($result_v3['values'])) {
+            $this->assertApiValuesEqual($result_v3['values'], $result_v4['values'], $skip_keys);
+        }
+
+        return $result_v3;
+    }
+
+    public function assertApiValuesEqual($values_v3, $values_v4, $skip_keys = [])
+    {
+        $keys = array_unique(array_merge(array_keys($values_v3), array_keys($values_v4)));
+        foreach ($keys as $key) {
+            if (in_array($key, $skip_keys)) continue;
+            $value_v3 = $values_v3[$key] ?? null;
+            $value_v4 = $values_v3[$key] ?? null;
+            if (is_array($value_v3) && is_array($value_v4)) {
+                $this->assertApiValuesEqual($value_v3, $value_v4, $skip_keys);
+            } else {
+                $this->assertEquals($value_v3, $value_v4, "APIv3 value differs from APIv4 value.");
+            }
+        }
+    }
+
+
 
     /**
      * Create a new contact
