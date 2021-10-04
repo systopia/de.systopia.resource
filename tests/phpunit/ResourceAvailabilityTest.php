@@ -26,24 +26,33 @@ require_once 'ResourceTestBase.php';
  *
  * @group headless
  */
-class BasicResourceTest extends ResourceTestBase implements HeadlessInterface, HookInterface,
-                                                                      TransactionalInterface
+class BasicResourceAvailabilityTest extends ResourceTestBase implements HeadlessInterface, HookInterface,
+                                                                        TransactionalInterface
 {
     /**
      * Simple resource creation
      */
-    public function testCreateContactResource()
+    public function testAbsoluteUnavailability()
     {
         $contact = $this->createContact();
-        $created_resource = $this->callAPI34('Resource', 'create', [
+        $resource = $this->callAPI34('Resource', 'create', [
             'entity_id' => $contact['id'],
             'entity_table' => 'civicrm_contact',
             'label' => $this->randomString()
         ]);
 
-        $loaded_resource = $this->callAPI34('Resource', 'getsingle', [
-            'id' => $created_resource['id'],
+        // check if resource is available
+        $this->assertResourceAvailable($resource['id'], [], true);
+
+        // add unavailability
+        $unavailability = $this->callAPI34('ResourceUnavailability', 'create', [
+            'resource_id' => $resource['id'],
+            'class_name' => 'CRM_Resource_Unavailability_Absolute',
+            'label' => "testAbsoluteUnavailability"
         ]);
+
+        // check if resource is still available
+        $this->assertResourceAvailable($resource['id'], [], false);
     }
 
     /**

@@ -20,5 +20,16 @@ use CRM_Resource_ExtensionUtil as E;
  */
 class CRM_Resource_Unavailability_Absolute extends CRM_Resource_BAO_ResourceUnavailability
 {
-    // todo: implement
+    /**
+     * Check if the
+     * @param null $from_timestamp
+     * @param null $to_timestamp
+     *
+     * @return false
+     */
+    public function isActive($from_timestamp = null, $to_timestamp = null)
+    {
+        // this is always active
+        return true;
+    }
 }
