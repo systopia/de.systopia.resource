@@ -48,7 +48,7 @@ class BasicResourceAvailabilityTest extends ResourceTestBase implements Headless
         $unavailability = $this->callAPI34('ResourceUnavailability', 'create', [
             'resource_id' => $resource['id'],
             'class_name' => 'CRM_Resource_Unavailability_Absolute',
-            'label' => "testAbsoluteUnavailability"
+            'reason' => "testAbsoluteUnavailability"
         ]);
 
         // check if resource is still available
