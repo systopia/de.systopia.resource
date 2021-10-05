@@ -53,6 +53,12 @@ class BasicResourceAvailabilityTest extends ResourceTestBase implements Headless
 
         // check if resource is still available
         $this->assertResourceAvailable($resource['id'], [], false);
+
+        // delete availability
+        $this->callAPI34('ResourceUnavailability', 'delete', ['id' => $unavailability['id']]);
+
+        // resource should be available again
+        $this->assertResourceAvailable($resource['id'], [], true);
     }
 
     /**

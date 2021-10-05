@@ -82,7 +82,7 @@ class ResourceTestBase extends TestCase implements HeadlessInterface, HookInterf
      */
     public function callAPI34($entity, $action, $params)
     {
-        if ($action == 'create') {
+        if ($action == 'create' || $action == 'delete') {
             if (empty($params['version']) || $params['version'] == 3) {
                 // create with APIv3
                 return $this->traitCallAPISuccess($entity, $action, $params);
@@ -113,6 +113,12 @@ class ResourceTestBase extends TestCase implements HeadlessInterface, HookInterf
         return $result_v3;
     }
 
+    /**
+     * Internal function to compare the values of an apiv3 and apiv4 result
+     * @param $values_v3
+     * @param $values_v4
+     * @param array $skip_keys
+     */
     public function assertApiValuesEqual($values_v3, $values_v4, $skip_keys = [])
     {
         $keys = array_unique(array_merge(array_keys($values_v3), array_keys($values_v4)));
