@@ -22,6 +22,15 @@
   </primaryKey>
 
   <field>
+    <name>reason</name>
+    <title>Reason</title>
+    <type>varchar</type>
+    <length>255</length>
+    <localizable>true</localizable>
+    <comment>Reason for the unavailability</comment>
+  </field>
+
+  <field>
     <name>resource_id</name>
     <type>int unsigned</type>
     <required>true</required>
