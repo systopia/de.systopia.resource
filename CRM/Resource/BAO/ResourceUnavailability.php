@@ -20,6 +20,56 @@ class CRM_Resource_BAO_ResourceUnavailability extends CRM_Resource_DAO_ResourceU
     /** @var CRM_Resource_BAO_ResourceUnavailability */
     private $implementation = null;
 
+    /** @var array */
+    private $json_parameters = null;
+
+    /**
+     * Create a new ResourceUnavailability based on array-data
+     *
+     * @param array $params key-value pairs
+     *
+     * @return CRM_Resource_DAO_ResourceUnavailability|NULL
+     */
+    public static function create($params)
+    {
+        $className = 'CRM_Resource_DAO_ResourceUnavailability';
+        $entityName = 'ResourceUnavailability';
+        $hook = empty($params['id']) ? 'create' : 'edit';
+
+        CRM_Utils_Hook::pre($hook, $entityName, CRM_Utils_Array::value('id', $params), $params);
+        $instance = new $className();
+        $instance->copyValues($params);
+        $instance->save();
+        CRM_Utils_Hook::post($hook, $entityName, $instance->id, $instance);
+        return $instance;
+    }
+
+    /**
+     * Check whether the given resource is available (in the given time frame)
+     *
+     * @param integer $resource_id
+     * @param string $from_timestamp
+     * @param string $to_timestamp
+     */
+    public static function isResourceAvailable($resource_id, $from_timestamp = null, $to_timestamp = null)
+    {
+        // load all availabilities restrictions
+        $unavailability_search = new CRM_Resource_BAO_ResourceUnavailability();
+        $unavailability_search->resource_id = (int)$resource_id;
+        $unavailability_search->find();
+        while ($unavailability_search->fetch()) {
+            $implementation = $unavailability_search->getImplementation();
+            if ($implementation->isActive($from_timestamp, $to_timestamp)) {
+                return false;
+            }
+        }
+
+        // todo: check if currently assigned
+
+        // no problems found
+        return true;
+    }
+
     /**
      * Return an object of the specific class, i.e. the object that matches
      *   the provided class
@@ -36,33 +86,24 @@ class CRM_Resource_BAO_ResourceUnavailability extends CRM_Resource_DAO_ResourceU
     }
 
     /**
-     * Check whether the given resource is available (in the given time frame)
+     * Get the parsed version of the parameter column
      *
-     * @param integer $resource_id
-     * @param string $from_timestamp
-     * @param string $to_timestamp
+     * @return array parameters
      */
-    public static function isResourceAvailable($resource_id, $from_timestamp = null, $to_timestamp = null)
+    public function getParametersParsed()
     {
-        // load all availabilities restrictions
-        $unavailability_search = new CRM_Resource_BAO_ResourceUnavailability();
-        $unavailability_search->resource_id = (int) $resource_id;
-        $unavailability_search->find();
-        while ($unavailability_search->fetch()) {
-            $implementation = $unavailability_search->getImplementation();
-            if ($implementation->isActive($from_timestamp, $to_timestamp)) {
-                return false;
+        if ($this->json_parameters === null) {
+            $this->json_parameters = json_decode($this->parameters);
+            if ($this->json_parameters === null) {
+                $this->json_parameters = [];
             }
         }
-
-        // todo: check if currently assigned
-
-        // no problems found
-        return true;
+        return $this->json_parameters;
     }
 
     /**
      * Check if the
+     *
      * @param null $from_timestamp
      * @param null $to_timestamp
      *
@@ -74,26 +115,4 @@ class CRM_Resource_BAO_ResourceUnavailability extends CRM_Resource_DAO_ResourceU
         Civi::log()->warning("CRM_Resource_BAO_ResourceUnavailability::isActive called, this should be overwritten");
         return true;
     }
-
-    /**
-     * Create a new ResourceUnavailability based on array-data
-     *
-     * @param array $params key-value pairs
-     *
-     * @return CRM_Resource_DAO_ResourceUnavailability|NULL
-     *
-     * public static function create($params) {
-     * $className = 'CRM_Resource_DAO_ResourceUnavailability';
-     * $entityName = 'ResourceUnavailability';
-     * $hook = empty($params['id']) ? 'create' : 'edit';
-     *
-     * CRM_Utils_Hook::pre($hook, $entityName, CRM_Utils_Array::value('id', $params), $params);
-     * $instance = new $className();
-     * $instance->copyValues($params);
-     * $instance->save();
-     * CRM_Utils_Hook::post($hook, $entityName, $instance->id, $instance);
-     *
-     * return $instance;
-     * } */
-
 }

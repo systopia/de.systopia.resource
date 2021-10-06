@@ -82,12 +82,13 @@ class ResourceTestBase extends TestCase implements HeadlessInterface, HookInterf
      */
     public function callAPI34($entity, $action, $params)
     {
+        // make sure changing/destructive operations are run only once
         if ($action == 'create' || $action == 'delete') {
             if (empty($params['version']) || $params['version'] == 3) {
-                // create with APIv3
+                // run with APIv3
                 return $this->traitCallAPISuccess($entity, $action, $params);
             } else {
-                // create with APIv4
+                // run with APIv4
                 try {
                     return civicrm_api4($entity, $action, $params);
                 } catch (API_Exception $ex) {

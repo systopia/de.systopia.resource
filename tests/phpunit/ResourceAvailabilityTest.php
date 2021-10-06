@@ -30,7 +30,7 @@ class BasicResourceAvailabilityTest extends ResourceTestBase implements Headless
                                                                         TransactionalInterface
 {
     /**
-     * Simple resource creation
+     * Test if the resource availability based on the "absolute unavailability" works
      */
     public function testAbsoluteUnavailability()
     {
@@ -61,38 +61,11 @@ class BasicResourceAvailabilityTest extends ResourceTestBase implements Headless
         $this->assertResourceAvailable($resource['id'], [], true);
     }
 
-    /**
-     * Create a simple resource
-     */
-    public function testCreateResourceDemand()
-    {
-        $contact = $this->createContact();
-        $created_resource_demand = $this->callAPI34('ResourceDemand', 'create', [
-            'entity_id' => $contact['id'],
-            'entity_table' => 'civicrm_contact',
-            'label' => $this->randomString()
-        ]);
-
-        $loaded_demand = $this->callAPI34('ResourceDemand', 'getsingle', [
-            'id' => $created_resource_demand['id'],
-        ]);
-
-        $created_resource_demand_template = $this->callAPI34('ResourceDemand', 'create', [
-            'entity_id' => $contact['id'],
-            'entity_table' => 'civicrm_contact',
-            'is_template' => 1,
-            'label' => $this->randomString()
-        ]);
-
-        $loaded_demand_template = $this->callAPI34('ResourceDemand', 'getsingle', [
-            'id' => $created_resource_demand_template['id'],
-        ]);
-    }
 
     /**
-     * Create a simple resource
+     * Test if the resource availability based on the "absolute unavailability" works
      */
-    public function testCreateResourceAssignment()
+    public function testDateRangeUnavailability()
     {
         $contact = $this->createContact();
         $resource = $this->callAPI34('Resource', 'create', [
@@ -100,21 +73,60 @@ class BasicResourceAvailabilityTest extends ResourceTestBase implements Headless
             'entity_table' => 'civicrm_contact',
             'label' => $this->randomString()
         ]);
-        $resource_demand = $this->callAPI34('ResourceDemand', 'create', [
+
+        // check if resource is available
+        $this->assertResourceAvailable($resource['id'], ['from' => 'now'], true);
+
+        // add unavailability
+        $unavailability_BAO = CRM_Resource_Unavailability_DateRange::createUnavailability(
+            $resource['id'],
+            'testDateRangeUnavailability',
+            strtotime('now - 1 day'),
+            strtotime('now + 1 day')
+        );
+
+        // check if resource is still available
+        $this->assertResourceAvailable($resource['id'], ['from' => 'now'], false);
+
+        // delete availability
+        $this->callAPI34('ResourceUnavailability', 'delete', ['id' => $unavailability_BAO->id]);
+
+        // resource should be available again
+        $this->assertResourceAvailable($resource['id'], ['from' => 'now'], true);
+    }
+
+    /**
+     * Test if the resource availability based on the "absolute unavailability" works
+     */
+    public function testIrrelevantDateRangeUnavailability()
+    {
+        $contact = $this->createContact();
+        $resource = $this->callAPI34('Resource', 'create', [
             'entity_id' => $contact['id'],
             'entity_table' => 'civicrm_contact',
             'label' => $this->randomString()
         ]);
 
-        $resource_assignment = $this->callAPI34('ResourceAssignment', 'create', [
-            'resource_id' => $resource['id'],
-            'resource_demand_id' => $resource_demand['id'],
-            'status' => 1
-        ]);
+        // check if resource is available
+        $this->assertResourceAvailable($resource['id'], ['from' => 'now'], true);
 
-        $loaded_assignment = $this->callAPI34('ResourceAssignment', 'getsingle', [
-            'id' => $resource_assignment['id'],
-        ]);
+        // add irrelevant unavailability
+        $unavailability1 = CRM_Resource_Unavailability_DateRange::createUnavailability(
+            $resource['id'],
+            'test irrelevant future unavailability',
+            strtotime('now + 1 day'),
+            strtotime('now + 2 day')
+        );
+
+        $unavailability2 = CRM_Resource_Unavailability_DateRange::createUnavailability(
+            $resource['id'],
+            'test irrelevant past unavailability',
+            strtotime('now - 2 day'),
+            strtotime('now - 1 day')
+        );
+
+        // check if resource is still available
+        $this->assertResourceAvailable($resource['id'], ['from' => 'now'], true);
     }
 
 }
