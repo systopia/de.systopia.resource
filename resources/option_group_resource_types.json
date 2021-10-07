@@ -1,0 +1,21 @@
+{
+  "_lookup": ["name"],
+  "_translate": ["title"],
+  "name": "resource_types",
+  "title": "Resource Types",
+  "is_reserved": "1",
+  "is_active": "1",
+  "_values": [
+    {
+      "_lookup": ["name"],
+      "_translate": ["label", "description"],
+      "name": "Personal_Resource",
+      "label": "Personal Resource",
+      "grouping": "civicrm_contact",
+      "description": "A resource based on a contact",
+      "filter": "0",
+      "is_reserved": "1",
+      "is_active": "1"
+    }
+  ]
+}
