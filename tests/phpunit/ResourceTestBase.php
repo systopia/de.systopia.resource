@@ -31,6 +31,8 @@ class ResourceTestBase extends TestCase implements HeadlessInterface, HookInterf
         callAPISuccess as protected traitCallAPISuccess;
     }
 
+    const RESOURCE_TYPE_CONTACT = 1;
+
     /**
      * Set up for headless tests.
      *

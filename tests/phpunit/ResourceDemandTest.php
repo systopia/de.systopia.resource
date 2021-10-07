@@ -36,6 +36,7 @@ class BasicResourceDemandTest extends ResourceTestBase implements HeadlessInterf
     {
         $contact = $this->createContact();
         $created_resource_demand = $this->callAPI34('ResourceDemand', 'create', [
+            'resource_type_id' => ResourceTestBase::RESOURCE_TYPE_CONTACT,
             'entity_id' => $contact['id'],
             'entity_table' => 'civicrm_contact',
             'label' => $this->randomString()
@@ -46,6 +47,7 @@ class BasicResourceDemandTest extends ResourceTestBase implements HeadlessInterf
         ]);
 
         $created_resource_demand_template = $this->callAPI34('ResourceDemand', 'create', [
+            'resource_type_id' => ResourceTestBase::RESOURCE_TYPE_CONTACT,
             'entity_id' => $contact['id'],
             'entity_table' => 'civicrm_contact',
             'is_template' => 1,

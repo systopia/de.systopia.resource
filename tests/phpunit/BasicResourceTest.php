@@ -36,6 +36,7 @@ class BasicResourceTest extends ResourceTestBase implements HeadlessInterface, H
     {
         $contact = $this->createContact();
         $created_resource = $this->callAPI34('Resource', 'create', [
+            'resource_type_id' => ResourceTestBase::RESOURCE_TYPE_CONTACT,
             'entity_id' => $contact['id'],
             'entity_table' => 'civicrm_contact',
             'label' => $this->randomString()
@@ -53,6 +54,7 @@ class BasicResourceTest extends ResourceTestBase implements HeadlessInterface, H
     {
         $contact = $this->createContact();
         $created_resource_demand = $this->callAPI34('ResourceDemand', 'create', [
+            'resource_type_id' => ResourceTestBase::RESOURCE_TYPE_CONTACT,
             'entity_id' => $contact['id'],
             'entity_table' => 'civicrm_contact',
             'label' => $this->randomString()
@@ -63,6 +65,7 @@ class BasicResourceTest extends ResourceTestBase implements HeadlessInterface, H
         ]);
 
         $created_resource_demand_template = $this->callAPI34('ResourceDemand', 'create', [
+            'resource_type_id' => ResourceTestBase::RESOURCE_TYPE_CONTACT,
             'entity_id' => $contact['id'],
             'entity_table' => 'civicrm_contact',
             'is_template' => 1,
@@ -81,11 +84,13 @@ class BasicResourceTest extends ResourceTestBase implements HeadlessInterface, H
     {
         $contact = $this->createContact();
         $resource = $this->callAPI34('Resource', 'create', [
+            'resource_type_id' => ResourceTestBase::RESOURCE_TYPE_CONTACT,
             'entity_id' => $contact['id'],
             'entity_table' => 'civicrm_contact',
             'label' => $this->randomString()
         ]);
         $resource_demand = $this->callAPI34('ResourceDemand', 'create', [
+            'resource_type_id' => ResourceTestBase::RESOURCE_TYPE_CONTACT,
             'entity_id' => $contact['id'],
             'entity_table' => 'civicrm_contact',
             'label' => $this->randomString()

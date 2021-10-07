@@ -36,6 +36,7 @@ class BasicResourceAvailabilityTest extends ResourceTestBase implements Headless
     {
         $contact = $this->createContact();
         $resource = $this->callAPI34('Resource', 'create', [
+            'resource_type_id' => ResourceTestBase::RESOURCE_TYPE_CONTACT,
             'entity_id' => $contact['id'],
             'entity_table' => 'civicrm_contact',
             'label' => $this->randomString()
@@ -69,6 +70,7 @@ class BasicResourceAvailabilityTest extends ResourceTestBase implements Headless
     {
         $contact = $this->createContact();
         $resource = $this->callAPI34('Resource', 'create', [
+            'resource_type_id' => ResourceTestBase::RESOURCE_TYPE_CONTACT,
             'entity_id' => $contact['id'],
             'entity_table' => 'civicrm_contact',
             'label' => $this->randomString()
@@ -102,6 +104,7 @@ class BasicResourceAvailabilityTest extends ResourceTestBase implements Headless
     {
         $contact = $this->createContact();
         $resource = $this->callAPI34('Resource', 'create', [
+            'resource_type_id' => ResourceTestBase::RESOURCE_TYPE_CONTACT,
             'entity_id' => $contact['id'],
             'entity_table' => 'civicrm_contact',
             'label' => $this->randomString()

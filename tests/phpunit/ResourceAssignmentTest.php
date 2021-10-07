@@ -36,11 +36,13 @@ class BasicResourceAssignmentTest extends ResourceTestBase implements HeadlessIn
     {
         $contact = $this->createContact();
         $resource = $this->callAPI34('Resource', 'create', [
+            'resource_type_id' => ResourceTestBase::RESOURCE_TYPE_CONTACT,
             'entity_id' => $contact['id'],
             'entity_table' => 'civicrm_contact',
             'label' => $this->randomString()
         ]);
         $resource_demand = $this->callAPI34('ResourceDemand', 'create', [
+            'resource_type_id' => ResourceTestBase::RESOURCE_TYPE_CONTACT,
             'entity_id' => $contact['id'],
             'entity_table' => 'civicrm_contact',
             'label' => $this->randomString()

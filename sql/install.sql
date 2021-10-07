@@ -26,7 +26,8 @@ CREATE TABLE IF NOT EXISTS `civicrm_resource` (
 CREATE TABLE IF NOT EXISTS  `civicrm_resource_demand` (
     `id`               int unsigned   NOT NULL AUTO_INCREMENT  COMMENT 'Unique Resource Demand ID',
     `label`            varchar(255)                            COMMENT 'Resource Label',
-    `resource_type_id` int unsigned NOT NULL                   COMMENT 'Resource Type ID',
+    `resource_type_id` int unsigned   NOT NULL                 COMMENT 'Resource Type ID',
+    `count`            int unsigned   DEFAULT 1                COMMENT 'Resource Demand Count',
     `entity_id`        int unsigned   NOT NULL                 COMMENT 'Resource linked entity ID',
     `entity_table`     varchar(64)    NOT NULL                 COMMENT 'Resource linked entity table name',
     `is_template`      tinyint        DEFAULT 0                COMMENT 'Marks demand templates',
