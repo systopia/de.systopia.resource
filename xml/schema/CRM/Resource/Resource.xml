@@ -31,6 +31,15 @@
   </field>
 
   <field>
+    <name>resource_type_id</name>
+    <type>int unsigned</type>
+    <length>10</length>
+    <title>Resource Type</title>
+    <required>true</required>
+    <comment>Resource Type ID</comment>
+  </field>
+
+  <field>
     <name>entity_id</name>
     <type>int unsigned</type>
     <length>10</length>
