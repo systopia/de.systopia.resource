@@ -15,16 +15,18 @@
 # noinspection SqlNoDataSourceInspectionForFile
 
 CREATE TABLE IF NOT EXISTS `civicrm_resource` (
-    `id`           int unsigned  NOT NULL AUTO_INCREMENT  COMMENT 'Unique Resource ID',
-    `label`        varchar(255)                           COMMENT 'Resource Label',
-    `entity_id`    int unsigned  NOT NULL                 COMMENT 'Resource - linked entity ID',
-    `entity_table` varchar(64)   NOT NULL                 COMMENT 'Resource - linked entity table name' ,
+    `id`           int unsigned     NOT NULL AUTO_INCREMENT  COMMENT 'Unique Resource ID',
+    `label`        varchar(255)                              COMMENT 'Resource Label',
+    `resource_type_id` int unsigned NOT NULL                 COMMENT 'Resource Type ID',
+    `entity_id`    int unsigned     NOT NULL                 COMMENT 'Resource - linked entity ID',
+    `entity_table` varchar(64)      NOT NULL                 COMMENT 'Resource - linked entity table name' ,
     PRIMARY KEY (`id`)
 ) ENGINE=InnoDB;
 
 CREATE TABLE IF NOT EXISTS  `civicrm_resource_demand` (
     `id`               int unsigned   NOT NULL AUTO_INCREMENT  COMMENT 'Unique Resource Demand ID',
     `label`            varchar(255)                            COMMENT 'Resource Label',
+    `resource_type_id` int unsigned NOT NULL                   COMMENT 'Resource Type ID',
     `entity_id`        int unsigned   NOT NULL                 COMMENT 'Resource linked entity ID',
     `entity_table`     varchar(64)    NOT NULL                 COMMENT 'Resource linked entity table name',
     `is_template`      tinyint        DEFAULT 0                COMMENT 'Marks demand templates',
