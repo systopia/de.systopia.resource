@@ -47,6 +47,8 @@ class CRM_Resource_BAO_ResourceUnavailability extends CRM_Resource_DAO_ResourceU
     /**
      * Check whether the given resource is available (in the given time frame)
      *
+     * @todo move to resource
+     *
      * @param integer $resource_id
      * @param string $from_timestamp
      * @param string $to_timestamp
@@ -64,7 +66,25 @@ class CRM_Resource_BAO_ResourceUnavailability extends CRM_Resource_DAO_ResourceU
             }
         }
 
-        // todo: check if currently assigned
+        // check for currently assignments
+        $assignment_search = new CRM_Resource_BAO_ResourceAssignment();
+        $assignment_search->resource_id = (int)$resource_id;
+        $assignment_search->status = CRM_Resource_BAO_ResourceAssignment::STATUS_CONFIRMED;
+        $assignment_search->find();
+
+        while ($assignment_search->fetch()) {
+            if ($from_timestamp == null && $to_timestamp == null) {
+                // in this case *any* assignment would render it unavailable
+                return false;
+            }
+
+            // check if this assignment is valid during the given time frame
+            // todo: implement!
+            $implementation = $assignment_search->getImplementation();
+            if ($implementation->isActive($from_timestamp, $to_timestamp)) {
+                return false;
+            }
+        }
 
         // no problems found
         return true;

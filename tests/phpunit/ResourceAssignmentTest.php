@@ -48,14 +48,21 @@ class BasicResourceAssignmentTest extends ResourceTestBase implements HeadlessIn
             'label' => $this->randomString()
         ]);
 
+        // this resource should be available
+        $this->assertResourceAvailable(true, $resource['id']);
+
+        // assign the resource
         $resource_assignment = $this->callAPI34('ResourceAssignment', 'create', [
             'resource_id' => $resource['id'],
             'resource_demand_id' => $resource_demand['id'],
-            'status' => 1
+            'status' => CRM_Resource_BAO_ResourceAssignment::STATUS_CONFIRMED
         ]);
 
         $loaded_assignment = $this->callAPI34('ResourceAssignment', 'getsingle', [
             'id' => $resource_assignment['id'],
         ]);
+
+        // this resource should not be available
+        $this->assertResourceAvailable(false, $resource['id']);
     }
 }

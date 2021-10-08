@@ -251,12 +251,13 @@ class ResourceTestBase extends TestCase implements HeadlessInterface, HookInterf
      * @param $parameters
      * @param $expected
      */
-    public function assertResourceAvailable($resource_id, $parameters, $expected)
+    public function assertResourceAvailable($expected, $resource_id, $parameters = [])
     {
         // use the BAO function: todo: expose to API
         $resource_bao = new CRM_Resource_BAO_Resource();
         $resource_bao->id = $resource_id;
         $available = $resource_bao->isAvailable($parameters['from'] ?? null, $parameters['to'] ?? null);
+        $this->assertEquals($available, $expected, $expected ? "Resource should be available" : "Resource shouldn't be available");
 
         // todo use SQL
         //$resource_bao->isAvailableSQL();

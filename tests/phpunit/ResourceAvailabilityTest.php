@@ -43,7 +43,7 @@ class BasicResourceAvailabilityTest extends ResourceTestBase implements Headless
         ]);
 
         // check if resource is available
-        $this->assertResourceAvailable($resource['id'], [], true);
+        $this->assertResourceAvailable(true, $resource['id']);
 
         // add unavailability
         $unavailability = $this->callAPI34('ResourceUnavailability', 'create', [
@@ -53,13 +53,13 @@ class BasicResourceAvailabilityTest extends ResourceTestBase implements Headless
         ]);
 
         // check if resource is still available
-        $this->assertResourceAvailable($resource['id'], [], false);
+        $this->assertResourceAvailable(false, $resource['id']);
 
         // delete availability
         $this->callAPI34('ResourceUnavailability', 'delete', ['id' => $unavailability['id']]);
 
         // resource should be available again
-        $this->assertResourceAvailable($resource['id'], [], true);
+        $this->assertResourceAvailable(true, $resource['id']);
     }
 
 
@@ -77,24 +77,24 @@ class BasicResourceAvailabilityTest extends ResourceTestBase implements Headless
         ]);
 
         // check if resource is available
-        $this->assertResourceAvailable($resource['id'], ['from' => 'now'], true);
+        $this->assertResourceAvailable(true, $resource['id'], ['from' => 'now']);
 
         // add unavailability
         $unavailability_BAO = CRM_Resource_Unavailability_DateRange::createUnavailability(
             $resource['id'],
             'testDateRangeUnavailability',
-            strtotime('now - 1 day'),
-            strtotime('now + 1 day')
+            'now - 1 day',
+            'now + 1 day'
         );
 
         // check if resource is still available
-        $this->assertResourceAvailable($resource['id'], ['from' => 'now'], false);
+        $this->assertResourceAvailable(false, $resource['id'], ['from' => 'now']);
 
         // delete availability
         $this->callAPI34('ResourceUnavailability', 'delete', ['id' => $unavailability_BAO->id]);
 
         // resource should be available again
-        $this->assertResourceAvailable($resource['id'], ['from' => 'now'], true);
+        $this->assertResourceAvailable(true, $resource['id'], ['from' => 'now']);
     }
 
     /**
@@ -111,25 +111,25 @@ class BasicResourceAvailabilityTest extends ResourceTestBase implements Headless
         ]);
 
         // check if resource is available
-        $this->assertResourceAvailable($resource['id'], ['from' => 'now'], true);
+        $this->assertResourceAvailable(true, $resource['id'], ['from' => 'now']);
 
         // add irrelevant unavailability
         $unavailability1 = CRM_Resource_Unavailability_DateRange::createUnavailability(
             $resource['id'],
             'test irrelevant future unavailability',
-            strtotime('now + 1 day'),
-            strtotime('now + 2 day')
+            'now + 1 day',
+            'now + 2 day'
         );
 
         $unavailability2 = CRM_Resource_Unavailability_DateRange::createUnavailability(
             $resource['id'],
             'test irrelevant past unavailability',
-            strtotime('now - 2 day'),
-            strtotime('now - 1 day')
+            'now - 2 day',
+            'now - 1 day'
         );
 
         // check if resource is still available
-        $this->assertResourceAvailable($resource['id'], ['from' => 'now'], true);
+        $this->assertResourceAvailable(true, $resource['id'], ['from' => 'now']);
     }
 
 }

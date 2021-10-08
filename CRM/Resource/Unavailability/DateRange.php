@@ -57,12 +57,22 @@ class CRM_Resource_Unavailability_DateRange extends CRM_Resource_BAO_ResourceUna
     /**
      * Create a new ResourceUnavailability based on array-data
      *
-     * @param array $params
-     *   base values like resource_id, reason
+     * @param integer $resource_id
+     *   resource ID
+     *
+     * @param string $reason
+     *   the reason
+     *
+     * @param string $from_timestamp
+     *   timestamp, must be parsable by strtotime
+     *
+     * @param string $to_timestamp
+     *   timestamp, must be parsable by strtotime
+     *
      *
      * @return CRM_Resource_DAO_ResourceUnavailability
      */
-    public static function createUnavailability($resource_id, $reason, $from_timestamp, $to_timestamp)
+    public static function createUnavailability($resource_id, $reason, $from_timestamp = 'now', $to_timestamp = 'now')
     {
         $params = [
             'resource_id' => $resource_id,
@@ -71,16 +81,8 @@ class CRM_Resource_Unavailability_DateRange extends CRM_Resource_BAO_ResourceUna
         ];
 
         // add the timestamp data
-        if ($from_timestamp) {
-            $from_timestamp = strtotime($from_timestamp);
-        } else {
-            $from_timestamp = 0;
-        }
-        if ($to_timestamp) {
-            $to_timestamp = strtotime($to_timestamp);
-        } else {
-            $to_timestamp = PHP_INT_MAX;
-        }
+        $from_timestamp = strtotime($from_timestamp);
+        $to_timestamp = strtotime($to_timestamp);
         $params['parameters'] = json_encode([
             date('Y-m-d H:i:s e', $from_timestamp),
             date('Y-m-d H:i:s e', $to_timestamp),

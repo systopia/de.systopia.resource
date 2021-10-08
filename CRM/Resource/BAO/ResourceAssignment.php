@@ -17,6 +17,9 @@ use CRM_Resource_ExtensionUtil as E;
 
 class CRM_Resource_BAO_ResourceAssignment extends CRM_Resource_DAO_ResourceAssignment
 {
+    const STATUS_PROPOSED = 1;
+    const STATUS_DENIED = 2;
+    const STATUS_CONFIRMED = 3;
 
     /**
      * Create a new ResourceAssignment based on array-data
