@@ -79,4 +79,8 @@
     </html>
   </field>
 
+  <dynamicForeignKey>
+    <idColumn>entity_id</idColumn>
+    <typeColumn>entity_table</typeColumn>
+  </dynamicForeignKey>
 </table>
