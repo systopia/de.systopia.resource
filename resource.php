@@ -158,27 +158,27 @@ function resource_civicrm_alterSettingsFolders(&$metaDataFolders = null)
 function resource_civicrm_entityTypes(&$entityTypes)
 {
     _resource_civix_civicrm_entityTypes($entityTypes);
-    $entityTypes[] = [
+    $entityTypes['CRM_Resource_DAO_Resource'] = [
         'name'  => 'Resource',
         'class' => 'CRM_Resource_DAO_Resource',
         'table' => 'civicrm_resource',
     ];
-    $entityTypes[] = [
+    $entityTypes['CRM_Resource_DAO_ResourceAssignment'] = [
         'name'  => 'ResourceAssignment',
         'class' => 'CRM_Resource_DAO_ResourceAssignment',
         'table' => 'civicrm_resource_assignment',
     ];
-    $entityTypes[] = [
+    $entityTypes['CRM_Resource_DAO_ResourceDemand'] = [
         'name'  => 'ResourceDemand',
         'class' => 'CRM_Resource_DAO_ResourceDemand',
         'table' => 'civicrm_resource_demand',
     ];
-    $entityTypes[] = [
+    $entityTypes['CRM_Resource_DAO_ResourceDemandCondition'] = [
         'name'  => 'ResourceDemandCondition',
         'class' => 'CRM_Resource_DAO_ResourceDemandCondition',
         'table' => 'civicrm_resource_demand_condition',
     ];
-    $entityTypes[] = [
+    $entityTypes['CRM_Resource_DAO_ResourceUnavailability'] = [
         'name'  => 'ResourceUnavailability',
         'class' => 'CRM_Resource_DAO_ResourceUnavailability',
         'table' => 'civicrm_resource_unavailability',

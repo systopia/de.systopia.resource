@@ -40,25 +40,25 @@
   </field>
 
   <field>
-    <name>entity_id</name>
-    <type>int unsigned</type>
-    <length>10</length>
-    <title>Entity ID</title>
-    <required>true</required>
-    <comment>Resource linked entity ID</comment>
-  </field>
-
-  <field>
     <name>entity_table</name>
+    <title>Entity Table</title>
     <type>varchar</type>
     <length>64</length>
-    <title>Entity Table</title>
     <required>true</required>
-    <comment>Resource linked entity table name</comment>
   </field>
-
+  <field>
+    <name>entity_id</name>
+    <title>Entity ID </title>
+    <type>int unsigned</type>
+    <required>true</required>
+  </field>
   <dynamicForeignKey>
     <idColumn>entity_id</idColumn>
     <typeColumn>entity_table</typeColumn>
   </dynamicForeignKey>
+  <index>
+    <name>index_entity</name>
+    <fieldName>entity_table</fieldName>
+    <fieldName>entity_id</fieldName>
+  </index>
 </table>

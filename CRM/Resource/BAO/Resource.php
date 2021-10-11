@@ -17,6 +17,28 @@ use CRM_Resource_ExtensionUtil as E;
 
 class CRM_Resource_BAO_Resource extends CRM_Resource_DAO_Resource
 {
+    /**
+     * Get the linked entities
+     *
+     * @todo: make dynamic
+     *
+     * @return array
+     *  table_name => entity_name
+     */
+    public static function getLinkedEntities() {
+        return [
+            'civicrm_contact' => 'Contact'
+        ];
+    }
+
+    /** TEMPLATE: COPY THIS TO CRM_Resource_DAO_Resource AFTER REBUILDING THE DAOs! */
+    public static function buildOptions($fieldName, $context = NULL, $props = []) {
+        if ($fieldName == 'entity_table') {
+            return CRM_Resource_BAO_Resource::getLinkedEntities();
+        } else {
+            return parent::buildOptions($fieldName, $context, $props);
+        }
+    }
 
     /**
      * Check if the resource is available, judging by
