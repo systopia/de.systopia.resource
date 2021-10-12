@@ -162,6 +162,7 @@ function resource_civicrm_entityTypes(&$entityTypes)
         'name'  => 'Resource',
         'class' => 'CRM_Resource_DAO_Resource',
         'table' => 'civicrm_resource',
+        //'links_callback' => ['CRM_Resource_BAO_Resource::add_resource_links']
     ];
     $entityTypes['CRM_Resource_DAO_ResourceAssignment'] = [
         'name'  => 'ResourceAssignment',
