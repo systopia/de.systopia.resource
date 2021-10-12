@@ -20,15 +20,45 @@ class CRM_Resource_BAO_Resource extends CRM_Resource_DAO_Resource
     /**
      * Get the linked entities
      *
-     * @todo: make dynamic
+     * This is currently based on the resource type specs,
+     *  which is an option group with the group_name field containing the table name
      *
      * @return array
      *  table_name => entity_name
      */
     public static function getLinkedEntities() {
-        return [
-            'civicrm_contact' => 'Contact'
-        ];
+        static $linked_entities = null;
+        if ($linked_entities === null) {
+            $linked_entities = [];
+            // use SQL since the API doesn't expose the grouping fields
+            $group_data = CRM_Core_DAO::executeQuery("
+                SELECT
+                 ov.grouping AS entity_table
+                FROM civicrm_option_value ov
+                INNER JOIN civicrm_option_group og
+                       ON ov.option_group_id = og.id
+                       AND og.name = 'resource_types'
+                ")->fetchAll();
+            foreach ($group_data as $group_datum) {
+                $linked_entities[$group_datum['entity_table']] =
+                    CRM_Core_DAO_AllCoreTables::getEntityNameForTable($group_datum['entity_table']);
+            }
+        }
+        return $linked_entities;
+    }
+
+    /**
+     * Used as in the entityTypes hook als follows:
+     *  'links_callback' => ['CRM_Resource_BAO_Resource::add_resource_links']
+     *
+     * @note current not active
+     *
+     * @param string $class
+     * @param array $links
+     */
+    public static function add_resource_links($class, &$links)
+    {
+        $links[] = new CRM_Core_Reference_Dynamic(self::getTableName(), 'entity_id', NULL, 'id', 'entity_table');
     }
 
     /** TEMPLATE: COPY THIS TO CRM_Resource_DAO_Resource AFTER REBUILDING THE DAOs! */
