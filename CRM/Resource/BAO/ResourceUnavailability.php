@@ -32,7 +32,7 @@ class CRM_Resource_BAO_ResourceUnavailability extends CRM_Resource_DAO_ResourceU
      */
     public static function create($params)
     {
-        $className = 'CRM_Resource_DAO_ResourceUnavailability';
+        $className = 'CRM_Resource_BAO_ResourceUnavailability';
         $entityName = 'ResourceUnavailability';
         $hook = empty($params['id']) ? 'create' : 'edit';
 
