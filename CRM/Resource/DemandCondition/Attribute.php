@@ -57,23 +57,51 @@ class CRM_Resource_DemandCondition_Attribute extends CRM_Resource_BAO_ResourceDe
      * Check if the given condition is currently met
      *
      * @param \CRM_Resource_BAO_Resource $resource
+     *    the resource to be tested against
      *
-     * @return boolean does the resource fulfill this condition?
+     * @param array $error_messages
+     *    if there is a problem, add a description to the list of error messages
+     *
+     * @return boolean does the resource fulfill this condition
      *
      * @note this should be overwritten by the subclass implementation
      */
-    public function isFulfilledWithResource($resource): bool
+    public function isFulfilledWithResource($resource, &$error_messages = []) : bool
     {
         $entity = $resource->getEntity();
         [$attribute_name, $value, $operation] = $this->getParameters();
         $current_value = $entity->$attribute_name ?? null;
         switch ($operation) {
+
             case '==':
-                return $current_value == $value;
+                if ($current_value == $value) {
+                    return true;
+                } else {
+                    $error_messages[] = E::ts("Attribute '%1' does not equal %2",
+                                              [1 => $attribute_name, 2 => json_encode($value)]);
+                    return false;
+                }
+
+            case '===':
+                if ($current_value === $value) {
+                    return true;
+                } else {
+                    $error_messages[] = E::ts("Attribute '%1' does not exactly equal %2",
+                                              [1 => $attribute_name, 2 => json_encode($value)]);
+                    return false;
+                }
+
             case '!=':
-                return $current_value != $value;
+                if ($current_value != $value) {
+                    return true;
+                } else {
+                    $error_messages[] = E::ts("Attribute '%1' equals %2",
+                                              [1 => $attribute_name, 2 => json_encode($value)]);
+                    return false;
+                }
+
             default:
-                Civi::log()->debug("DemandCondition_Attribute: operation {$operation} unknown.");
+                $error_messages[] = E::ts("DemandCondition_Attribute: operation '%1' unknown.", [1 => $operation]);
                 return false;
         }
     }

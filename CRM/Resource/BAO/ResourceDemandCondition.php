@@ -59,13 +59,18 @@ class CRM_Resource_BAO_ResourceDemandCondition extends CRM_Resource_DAO_Resource
      * Check if the given condition is currently met
      *
      * @param \CRM_Resource_BAO_Resource $resource
+     *    the resource to be tested against
+     *
+     * @param array $error_messages
+     *    if there is a problem, add a description to the list of error messages
      *
      * @return boolean does the resource fulfill this condition
      *
      * @note this should be overwritten by the subclass implementation
      */
-    public function isFulfilledWithResource($resource)
+    public function isFulfilledWithResource($resource, &$error_messages = []) : bool
     {
+        $error_messages[] = "this is the abstract function and should never be called";
         return false;
     }
 

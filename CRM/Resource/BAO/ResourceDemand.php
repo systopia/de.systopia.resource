@@ -49,12 +49,13 @@ class CRM_Resource_BAO_ResourceDemand extends CRM_Resource_DAO_ResourceDemand
      *
      * @return boolean does the resource fulfill the required conditions
      */
-    public function isFulfilledWithResource($resource, $cached = true)
+    public function isFulfilledWithResource($resource, $cached = true, &$error_list = [])
     {
         $demand_conditions = $this->getDemandConditions($cached);
         foreach ($demand_conditions as $demand_condition) {
             /** @var $demand_condition CRM_Resource_BAO_ResourceDemandCondition */
-            if (!$demand_condition->isFulfilledWithResource($resource)) {
+            $error_message = null;
+            if (!$demand_condition->isFulfilledWithResource($resource, $error_message)) {
                 return false;
             }
         }
