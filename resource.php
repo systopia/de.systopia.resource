@@ -187,6 +187,53 @@ function resource_civicrm_entityTypes(&$entityTypes)
 }
 
 /**
+ * Add contact summary tab for contact resources
+ */
+function resource_civicrm_tabset($tabsetName, &$tabs, $context)
+{
+    if ($tabsetName == 'civicrm/contact/view') {
+        // add a resource tab to the summary view
+        $contact_resources = \Civi\Api4\Resource::get()
+            ->addWhere('entity_table', '=', 'civicrm_contact')
+            ->addWhere('entity_id', '=', $context['contact_id'])
+            ->execute();
+        $resource_id = $contact_resources->first();
+        if ($resource_id) {
+            // contact already is a resource:
+            $tabs['resource'] = [
+                'id'      => 'resource',
+                'title'   => E::ts("Resource"),
+                'url'     => CRM_Utils_System::url(
+                    'civicrm/resource/view',
+                    "id={$resource_id}"
+                ),
+                'count'   => 1, // todo: (active) assignments
+                'valid'   => 1,
+                'icon' => "crm-i fa-user-md",
+                'active'  => 1,
+                'current' => false,
+            ];
+        } else {
+            // contact isn't a resource -> offer to become one
+            $tabs['resource'] = [
+                'id'      => 'resource',
+                'title'   => E::ts("Resource"),
+                'url'     => CRM_Utils_System::url(
+                    'civicrm/resource/create',
+                    "entity_id={$context['contact_id']}&entity_table=civicrm_contact"
+                ),
+                'icon' => "crm-i fa-question",
+                'count'   => 0,
+                'valid'   => 0,
+                'active'  => 0,
+                'current' => false,
+            ];
+        }
+    }
+}
+
+
+/**
  * Implements hook_civicrm_themes().
  */
 function resource_civicrm_themes(&$themes)
