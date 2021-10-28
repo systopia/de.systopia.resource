@@ -62,7 +62,7 @@ class BasicResourceDemandTest extends ResourceTestBase implements HeadlessInterf
     /**
      * Create a simple resource
      */
-    public function testSimpleCreateResourceDemandWithCondition()
+    public function testSimpleCreateResourceDemandWithConditionBAO()
     {
         $resource_contact = $this->createContact();
         $created_resource = $this->callAPI34('Resource', 'create', [
@@ -79,7 +79,8 @@ class BasicResourceDemandTest extends ResourceTestBase implements HeadlessInterf
             'label' => $this->randomString()
         ]);
 
-        // todo: expose to API
+
+        // use BAO logic
         $resource_demand_bao = new CRM_Resource_BAO_ResourceDemand();
         $resource_demand_bao->id = $created_resource_demand['id'];
         $resource_demand_bao->find(true);
@@ -115,5 +116,52 @@ class BasicResourceDemandTest extends ResourceTestBase implements HeadlessInterf
         // the whole demand should not be met
         $resource_would_be_met = $resource_demand_bao->isFulfilledWithResource($resource_bao, false);
         $this->assertFalse($resource_would_be_met, "This resource should not meet the demand");
+    }
+
+    /**
+     * Create a simple resource
+     */
+    public function testSimpleCreateResourceDemandWithConditionAPI()
+    {
+        $resource_contact = $this->createContact();
+        $created_resource = $this->callAPI34('Resource', 'create', [
+            'resource_type_id' => ResourceTestBase::RESOURCE_TYPE_CONTACT,
+            'entity_id' => $resource_contact['id'],
+            'entity_table' => 'civicrm_contact',
+            'label' => $this->randomString()
+        ]);
+        $demand_entity = $this->createContact();
+        $created_resource_demand = $this->callAPI34('ResourceDemand', 'create', [
+            'resource_type_id' => ResourceTestBase::RESOURCE_TYPE_CONTACT,
+            'entity_id' => $demand_entity['id'],
+            'entity_table' => 'civicrm_contact',
+            'label' => $this->randomString()
+        ]);
+
+        // create resource demand condition
+        $condition = CRM_Resource_DemandCondition_Attribute::createCondition(
+            $created_resource_demand['id'],
+            'first_name',
+            $resource_contact['first_name']);
+
+        $result = $this->callAPI34('Resource', 'meets_demand', [
+            'id' => $created_resource['id'],
+            'resource_demand_id' => $created_resource_demand['id']
+        ]);
+        $this->assertTrue($result['is_fulfilled'], "Demand should be met with this resource.");
+
+        // create BAD resource demand condition
+        $bad_condition = CRM_Resource_DemandCondition_Attribute::createCondition(
+            $created_resource_demand['id'],
+            'first_name',
+            'OTHER' . $resource_contact['first_name']);
+
+        // the resource should not meet the individual condition
+
+        $result = $this->callAPI34('Resource', 'meets_demand', [
+            'id' => $created_resource['id'],
+            'resource_demand_id' => $created_resource_demand['id']
+        ]);
+        $this->assertFalse($result['is_fulfilled'], "Demand should NOT be met with this resource.");
     }
 }

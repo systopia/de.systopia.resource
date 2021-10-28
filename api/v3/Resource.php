@@ -117,6 +117,10 @@ function _civicrm_api3_resource_meets_demand_spec(&$spec)
  */
 function civicrm_api3_resource_meets_demand($params)
 {
+    if (!isset($params['cached'])) {
+        $params['cached'] = false;
+    }
+
     // get resource
     $resource = new CRM_Resource_BAO_Resource();
     $resource->id = $params['id'];
