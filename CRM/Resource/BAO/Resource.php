@@ -77,6 +77,8 @@ class CRM_Resource_BAO_Resource extends CRM_Resource_DAO_Resource
      *
      * @return array
      *  table_name => entity_name
+     *
+     * @todo migrate to CRM_Resource_Types
      */
     public static function getLinkedEntities()
     {
