@@ -20,7 +20,7 @@ class CRM_Resource_Page_ResourceView extends CRM_Core_Page
     /** @var integer resource ID */
     protected $id = null;
 
-    /** @var array resource data */
+    /** @var \CRM_Resource_BAO_Resource resource */
     protected $resource = null;
 
     /** @var array unavailability data */
@@ -33,15 +33,16 @@ class CRM_Resource_Page_ResourceView extends CRM_Core_Page
     {
         $this->id = CRM_Utils_Request::retrieve('id', 'Integer', $this);
         // load resource
-        $this->resource = \Civi\Api4\Resource::get()
-            ->addWhere('id', '=', $this->id)
-            ->setLimit(1)->execute()->first();
+        $this->resource = CRM_Resource_BAO_Resource::getInstance($this->id);
 
-        // load unavailabilities
-        $this->unavailabilities = \Civi\Api4\ResourceUnavailability::get()
-            ->addWhere('resource_id', '=', $this->id)
-            ->execute()
-            ->getArrayCopy();
+        // load and prep unavailabilities
+        $this->unavailabilities = $this->resource->getUnavailabilities();
+        $unavailability_list = [];
+        foreach ($this->unavailabilities as $unavailability) {
+            $unavailability_data = $unavailability->toArray();
+            $unavailability_data['display_name'] = $unavailability->getLabel();
+            $unavailability_list[] = $unavailability_data;
+        }
 
         // load assignments
         $this->assignments = \Civi\Api4\ResourceAssignment::get()
@@ -49,9 +50,22 @@ class CRM_Resource_Page_ResourceView extends CRM_Core_Page
             ->execute()
             ->getArrayCopy();
 
+        // enrich data
+        $this->assign('resource_type_label', CRM_Resource_Types::getType($this->resource->resource_type_id)['label']);
+        $this->assign('resource_label', $this->resource->label);
+
+        // pass data to smarty
         $this->assign('resource', $this->resource);
-        $this->assign('unavailabilities', $this->unavailabilities);
+        $this->assign('unavailabilities', $unavailability_list);
         $this->assign('assignments', $this->assignments);
+        $this->assign('is_available', $this->resource->isAvailable(date('YmdHis'), date('YmdHis')));
+
+
+        // generate links
+        $this->assign('unavailability_create_link',
+                      CRM_Utils_System::url('civicrm/resource/unavailability/create', "resource_id={$this->id}"));
+
+        Civi::resources()->addStyleUrl(E::url('css/resource_view.css'));
 
         parent::run();
     }

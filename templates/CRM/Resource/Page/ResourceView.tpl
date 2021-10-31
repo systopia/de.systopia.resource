@@ -13,25 +13,48 @@
 +-------------------------------------------------------*}
 
 {crmScope extensionKey='de.systopia.resource'}
-  <h3>{ts}Information{/ts}</h3>
-  Resource Type:
-  Resource ID:
+  <h3 class="header-dark resource-view">{ts}Resource Information{/ts}</h3>
+  <div class="resource-view resource-view-info">
+    <table>
+      <tr>
+        <td>{ts}Label{/ts}</td>
+        <td>{$resource_label}</td>
+      </tr>
+      <tr>
+        <td>{ts}Type{/ts}</td>
+        <td>{$resource_type_label}</td>
+      </tr>
+      <tr>
+        <td>{ts}Available{/ts}</td>
+        <td>{if $is_available}{ts}Yes{/ts}{else}{ts}No{/ts}{/if}</td>
+      </tr>
+    </table>
+  </div>
 
-  <h3>{ts}Availability{/ts}</h3>
-  {if $unavailabilities|count}
-    ASDSAD
-  {else}
-      <i>{ts}generally available{/ts}</i>
-      <button>add</button>
-  {/if}
-  <br/>
+  <h3 class="header-dark resource-view">{ts}Availability Restrictions{/ts} <a href="{$unavailability_create_link}" title="{ts}Add Availability Restriction{/ts}" class="crm-popup medium-popup">[+]</a></h3>
+  <div class="resource-view resource-view-availabilities">
+    {if $unavailabilities}
+        <table class="crm-table resource-view resource-view-unavailabilities">
+            {foreach from=$unavailabilities item=unavailability}
+              <tr>
+                  <td>{$unavailability.display_name}</td>
+                  <td>todo: options</td>
+              </tr>
+            {/foreach}
+        </table>
+    {else}
+      <span><i>{ts}always available{/ts}</i></span>
+    {/if}
+  </div>
 
-  <h3>{ts}Assignments{/ts}</h3>
-  {if $assignments|count}
-    ASDSAD
-  {else}
-    <i>{ts}no assignments{/ts}</i>
-  {/if}
+  <h3 class="header-dark resource-view">{ts}Assignments{/ts}</h3>
+  <div class="resource-view resource-view-assignments">
+    {if $assignments|count}
+      ASDSAD
+    {else}
+      <i>{ts}no assignments{/ts}</i>
+    {/if}
+  </div>
 
   <br/>
 {/crmScope}

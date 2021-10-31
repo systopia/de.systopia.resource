@@ -37,10 +37,11 @@ class CRM_Resource_Types
             $group_data = CRM_Core_DAO::executeQuery(
                 "
                 SELECT
-                    ov.label    AS label,
-                    ov.value    AS value, 
-                    ov.icon     AS icon, 
-                    ov.grouping AS entity_table
+                    ov.label     AS label,
+                    ov.value     AS value, 
+                    ov.icon      AS icon, 
+                    ov.grouping  AS entity_table,
+                    ov.is_active AS is_active
                 FROM civicrm_option_value ov
                 INNER JOIN civicrm_option_group og
                        ON ov.option_group_id = og.id
@@ -54,6 +55,7 @@ class CRM_Resource_Types
                     'label'        => $group_datum['label'],
                     'icon'         => $group_datum['icon'],
                     'entity_table' => $group_datum['entity_table'],
+                    'is_active'    => $group_datum['is_active'],
                 ];
             }
         }
@@ -70,20 +72,39 @@ class CRM_Resource_Types
     }
 
     /**
+     * Get Resource-Type by ID
+     *
+     * @param integer $id
+     *   the type ID
+     *
+     * @return array|null
+     *   type data if exists
+     */
+    public static function getType($id)
+    {
+        $all_types = self::getAll();
+        return $all_types[$id] ?? null;
+    }
+
+    /**
      * Check if there are resource types available for the given civicrm table name
      *
      * @param string $table_name
      *   the table name, e.g. civicrm_contact
      *
+     * @param boolean $active_only
+     *    return only active types
+     *
      * @return array
      *   list of types that use this entity table
      */
-    public static function getForEntityTable($table_name)
+    public static function getForEntityTable($table_name, $active_only = true)
     {
         $types = [];
         $all_types = self::getAll();
         foreach ($all_types as $type) {
             if ($type['entity_table'] == $table_name) {
+                if ($active_only && empty($type['is_active'])) continue;
                 $types[$type['id']] = $type;
             }
         }

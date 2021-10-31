@@ -9,8 +9,8 @@
     {
       "_lookup": ["name"],
       "_translate": ["label", "description"],
-      "name": "Personal_Resource",
-      "label": "Personal Resource",
+      "name": "Human_Resource",
+      "label": "Human Resource",
       "grouping": "civicrm_contact",
       "description": "A resource based on a contact",
       "filter": "0",
