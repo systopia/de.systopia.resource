@@ -95,11 +95,12 @@ class CRM_Resource_BAO_ResourceUnavailability extends CRM_Resource_DAO_ResourceU
      *
      * @return CRM_Resource_BAO_ResourceUnavailability subclass
      */
-    public function getImplementation() : object
+    public function getImplementation($cached = true) : object
     {
-        if (!isset($this->implementation)) {
+        if (!isset($this->implementation) || !$cached) {
             $this->implementation = new $this->class_name();
             $this->implementation->setFrom($this);
+            $this->implementation->id = $this->id;
         }
         return $this->implementation;
     }
@@ -154,16 +155,26 @@ class CRM_Resource_BAO_ResourceUnavailability extends CRM_Resource_DAO_ResourceU
 
     /**
      * Get the proper label for this unavailability
+     *
+     * @return string
+     *    the label of this unavailability type
+     */
+    public static function getTypeLabel()
+    {
+        return __CLASS__;
+    }
+
+    /**
+     * Get the proper label for this unavailability
      */
     public function getLabel()
     {
         return 'NOT IMPLEMENTED';
     }
 
-    /**
-     * UI Elements
-     */
 
+
+    // CRM_Core_Form Integration
 
     /**
      * Add form fields for the given unavailability

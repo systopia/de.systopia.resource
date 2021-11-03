@@ -33,7 +33,7 @@ class CRM_Resource_Form_Unavailability extends CRM_Core_Form
         $type_fields = [];
         foreach ($unavailability_types as $unavailability_type) {
             // get the labels
-            $unavailability_type2label[$unavailability_type] = call_user_func([$unavailability_type, 'getLabel']);
+            $unavailability_type2label[$unavailability_type] = call_user_func([$unavailability_type, 'getTypeLabel']);
 
             // add the fields
             $new_fields = call_user_func([$unavailability_type, 'addFormFields'], $this, $unavailability_type);

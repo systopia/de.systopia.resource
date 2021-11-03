@@ -193,6 +193,7 @@ function resource_civicrm_tabset($tabsetName, &$tabs, $context)
 {
     if ($tabsetName == 'civicrm/contact/view') {
         // add a resource tab to the summary view
+        Civi::resources()->addScriptUrl(E::url('js/contact_view.js'));
         $resource = \Civi\Api4\Resource::get()
             ->addWhere('entity_table', '=', 'civicrm_contact')
             ->addWhere('entity_id', '=', $context['contact_id'])

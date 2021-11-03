@@ -181,7 +181,7 @@ class CRM_Resource_BAO_Resource extends CRM_Resource_DAO_Resource
         $unavailability_search->resource_id = (int) $this->id;
         $unavailability_search->find();
         while ($unavailability_search->fetch()) {
-            $unavailabilities[] = $unavailability_search->getImplementation();
+            $unavailabilities[] = $unavailability_search->getImplementation(false);
         }
 
         return $unavailabilities;

@@ -92,15 +92,33 @@ class CRM_Resource_Unavailability_DateRange extends CRM_Resource_BAO_ResourceUna
         return parent::create($params);
     }
 
+
     /**
      * Get the label of the resource unavailability
      *
      * @return string
      *   a localised, human-readable label of the unavailability
      */
-    public static function getLabel() : string
+    public function getLabel()
     {
-        // all classes should implement this, so we shouldn't get here
+        list($unavailable_from, $unavailable_until) = $this->getParametersParsed();
+        $unavailable_from = strtotime($unavailable_from);
+        $unavailable_until = strtotime($unavailable_until);
+        return E::ts("[%1-%2]: %3", [
+            1 => date('Y-m-d', strtotime($unavailable_from)),
+            2 => date('Y-m-d', strtotime($unavailable_until)),
+            3 => $this->reason,
+        ]);
+    }
+
+    /**
+     * Get the proper label for this unavailability
+     *
+     * @return string
+     *    the label of this unavailability type
+     */
+    public static function getTypeLabel()
+    {
         return E::ts("Date Range");
     }
 
@@ -119,7 +137,10 @@ class CRM_Resource_Unavailability_DateRange extends CRM_Resource_BAO_ResourceUna
     public static function addFormFields($form, $prefix = '')
     {
         // no input fields needed
-        $form->addDateRange($prefix . 'date_range');
+        $form->addDatePickerRange(
+            $prefix . 'date_range',
+            E::ts("Date Range")
+        );
 
         return [];
     }
@@ -139,6 +160,6 @@ class CRM_Resource_Unavailability_DateRange extends CRM_Resource_BAO_ResourceUna
     public static function compileParameters($data, $prefix = '')
     {
         // no parameters needed
-        return [];
+        return [$prefix . 'date_range'];
     }
 }

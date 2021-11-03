@@ -44,6 +44,16 @@ class CRM_Resource_Unavailability_Absolute extends CRM_Resource_BAO_ResourceUnav
         return E::ts("Generally Unavailable: %1", [1 => $this->reason]);
     }
 
+    /**
+     * Get the proper label for this unavailability
+     *
+     * @return string
+     *    the label of this unavailability type
+     */
+    public static function getTypeLabel()
+    {
+        return E::ts("General Unavailability");
+    }
 
     /**
      * Add form fields for the given unavailability

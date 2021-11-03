@@ -41,6 +41,7 @@ class CRM_Resource_Page_ResourceView extends CRM_Core_Page
         foreach ($this->unavailabilities as $unavailability) {
             $unavailability_data = $unavailability->toArray();
             $unavailability_data['display_name'] = $unavailability->getLabel();
+            $unavailability_data['edit_link'] = CRM_Utils_System::url('civicrm/resource/unavailability/edit', "id={$unavailability_data['id']}");
             $unavailability_list[] = $unavailability_data;
         }
 
@@ -66,6 +67,7 @@ class CRM_Resource_Page_ResourceView extends CRM_Core_Page
                       CRM_Utils_System::url('civicrm/resource/unavailability/create', "resource_id={$this->id}"));
 
         Civi::resources()->addStyleUrl(E::url('css/resource_view.css'));
+        Civi::resources()->addScriptUrl(E::url('js/resource_view.js'));
 
         parent::run();
     }

@@ -36,9 +36,14 @@
     {if $unavailabilities}
         <table class="crm-table resource-view resource-view-unavailabilities">
             {foreach from=$unavailabilities item=unavailability}
-              <tr>
+              <tr id="unavailability-{$unavailability.id}">
                   <td>{$unavailability.display_name}</td>
-                  <td>todo: options</td>
+                  <td class="nowrap">
+                    <span>
+                      <a href="{$unavailability.edit_link}" class="action-item crm-hover-button crm-popup medium-popup" title="{ts}Edit Unavailability{/ts}">{ts}Edit{/ts}</a>
+                      <a class="action-item crm-hover-button" onclick="delete_unavailability({$unavailability.id});" title="{ts}Delete Unavailability{/ts}">{ts}Delete{/ts}</a>
+                    </span>
+                  </td>
               </tr>
             {/foreach}
         </table>
