@@ -104,9 +104,9 @@ class CRM_Resource_Unavailability_DateRange extends CRM_Resource_BAO_ResourceUna
         list($unavailable_from, $unavailable_until) = $this->getParametersParsed();
         $unavailable_from = strtotime($unavailable_from);
         $unavailable_until = strtotime($unavailable_until);
-        return E::ts("[%1-%2]: %3", [
-            1 => date('Y-m-d', strtotime($unavailable_from)),
-            2 => date('Y-m-d', strtotime($unavailable_until)),
+        return E::ts("[%1 - %2]: %3", [
+            1 => date('Y-m-d', $unavailable_from),
+            2 => date('Y-m-d', $unavailable_until),
             3 => $this->reason,
         ]);
     }
@@ -136,13 +136,48 @@ class CRM_Resource_Unavailability_DateRange extends CRM_Resource_BAO_ResourceUna
      */
     public static function addFormFields($form, $prefix = '')
     {
-        // no input fields needed
-        $form->addDatePickerRange(
-            $prefix . 'date_range',
-            E::ts("Date Range")
-        );
+        // add date
+        $form->add(
+            'datepicker',
+            $prefix . '_from',
+            E::ts("From"),
+            NULL,
+            FALSE,
+            []);
 
-        return [];
+        $form->add(
+            'datepicker',
+            $prefix . '_to',
+            E::ts("To"),
+            NULL,
+            FALSE,
+            []);
+
+        return [
+            $prefix . '_from',
+            $prefix . '_to',
+        ];
+    }
+
+    /**
+     * Validate our values in the form submission
+     *
+     * @param $submit_values array
+     *   the submitted values
+     *
+     * @return array
+     *    validation errors [field_name => error]
+     */
+    public static function validateFormSubmission($submit_values, $prefix = '')
+    {
+        $validation_errors = [];
+        if (empty($submit_values["{$prefix}_from"])) {
+            $validation_errors["{$prefix}_from"] = E::ts("No start date given");
+        }
+        if (empty($submit_values["{$prefix}_to"])) {
+            $validation_errors["{$prefix}_to"] = E::ts("No end date given");
+        }
+        return $validation_errors;
     }
 
     /**
@@ -159,7 +194,9 @@ class CRM_Resource_Unavailability_DateRange extends CRM_Resource_BAO_ResourceUna
      */
     public static function compileParameters($data, $prefix = '')
     {
-        // no parameters needed
-        return [$prefix . 'date_range'];
+        // format the from/to values properly
+        $from = date('Y-m-d H:i:s', strtotime($data["{$prefix}_from"]));
+        $to   = date('Y-m-d H:i:s', strtotime($data["{$prefix}_to"]));
+        return [$from, $to];
     }
 }

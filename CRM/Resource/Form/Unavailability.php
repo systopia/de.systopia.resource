@@ -23,20 +23,23 @@ class CRM_Resource_Form_Unavailability extends CRM_Core_Form
     /** @var integer resource id */
     protected $resource_id = null;
 
+    /** @var array list of unavailability_types */
+    protected $unavailability_types;
+
     public function buildQuickForm()
     {
         $this->resource_id = CRM_Utils_Request::retrieve('resource_id', 'Integer', $this, true);
 
         // gather information of the unavailabilities
-        $unavailability_types = CRM_Resource_BAO_ResourceUnavailability::getAllUnavailabilityTypes();
+        $this->unavailability_types = CRM_Resource_BAO_ResourceUnavailability::getAllUnavailabilityTypes();
         $unavailability_type2label = [];
         $type_fields = [];
-        foreach ($unavailability_types as $unavailability_type) {
+        foreach ($this->unavailability_types as $unavailability_type) {
             // get the labels
             $unavailability_type2label[$unavailability_type] = call_user_func([$unavailability_type, 'getTypeLabel']);
 
             // add the fields
-            $new_fields = call_user_func([$unavailability_type, 'addFormFields'], $this, $unavailability_type);
+            $new_fields = call_user_func([$unavailability_type, 'addFormFields'], $this, $unavailability_type . '_');
             $type_fields = array_merge($type_fields, $new_fields);
         }
         $this->assign('type_fields', $type_fields);
@@ -55,10 +58,9 @@ class CRM_Resource_Form_Unavailability extends CRM_Core_Form
             'unavailability_type',
             E::ts("Type"),
             $unavailability_type2label,
-            true
+            true,
+            ['class' => 'crm-select2']
         );
-
-
 
         $this->addButtons([
             [
@@ -68,7 +70,27 @@ class CRM_Resource_Form_Unavailability extends CRM_Core_Form
             ],
         ]);
 
+        Civi::resources()->addScriptUrl(E::url('js/unavailability_create.js'));
+
         parent::buildQuickForm();
+    }
+
+    /**
+     * Validate the user defined fields
+     *
+     * @return bool
+     */
+    public function validate()
+    {
+        $unavailability_type = $this->_submitValues['unavailability_type'];
+        if (in_array($unavailability_type, $this->unavailability_types)) {
+            $errors = call_user_func([$unavailability_type, 'validateFormSubmission'], $this->_submitValues, $unavailability_type . '_');
+            foreach ($errors as $field_key => $error) {
+                $this->_errors[$field_key] = $error;
+            }
+        }
+
+        return (0 == count($this->_errors));
     }
 
 
@@ -78,17 +100,20 @@ class CRM_Resource_Form_Unavailability extends CRM_Core_Form
 
         // create new unavailability
         $unavailability_type = $values['unavailability_type'];
-        $parameters = call_user_func([$unavailability_type, 'addFormFields'], $values, $unavailability_type);
-        $result = civicrm_api4('ResourceUnavailability', 'create', [
-            'values' => [
-                'reason' => $values['reason'],
-                'resource_id' => $this->resource_id,
-                'class_name' => $unavailability_type,
-                'parameters' => json_encode($parameters),
-            ],
-        ]);
+        if (in_array($unavailability_type, $this->unavailability_types)) {
+            $parameters = call_user_func([$unavailability_type, 'compileParameters'], $values, $unavailability_type . '_');
+            civicrm_api4('ResourceUnavailability', 'create', [
+                'values' => [
+                    'reason' => $values['reason'],
+                    'resource_id' => $this->resource_id,
+                    'class_name' => $unavailability_type,
+                    'parameters' => json_encode($parameters),
+                ],
+            ]);
+        } else {
+            throw new Exception("Unknown unavailability type " . $unavailability_type);
+        }
 
         parent::postProcess();
     }
-
 }

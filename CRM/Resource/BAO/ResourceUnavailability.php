@@ -195,6 +195,21 @@ class CRM_Resource_BAO_ResourceUnavailability extends CRM_Resource_DAO_ResourceU
     }
 
     /**
+     * Validate our values in the form submission
+     *
+     * @param $submit_values array
+     *   the submitted values
+     *
+     * @return array
+     *    validation errors [field_name => error]
+     */
+    public static function validateFormSubmission($submit_values)
+    {
+        // some subclasses don't have to implement this, so no warning here
+        return [];
+    }
+
+    /**
      * Generate data values
      *
      * @param $data array

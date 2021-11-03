@@ -25,6 +25,17 @@
     <div class="clear"></div>
   </div>
 
+  {foreach from=$type_fields item=type_field}
+    <div class="crm-section unavailability-form-field {$type_field}">
+      <div class="label">{$form.$type_field.label}</div>
+      <div class="content">{$form.$type_field.html}</div>
+      <div class="clear"></div>
+    </div>
+  {/foreach}
+
+  {* todo: remove hack *}
+  {include file="CRM/Core/DatePickerRangeWrapper.tpl" fieldName="CRM_Resource_Unavailability_DateRange_date_range" colspan='2'}
+
   <div class="crm-submit-buttons">
       {include file="CRM/common/formButtons.tpl" location="bottom"}
   </div>

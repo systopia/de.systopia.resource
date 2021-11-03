@@ -41,7 +41,7 @@ class CRM_Resource_Unavailability_Absolute extends CRM_Resource_BAO_ResourceUnav
      */
     public function getLabel()
     {
-        return E::ts("Generally Unavailable: %1", [1 => $this->reason]);
+        return E::ts("[general]: %1", [1 => $this->reason]);
     }
 
     /**

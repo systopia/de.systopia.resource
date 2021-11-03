@@ -25,7 +25,7 @@
         <td>{$resource_type_label}</td>
       </tr>
       <tr>
-        <td>{ts}Available{/ts}</td>
+        <td>{ts}Available Now{/ts}</td>
         <td>{if $is_available}{ts}Yes{/ts}{else}{ts}No{/ts}{/if}</td>
       </tr>
     </table>
