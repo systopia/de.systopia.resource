@@ -177,6 +177,9 @@ class CRM_Resource_Unavailability_DateRange extends CRM_Resource_BAO_ResourceUna
         if (empty($submit_values["{$prefix}_to"])) {
             $validation_errors["{$prefix}_to"] = E::ts("No end date given");
         }
+        if (strtotime($submit_values["{$prefix}_to"]) <= strtotime($submit_values["{$prefix}_from"])) {
+            $validation_errors["{$prefix}_to"] = E::ts("This has be after the start date");
+        }
         return $validation_errors;
     }
 
