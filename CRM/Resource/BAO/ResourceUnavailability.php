@@ -173,8 +173,9 @@ class CRM_Resource_BAO_ResourceUnavailability extends CRM_Resource_DAO_ResourceU
     }
 
 
-
-    // CRM_Core_Form Integration
+    /*****************************************
+     ***          FORM INTEGRATION          **
+    /****************************************/
 
     /**
      * Add form fields for the given unavailability
@@ -224,6 +225,20 @@ class CRM_Resource_BAO_ResourceUnavailability extends CRM_Resource_DAO_ResourceU
     public static function compileParameters($data, $prefix = '')
     {
         // some subclasses don't have to implement this, so no warning here
+        return [];
+    }
+
+    /**
+     * Get the current values for the fields defined in ::addFormFields
+     *
+     * @param string $prefix
+     *   an optional prefix
+     *
+     * @return array
+     *   field-key => current value
+     */
+    public function getCurrentFormValues($prefix = '')
+    {
         return [];
     }
 }

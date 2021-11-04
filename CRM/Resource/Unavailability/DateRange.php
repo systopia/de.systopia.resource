@@ -122,6 +122,11 @@ class CRM_Resource_Unavailability_DateRange extends CRM_Resource_BAO_ResourceUna
         return E::ts("Date Range");
     }
 
+    /*****************************************
+     ***          FORM INTEGRATION          **
+    /****************************************/
+
+
     /**
      * Add form fields for the given unavailability
      *
@@ -201,5 +206,27 @@ class CRM_Resource_Unavailability_DateRange extends CRM_Resource_BAO_ResourceUna
         $from = date('Y-m-d H:i:s', strtotime($data["{$prefix}_from"]));
         $to   = date('Y-m-d H:i:s', strtotime($data["{$prefix}_to"]));
         return [$from, $to];
+    }
+
+    /**
+     * Get the current values for the fields defined in ::addFormFields
+     *
+     * @param string $prefix
+     *   an optional prefix
+     *
+     * @return array
+     *   field-key => current value
+     */
+    public function getCurrentFormValues($prefix = '')
+    {
+        $params = $this->getParametersParsed();
+        if (isset($params[1])) {
+            return [
+                "{$prefix}_from" => $params[0],
+                "{$prefix}_to"   => $params[1],
+            ];
+        } else {
+            return [];
+        }
     }
 }

@@ -55,6 +55,11 @@ class CRM_Resource_Unavailability_Absolute extends CRM_Resource_BAO_ResourceUnav
         return E::ts("General Unavailability");
     }
 
+
+    /*****************************************
+     ***          FORM INTEGRATION          **
+    /****************************************/
+
     /**
      * Add form fields for the given unavailability
      *
