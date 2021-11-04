@@ -15,3 +15,7 @@
 div.resource-view {
   margin-bottom: 25px;
 }
+
+tr.unavailability-active-now {
+  background-color: palevioletred;
+}

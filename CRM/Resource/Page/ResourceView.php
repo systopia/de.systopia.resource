@@ -34,6 +34,7 @@ class CRM_Resource_Page_ResourceView extends CRM_Core_Page
         $this->id = CRM_Utils_Request::retrieve('id', 'Integer', $this);
         // load resource
         $this->resource = CRM_Resource_BAO_Resource::getInstance($this->id);
+        $now = date('YmdHis');
 
         // load and prep unavailabilities
         $this->unavailabilities = $this->resource->getUnavailabilities();
@@ -41,6 +42,7 @@ class CRM_Resource_Page_ResourceView extends CRM_Core_Page
         foreach ($this->unavailabilities as $unavailability) {
             $unavailability_data = $unavailability->toArray();
             $unavailability_data['display_name'] = $unavailability->getLabel();
+            $unavailability_data['active_now'] = $unavailability->isActive($now, $now);
             $unavailability_data['edit_link'] = CRM_Utils_System::url('civicrm/resource/unavailability/edit', "id={$unavailability_data['id']}");
             $unavailability_list[] = $unavailability_data;
         }

@@ -36,7 +36,7 @@
     {if $unavailabilities}
         <table class="crm-table resource-view resource-view-unavailabilities">
             {foreach from=$unavailabilities item=unavailability}
-              <tr id="unavailability-{$unavailability.id}">
+              <tr id="unavailability-{$unavailability.id}" class="unavailability {if $unavailability.active_now}unavailability-active-now{/if}">
                   <td>{$unavailability.display_name}</td>
                   <td class="nowrap">
                     <span>
