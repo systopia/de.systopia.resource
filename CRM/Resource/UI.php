@@ -83,4 +83,29 @@ class CRM_Resource_UI
             }
         }
     }
+
+    /**
+     * Inject event resource demand tab
+     *
+     * @param array $tabs
+     *    civicrm_tabset structure
+     * @param array $context
+     *    context information
+     */
+    public static function addEventResourceDemandTab(&$tabs, $context)
+    {
+        // todo: add setting to enable event demands?
+
+        // add required resources tab
+        $tabs['resourcedemands'] = [
+            'title'   => E::ts("Required Resources"),
+            'link'    => CRM_Utils_System::url(
+                'civicrm/event/manage/resourcedemands',
+                "action=update&reset=1&id={$context['event_id']}"
+            ),
+            'valid'   => 1,
+            'active'  => 1,
+            'current' => false,
+        ];
+    }
 }

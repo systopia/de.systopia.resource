@@ -191,11 +191,19 @@ function resource_civicrm_entityTypes(&$entityTypes)
  */
 function resource_civicrm_tabset($tabsetName, &$tabs, $context)
 {
-    if ($tabsetName == 'civicrm/contact/view') {
-        CRM_Resource_UI::addContactResourceTab($tabs, $context);
+    switch ($tabsetName) {
+        case 'civicrm/contact/view':
+            CRM_Resource_UI::addContactResourceTab($tabs, $context);
+            return;
+
+        case 'civicrm/event/manage':
+            CRM_Resource_UI::addEventResourceDemandTab($tabs, $context);
+            return;
+
+        default:
+            return;
     }
 }
-
 
 /**
  * Implements hook_civicrm_themes().
