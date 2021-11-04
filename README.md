@@ -10,6 +10,12 @@ This extension provides a framework to
 
 The extension is licensed under [AGPL-3.0](LICENSE.txt).
 
+## TODOs
+
+The following things still have to be implemented:
+1. permissions - the system has no permission system yet
+2. 
+
 ## Requirements
 
 * PHP v7.2+

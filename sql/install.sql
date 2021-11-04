@@ -55,7 +55,7 @@ CREATE TABLE IF NOT EXISTS  `civicrm_resource_demand_condition` (
 CREATE TABLE IF NOT EXISTS  `civicrm_resource_unavailability` (
    `id`                int unsigned   NOT NULL AUTO_INCREMENT  COMMENT 'Unique Resource Unavailability ID',
    `reason`            varchar(255)                            COMMENT 'Reason for the unavailability',
-   `resource_id`       int unsigned   NOT NULL                 COMMENT 'Resource Demand ID',
+   `resource_id`       int unsigned   NOT NULL                 COMMENT 'Resource ID',
    `class_name`        varchar(127)                            COMMENT 'Class name of the implementation, a subclass of CRM_Resource_BAO_Resource_Unavailability',
    `parameters`        varchar(255)                            COMMENT 'A json encoded data blob to store the parameters of this specific unavailability',
    PRIMARY KEY (`id`),

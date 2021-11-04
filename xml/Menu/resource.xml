@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<menu>
+  <item>
+    <path>civicrm/resource/view</path>
+    <page_callback>CRM_Resource_Page_ResourceView</page_callback>
+    <title>ResourceView</title>
+    <access_arguments>access CiviCRM</access_arguments>
+  </item>
+  <item>
+    <path>civicrm/resource/create</path>
+    <page_callback>CRM_Resource_Form_ResourceCreate</page_callback>
+    <title>ResourceCreate</title>
+    <access_arguments>access CiviCRM</access_arguments>
+  </item>
+  <item>
+    <path>civicrm/resource/unavailability/create</path>
+    <page_callback>CRM_Resource_Form_Unavailability</page_callback>
+    <title>Create Unavailability</title>
+    <access_arguments>access CiviCRM</access_arguments>
+  </item>
+  <item>
+    <path>civicrm/resource/unavailability/edit</path>
+    <page_callback>CRM_Resource_Form_UnavailabilityEdit</page_callback>
+    <title>UnavailabilityEdit</title>
+    <access_arguments>access CiviCRM</access_arguments>
+  </item>
+</menu>

@@ -52,16 +52,15 @@ class CRM_Resource_BAO_ResourceUnavailability extends CRM_Resource_DAO_ResourceU
      * @param integer $resource_id
      * @param string $from_timestamp
      * @param string $to_timestamp
+     *
+     * @return bool true iff available wrt the given time frame
      */
-    public static function isResourceAvailable($resource_id, $from_timestamp = null, $to_timestamp = null)
+    public static function isResourceAvailable($resource_id, $from_timestamp = null, $to_timestamp = null) : bool
     {
-        // load all availabilities restrictions
-        $unavailability_search = new CRM_Resource_BAO_ResourceUnavailability();
-        $unavailability_search->resource_id = (int)$resource_id;
-        $unavailability_search->find();
-        while ($unavailability_search->fetch()) {
-            $implementation = $unavailability_search->getImplementation();
-            if ($implementation->isActive($from_timestamp, $to_timestamp)) {
+        $resource = CRM_Resource_BAO_Resource::getInstance($resource_id);
+        $unavailabilities = $resource->getUnavailabilities();
+        foreach ($unavailabilities as $unavailability) {
+            if ($unavailability->isActive($from_timestamp, $to_timestamp)) {
                 return false;
             }
         }
@@ -96,11 +95,12 @@ class CRM_Resource_BAO_ResourceUnavailability extends CRM_Resource_DAO_ResourceU
      *
      * @return CRM_Resource_BAO_ResourceUnavailability subclass
      */
-    public function getImplementation()
+    public function getImplementation($cached = true) : object
     {
-        if (!isset($this->implementation)) {
+        if (!isset($this->implementation) || !$cached) {
             $this->implementation = new $this->class_name();
             $this->implementation->setFrom($this);
+            $this->implementation->id = $this->id;
         }
         return $this->implementation;
     }
@@ -110,7 +110,7 @@ class CRM_Resource_BAO_ResourceUnavailability extends CRM_Resource_DAO_ResourceU
      *
      * @return array parameters
      */
-    public function getParametersParsed()
+    public function getParametersParsed() : array
     {
         if ($this->json_parameters === null) {
             $this->json_parameters = json_decode($this->parameters);
@@ -135,4 +135,111 @@ class CRM_Resource_BAO_ResourceUnavailability extends CRM_Resource_DAO_ResourceU
         Civi::log()->warning("CRM_Resource_BAO_ResourceUnavailability::isActive called, this should be overwritten");
         return true;
     }
+
+    /**
+     * Get a list of all classes implementing Unavailabilities
+     *
+     * @return array
+     *   list of CRM_Resource_BAO_ResourceUnavailability subclasses
+     */
+    public static function getAllUnavailabilityTypes() : array
+    {
+        // todo: implement using Symfony event
+        return [
+            'CRM_Resource_Unavailability_Absolute',
+            'CRM_Resource_Unavailability_DateRange',
+//            'CRM_Resource_Unavailability_DateRepeat',
+//            'CRM_Resource_Unavailability_Holidays',
+        ];
+    }
+
+    /**
+     * Get the proper label for this unavailability
+     *
+     * @return string
+     *    the label of this unavailability type
+     */
+    public static function getTypeLabel()
+    {
+        return __CLASS__;
+    }
+
+    /**
+     * Get the proper label for this unavailability
+     */
+    public function getLabel()
+    {
+        return 'NOT IMPLEMENTED';
+    }
+
+
+    /*****************************************
+     ***          FORM INTEGRATION          **
+    /****************************************/
+
+    /**
+     * Add form fields for the given unavailability
+     *
+     * @param $form CRM_Core_Form
+     *   a form the parameters should be added to
+     *
+     * @param $prefix string
+     *   the prefix to be used to make sure there is no clash in forms
+     *
+     * @return array
+     *    list of field keys (incl. prefix)
+     */
+    public static function addFormFields($form, $prefix = '')
+    {
+        // some subclasses don't have to implement this, so no warning here
+        return [];
+    }
+
+    /**
+     * Validate our values in the form submission
+     *
+     * @param $submit_values array
+     *   the submitted values
+     *
+     * @return array
+     *    validation errors [field_name => error]
+     */
+    public static function validateFormSubmission($submit_values)
+    {
+        // some subclasses don't have to implement this, so no warning here
+        return [];
+    }
+
+    /**
+     * Generate data values
+     *
+     * @param $data array
+     *   form data
+     *
+     * @param $prefix string
+     *   the prefix to be used to make sure there is no clash in forms
+     *
+     * @return array
+     *   the data that should be written into the parameters field as a json blob
+     */
+    public static function compileParameters($data, $prefix = '')
+    {
+        // some subclasses don't have to implement this, so no warning here
+        return [];
+    }
+
+    /**
+     * Get the current values for the fields defined in ::addFormFields
+     *
+     * @param string $prefix
+     *   an optional prefix
+     *
+     * @return array
+     *   field-key => current value
+     */
+    public function getCurrentFormValues($prefix = '')
+    {
+        return [];
+    }
 }
+

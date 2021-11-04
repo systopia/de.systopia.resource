@@ -91,4 +91,142 @@ class CRM_Resource_Unavailability_DateRange extends CRM_Resource_BAO_ResourceUna
         // we're good, run the creation
         return parent::create($params);
     }
+
+
+    /**
+     * Get the label of the resource unavailability
+     *
+     * @return string
+     *   a localised, human-readable label of the unavailability
+     */
+    public function getLabel()
+    {
+        list($unavailable_from, $unavailable_until) = $this->getParametersParsed();
+        $unavailable_from = strtotime($unavailable_from);
+        $unavailable_until = strtotime($unavailable_until);
+        return E::ts("[%1 - %2]: %3", [
+            1 => date('Y-m-d', $unavailable_from),
+            2 => date('Y-m-d', $unavailable_until),
+            3 => $this->reason,
+        ]);
+    }
+
+    /**
+     * Get the proper label for this unavailability
+     *
+     * @return string
+     *    the label of this unavailability type
+     */
+    public static function getTypeLabel()
+    {
+        return E::ts("Date Range");
+    }
+
+    /*****************************************
+     ***          FORM INTEGRATION          **
+    /****************************************/
+
+
+    /**
+     * Add form fields for the given unavailability
+     *
+     * @param $form CRM_Core_Form
+     *   a form the parameters should be added to
+     *
+     * @param $prefix string
+     *   the prefix to be used to make sure there is no clash in forms
+     *
+     * @return array
+     *    list of field keys (incl. prefix)
+     */
+    public static function addFormFields($form, $prefix = '')
+    {
+        // add date
+        $form->add(
+            'datepicker',
+            $prefix . '_from',
+            E::ts("From"),
+            NULL,
+            FALSE,
+            []);
+
+        $form->add(
+            'datepicker',
+            $prefix . '_to',
+            E::ts("To"),
+            NULL,
+            FALSE,
+            []);
+
+        return [
+            $prefix . '_from',
+            $prefix . '_to',
+        ];
+    }
+
+    /**
+     * Validate our values in the form submission
+     *
+     * @param $submit_values array
+     *   the submitted values
+     *
+     * @return array
+     *    validation errors [field_name => error]
+     */
+    public static function validateFormSubmission($submit_values, $prefix = '')
+    {
+        $validation_errors = [];
+        if (empty($submit_values["{$prefix}_from"])) {
+            $validation_errors["{$prefix}_from"] = E::ts("No start date given");
+        }
+        if (empty($submit_values["{$prefix}_to"])) {
+            $validation_errors["{$prefix}_to"] = E::ts("No end date given");
+        }
+        if (strtotime($submit_values["{$prefix}_to"]) <= strtotime($submit_values["{$prefix}_from"])) {
+            $validation_errors["{$prefix}_to"] = E::ts("This has be after the start date");
+        }
+        return $validation_errors;
+    }
+
+    /**
+     * Generate data values
+     *
+     * @param $data array
+     *   form data
+     *
+     * @param $prefix string
+     *   the prefix to be used to make sure there is no clash in forms
+     *
+     * @return array
+     *   the data that should be written into the parameters field as a json blob
+     */
+    public static function compileParameters($data, $prefix = '')
+    {
+        // format the from/to values properly
+        $from = date('Y-m-d H:i:s', strtotime($data["{$prefix}_from"]));
+        $to   = date('Y-m-d H:i:s', strtotime($data["{$prefix}_to"]));
+        return [$from, $to];
+    }
+
+    /**
+     * Get the current values for the fields defined in ::addFormFields
+     *
+     * @param string $prefix
+     *   an optional prefix
+     *
+     * @return array
+     *   field-key => current value
+     */
+    public function getCurrentFormValues($prefix = '')
+    {
+        $params = $this->getParametersParsed();
+        if (isset($params[1])) {
+            return [
+                "{$prefix}_from" => $params[0],
+                "{$prefix}_to"   => $params[1],
+            ];
+        } else {
+            return [];
+        }
+    }
 }

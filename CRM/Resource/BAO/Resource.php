@@ -46,6 +46,30 @@ class CRM_Resource_BAO_Resource extends CRM_Resource_DAO_Resource
     }
 
     /**
+     * Get the resource BAO
+     *
+     * @param integer $id
+     *   the resource ID
+     *
+     * @return CRM_Resource_BAO_Resource
+     *   the resource
+     */
+    public static function getInstance($id, $cached = true)
+    {
+        $id = (int) $id;
+        static $resources = [];
+        if (!isset($resources[$id]) || !$cached) {
+            $resource = new CRM_Resource_BAO_Resource();
+            $resource->id = $id;
+            if (!$resource->find(true)) {
+                throw new CRM_Core_Exception("CRM_Resource_BAO_Resource [{$id}] not found.");
+            }
+            $resources[$id] = $resource;
+        }
+        return $resources[$id];
+    }
+
+    /**
      * Used as in the entityTypes hook als follows:
      *  'links_callback' => ['CRM_Resource_BAO_Resource::add_resource_links']
      *
@@ -77,6 +101,8 @@ class CRM_Resource_BAO_Resource extends CRM_Resource_DAO_Resource
      *
      * @return array
      *  table_name => entity_name
+     *
+     * @todo migrate to CRM_Resource_Types
      */
     public static function getLinkedEntities()
     {
@@ -139,5 +165,25 @@ class CRM_Resource_BAO_Resource extends CRM_Resource_DAO_Resource
     public function isAvailable($from_timestamp = null, $to_timestamp = null)
     {
         return CRM_Resource_BAO_ResourceUnavailability::isResourceAvailable($this->id, $from_timestamp, $to_timestamp);
+    }
+
+    /**
+     * Get a list of the attached unavailablities
+     *
+     * @return array of CRM_Resource_BAO_ResourceUnavailability instances
+     */
+    public function getUnavailabilities()
+    {
+        $unavailabilities = [];
+
+        // find and load all unavailabilities
+        $unavailability_search = new CRM_Resource_BAO_ResourceUnavailability();
+        $unavailability_search->resource_id = (int) $this->id;
+        $unavailability_search->find();
+        while ($unavailability_search->fetch()) {
+            $unavailabilities[] = $unavailability_search->getImplementation(false);
+        }
+
+        return $unavailabilities;
     }
 }
