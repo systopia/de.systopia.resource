@@ -71,6 +71,7 @@ class CRM_Resource_Page_ResourceDemandsView extends CRM_Core_Page
             $resource_demand['id'] = $resource_demand_bao->id;
             $resource_demand['is_met'] = !$resource_demand_bao->currentlyUnfulfilled();
             $resource_demand['type_label'] = CRM_Resource_Types::getType($resource_demand['resource_type_id'])['label'];
+            $resource_demand['condition_count'] = 0; // todo
             $demands_met_count += $resource_demand['is_met'] ? 1 : 0;
             $resource_demand_list[$resource_demand_bao->id] = $resource_demand;
         }

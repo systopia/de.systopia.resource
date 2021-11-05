@@ -20,7 +20,7 @@
             <thead>
               <tr>
                 <th>{ts}Resource{/ts}</th>
-                <th>{ts}Type{/ts}</th>
+                <th>{ts}Type (Conditions){/ts}</th>
                 <th>{ts}Assigned{/ts}</th>
                 <th>{ts}Fulfilled{/ts}</th>
                 <th>{ts}Actions{/ts}</th>
@@ -29,13 +29,13 @@
             {foreach from=$resource_demand_data item=resource_demand}
               <tr id="resource_demand-{$resource_demand.id}" class="resource_demand {if $resource_demand.active_now}resource_demand-active-now{/if}">
                   <td>{$resource_demand.label}</td>
-                  <td>{$resource_demand.type_label}</td>
+                  <td>{$resource_demand.type_label} ({$resource_demand.condition_count})</td>
                   <td>0 / {$resource_demand.count}</td>
                   <td>0 / {$resource_demand.count}</td>
                   <td class="nowrap">
                     <span>
                       <a href="{$resource_demand.edit_link}" class="action-item crm-hover-button crm-popup medium-popup" title="{ts}Edit Resource Demand{/ts}">{ts}Edit{/ts}</a>
-                      <a href="{$resource_demand.edit_link}" class="action-item crm-hover-button crm-popup medium-popup" title="{ts}Edit Resource Demand{/ts}">{ts}Assign{/ts}</a>
+                      <a href="{$resource_demand.edit_link}" class="action-item crm-hover-button crm-popup medium-popup" title="{ts}Assign New Resources{/ts}">{ts}Assign{/ts}</a>
                       <a class="action-item crm-hover-button" onclick="delete_resource_demand({$resource_demand.id});" title="{ts}Delete Resource Demand{/ts}">{ts}Delete{/ts}</a>
                     </span>
                   </td>
