@@ -12,6 +12,20 @@
 | written permission from the original author(s).        |
 +--------------------------------------------------------*/
 
+cj(document).ready(function() {
+  let tab_content_id = cj("#tab_resourcedemands").attr('aria-controls');
+  if (tab_content_id) {
+    cj(document).on('crmPopupFormSuccess', function() {
+      cj("#" + tab_content_id).crmSnippet('refresh');
+    });
+  } else {
+    cj(document).on('crmPopupFormSuccess', function() {
+      // reload the page
+      window.location.reload(false);
+    });
+  }
+});
+
 /**
  * Delete the given resource demand and refresh
  *
@@ -26,6 +40,9 @@ function delete_resource_demand(demand_id) {
         cj("#" + tab_content_id).crmSnippet('refresh');
         let ts = CRM.ts('de.systopia.resource');
         CRM.alert(ts("Resource Demand deleted"), ts("Deleted"), "info");
+      } else {
+        // reload the page
+        window.location.reload(false);
       }
     });
 }

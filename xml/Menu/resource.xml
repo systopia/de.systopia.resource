@@ -30,4 +30,10 @@
     <title>Event Resource Demands</title>
     <access_arguments>access CiviCRM</access_arguments>
   </item>
+  <item>
+    <path>civicrm/resource/demand/create</path>
+    <page_callback>CRM_Resource_Form_ResourceDemandCreate</page_callback>
+    <title>ResourceDemandCreate</title>
+    <access_arguments>access CiviCRM</access_arguments>
+  </item>
 </menu>

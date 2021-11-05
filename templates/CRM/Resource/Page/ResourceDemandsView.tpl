@@ -46,7 +46,7 @@
   </div>
 
   <!-- add more button -->
-  <a href="{$create_resource_requirement_link}" title="{ts}Add More Resource Requirement{/ts}" class="crm-popup medium-popup">
+  <a href="{$create_resource_requirement_link}" title="{ts}Add More Resource Requirement{/ts}" class="crm-popup small-popup">
     <button class="crm-button crm-button-type-add" value="1" accesskey="A"><i aria-hidden="true" class="crm-i fa-plus"></i>Add More</button>
   </a>
   <br/>
