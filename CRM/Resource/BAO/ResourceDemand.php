@@ -102,12 +102,11 @@ class CRM_Resource_BAO_ResourceDemand extends CRM_Resource_DAO_ResourceDemand
         });
 
         // then consolidate, i.e. join overlapping time frames
-        $merged_time_frames = [];
         if (!empty($all_time_frames)) {
             // start with the first one
-            $current_time_frame = array_shift($merged_time_frames);
-            while (!empty($merged_time_frames)) {
-                $next_time_frame = array_shift($merged_time_frames);
+            $current_time_frame = array_shift($all_time_frames);
+            while (!empty($all_time_frames)) {
+                $next_time_frame = array_shift($all_time_frames);
                 if ($current_time_frame[1] >= $next_time_frame[0]) {
                     // there is an overlap
                     $current_time_frame[1] = max($current_time_frame[1], $next_time_frame[1]);
@@ -120,6 +119,8 @@ class CRM_Resource_BAO_ResourceDemand extends CRM_Resource_DAO_ResourceDemand
             }
             if (isset($next_time_frame)) {
                 $merged_time_frames[] = $next_time_frame;
+            } else {
+                $merged_time_frames[] = $current_time_frame;
             }
         }
 
