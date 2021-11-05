@@ -57,16 +57,32 @@ class CRM_Resource_Page_ResourceDemandsView extends CRM_Core_Page
         if (!isset($this->entity_id))
             $this->entity_id = CRM_Utils_Request::retrieve('entity_id', 'Integer', $this);
         if (!isset($this->entity_table))
-            $this->entity_table = CRM_Utils_Request::retrieve('entity_id', 'String', $this);
+            $this->entity_table = CRM_Utils_Request::retrieve('entity_table', 'String', $this);
 
         // fetch all resource demands
-        $demand_query = new CRM_Resource_BAO_ResourceDemand();
-        $demand_query->entity_table = $this->entity_table;
-        $demand_query->entity_id = $this->entity_id;
-        $this->resource_demands = $demand_query->fetchAll();
+        $this->resource_demands = CRM_Resource_BAO_ResourceDemand::getResourceDemandsFor($this->entity_id, $this->entity_table);
 
-        Civi::resources()->addStyleUrl(E::url('css/resource_demand_view.css'));
-        Civi::resources()->addScriptUrl(E::url('js/resource_demand_view.js'));
+        // render resource demands
+        $resource_demand_list = [];
+        $demands_met_count = 0;
+        foreach ($this->resource_demands as $resource_demand_bao) {
+            /** @var CRM_Resource_BAO_ResourceDemand $resource_demand */
+            $resource_demand = $resource_demand_bao->toArray();
+            $resource_demand['id'] = $resource_demand_bao->id;
+            $resource_demand['is_met'] = !$resource_demand_bao->currentlyUnfulfilled();
+            $demands_met_count += $resource_demand['is_met'] ? 1 : 0;
+            $resource_demand_list[$resource_demand_bao->id] = $resource_demand;
+        }
+        $this->assign('resource_demand_data',$resource_demand_list);
+        $this->assign('demand_count', count($resource_demand_list));
+        $this->assign('demands_met_count', $demands_met_count);
+
+        // add links
+        $this->assign('create_resource_requirement_link',
+            CRM_Utils_System::url('civicrm/resource/demand/create', "reset=1&entity_id={$this->entity_id}&entity_table={$this->entity_table}"));
+
+        Civi::resources()->addStyleUrl(E::url('css/resource_demands_view.css'));
+        Civi::resources()->addScriptUrl(E::url('js/resource_demands_view.js'));
     }
 
     /**

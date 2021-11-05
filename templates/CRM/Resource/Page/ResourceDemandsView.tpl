@@ -13,17 +13,28 @@
 +-------------------------------------------------------*}
 
 {crmScope extensionKey='de.systopia.resource'}
-  <h3 class="header-dark resource-demand-view">{ts 1=0 2=100}Required Resources (%1 of %2){/ts}</h3>
+  <h3 class="header-dark resource-demand-view">{ts 1=$demands_met_count 2=$demand_count}Required Resources (%1 of %2 ok){/ts}</h3>
   <div class="resource-demand-view resource-demand-view-availabilities">
-    {if $resource_demands}
+    {if $resource_demand_data}
         <table class="crm-table resource-demand-view resource-demand-view-unavailabilities">
-            {foreach from=$resource_demands item=resource_demand}
+            <thead>
+              <tr>
+                <th>{ts}Resource{/ts}</th>
+                <th>Assigned</th>
+                <th>Fulfilled</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            {foreach from=$resource_demand_data item=resource_demand}
               <tr id="resource_demand-{$resource_demand.id}" class="resource_demand {if $resource_demand.active_now}resource_demand-active-now{/if}">
-                  <td>{$resource_demand.display_name}</td>
+                  <td>{$resource_demand.label}</td>
+                  <td>0 / {$resource_demand.count}</td>
+                  <td>0 / {$resource_demand.count}</td>
                   <td class="nowrap">
                     <span>
-                      <a href="{$resource_demand.edit_link}" class="action-item crm-hover-button crm-popup medium-popup" title="{ts}Edit Unavailability{/ts}">{ts}Edit{/ts}</a>
-                      <a class="action-item crm-hover-button" onclick="delete_resource_demand({$resource_demand.id});" title="{ts}Delete Unavailability{/ts}">{ts}Delete{/ts}</a>
+                      <a href="{$resource_demand.edit_link}" class="action-item crm-hover-button crm-popup medium-popup" title="{ts}Edit Resource Demand{/ts}">{ts}Edit{/ts}</a>
+                      <a href="{$resource_demand.edit_link}" class="action-item crm-hover-button crm-popup medium-popup" title="{ts}Edit Resource Demand{/ts}">{ts}Assign{/ts}</a>
+                      <a class="action-item crm-hover-button" onclick="delete_resource_demand({$resource_demand.id});" title="{ts}Delete Resource Demand{/ts}">{ts}Delete{/ts}</a>
                     </span>
                   </td>
               </tr>

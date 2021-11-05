@@ -84,6 +84,72 @@ class CRM_Resource_BAO_ResourceDemand extends CRM_Resource_DAO_ResourceDemand
     }
 
     /**
+     * Algorithm to consolidate overlapping timeframes
+     *
+     * @param array $all_time_frames
+     *   list of 2-int-tuples [from, to] as given by strtotime
+     *
+     * @return array
+     *   list of 2-int-tuples [from, to] as given by strtotime
+     */
+    public static function consolidateTimeframes($all_time_frames)
+    {
+        $merged_time_frames = [];
+
+        // then: sort by start time
+        usort($all_time_frames, function($a, $b) {
+            return $a[0] <=> $b[0];
+        });
+
+        // then consolidate, i.e. join overlapping time frames
+        $merged_time_frames = [];
+        if (!empty($all_time_frames)) {
+            // start with the first one
+            $current_time_frame = array_shift($merged_time_frames);
+            while (!empty($merged_time_frames)) {
+                $next_time_frame = array_shift($merged_time_frames);
+                if ($current_time_frame[1] >= $next_time_frame[0]) {
+                    // there is an overlap
+                    $current_time_frame[1] = max($current_time_frame[1], $next_time_frame[1]);
+                    $next_time_frame = null;
+                } else {
+                    // there is no overlap, store the old one, and move on
+                    $merged_time_frames[] = $current_time_frame;
+                    $current_time_frame = $next_time_frame;
+                }
+            }
+            if (isset($next_time_frame)) {
+                $merged_time_frames[] = $next_time_frame;
+            }
+        }
+
+        return $merged_time_frames;
+    }
+
+    /**
+     * Get a list of from-to time markers during which the
+     *   assigned resources are considered to be blocked for other use
+     *
+     * If this list is empty, it should be considered to be
+     *   blocked indefinitely
+     *
+     * @return array
+     *   list of 2-int-tuples [from, to] as given by strtotime
+     */
+    public function getResourcesBlockedTimeframes()
+    {
+        // first: collect all time frames
+        $all_time_frames = [];
+        foreach ($this->getDemandConditions() as $demand_condition) {
+            /** @var CRM_Resource_BAO_ResourceDemandCondition $demand_condition */
+            $all_time_frames = array_merge($all_time_frames, $demand_condition->getResourcesBlockedTimeframes());
+        }
+
+        // consolidate and return
+        return CRM_Resource_BAO_ResourceDemand::consolidateTimeframes($all_time_frames);
+    }
+
+    /**
      * Get all the assigned resources
      *
      * @param int|array $assignment_status
@@ -115,12 +181,14 @@ class CRM_Resource_BAO_ResourceDemand extends CRM_Resource_DAO_ResourceDemand
 
         // convert the result into a BAO list
         $results = [];
-        foreach ($resource_list['values'] as $resource) {
-            // todo: can we fetch them in one go?
-            $bao = new CRM_Resource_BAO_Resource();
-            $bao->id = $resource['id'];
-            $bao->find(true);
-            $results[] = $bao;
+        if (isset($resource_list['values'])) {
+            foreach ($resource_list['values'] as $resource) {
+                // todo: can we fetch them in one go?
+                $bao = new CRM_Resource_BAO_Resource();
+                $bao->id = $resource['id'];
+                $bao->find(true);
+                $results[] = $bao;
+            }
         }
         return $results;
     }
@@ -141,5 +209,27 @@ class CRM_Resource_BAO_ResourceDemand extends CRM_Resource_DAO_ResourceDemand
             }
         }
         return $demand_conditions;
+    }
+
+    /**
+     * Get a list of BAOs of the resource demands on the specified entity
+     *
+     * @param integer $entity_id
+     * @param string $entity_table
+     */
+    public static function getResourceDemandsFor($entity_id, $entity_table)
+    {
+        $resource_demands = [];
+        $demand_search = new CRM_Resource_BAO_ResourceDemand();
+        $demand_search->entity_id = $entity_id;
+        $demand_search->entity_table = $entity_table;
+        $demand_search->find();
+        while ($demand_search->fetch()) {
+            $demand_bao = new CRM_Resource_BAO_ResourceDemand();
+            $demand_bao->setFrom($demand_search);
+            $demand_bao->id = $demand_search->id;
+            $resource_demands[] = $demand_bao;
+        }
+        return $resource_demands;
     }
 }
