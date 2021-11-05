@@ -20,14 +20,16 @@
             <thead>
               <tr>
                 <th>{ts}Resource{/ts}</th>
-                <th>Assigned</th>
-                <th>Fulfilled</th>
-                <th>Actions</th>
+                <th>{ts}Type{/ts}</th>
+                <th>{ts}Assigned{/ts}</th>
+                <th>{ts}Fulfilled{/ts}</th>
+                <th>{ts}Actions{/ts}</th>
               </tr>
             </thead>
             {foreach from=$resource_demand_data item=resource_demand}
               <tr id="resource_demand-{$resource_demand.id}" class="resource_demand {if $resource_demand.active_now}resource_demand-active-now{/if}">
                   <td>{$resource_demand.label}</td>
+                  <td>{$resource_demand.type_label}</td>
                   <td>0 / {$resource_demand.count}</td>
                   <td>0 / {$resource_demand.count}</td>
                   <td class="nowrap">
