@@ -36,4 +36,10 @@
     <title>ResourceDemandCreate</title>
     <access_arguments>access CiviCRM</access_arguments>
   </item>
+  <item>
+    <path>civicrm/resource/demand/assign</path>
+    <page_callback>CRM_Resource_Form_ResourceDemandAssign</page_callback>
+    <title>ResourceDemandAssign</title>
+    <access_arguments>access CiviCRM</access_arguments>
+  </item>
 </menu>

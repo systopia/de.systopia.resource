@@ -63,6 +63,42 @@ class CRM_Resource_BAO_ResourceDemand extends CRM_Resource_DAO_ResourceDemand
     }
 
     /**
+     * Get a number of candidates potentially matching this resource demand
+     *
+     * @param $count integer maximal number of resources
+     *
+     * @return array list of CRM_Resource_BAO_Resource
+     */
+    public function getResourceCandidates($count)
+    {
+        // run a query to simply find resources matching the type, and then iterate and test
+        // todo: optimise, this is a quick hack
+        // fixme: this should eventually be replaced by an elaborate, dynamically generated sql query
+        $resource_candidates = [];
+
+        // build query
+        $candidate_query = new CRM_Resource_BAO_Resource();
+        $candidate_query->resource_type_id = $this->resource_type_id;
+        $candidate_query->_query['order_by'] = "ORDER BY RAND()";
+        $candidate_query->find();
+
+        while ($candidate_query->fetch()) {
+            if ($this->isFulfilledWithResource($candidate_query)) {
+                $candidate = new CRM_Resource_BAO_Resource();
+                $candidate->setFrom($candidate_query);
+                $candidate->id = $candidate_query->id;
+                $resource_candidates[] = $candidate;
+            }
+            if (count($resource_candidates) >= $count) {
+                break;
+            }
+        }
+        $candidate_query->free();
+        return $resource_candidates;
+    }
+
+
+    /**
      * Check if all conditions are currently met
      *
      * @param int|array $assignment_status
