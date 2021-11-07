@@ -20,7 +20,8 @@ CREATE TABLE IF NOT EXISTS `civicrm_resource` (
     `resource_type_id` int unsigned NOT NULL                 COMMENT 'Resource Type ID',
     `entity_id`    int unsigned     NOT NULL                 COMMENT 'Resource - linked entity ID',
     `entity_table` varchar(64)      NOT NULL                 COMMENT 'Resource - linked entity table name' ,
-    PRIMARY KEY (`id`)
+    PRIMARY KEY (`id`),
+    UNIQUE INDEX `UI_resource_unique` (entity_table, entity_id, resource_type_id)
 ) ENGINE=InnoDB;
 
 CREATE TABLE IF NOT EXISTS  `civicrm_resource_demand` (
@@ -31,7 +32,8 @@ CREATE TABLE IF NOT EXISTS  `civicrm_resource_demand` (
     `entity_id`        int unsigned   NOT NULL                 COMMENT 'Resource linked entity ID',
     `entity_table`     varchar(64)    NOT NULL                 COMMENT 'Resource linked entity table name',
     `is_template`      tinyint        DEFAULT 0                COMMENT 'Marks demand templates',
-    PRIMARY KEY (`id`)
+    PRIMARY KEY (`id`),
+    INDEX `UI_resource_demamnd_entity` (entity_table, entity_id, resource_type_id)
 ) ENGINE=InnoDB;
 
 CREATE TABLE IF NOT EXISTS `civicrm_resource_assignment` (
@@ -39,8 +41,9 @@ CREATE TABLE IF NOT EXISTS `civicrm_resource_assignment` (
   `resource_id`          int unsigned NOT NULL                 COMMENT 'Resource ID',
   `resource_demand_id`   int unsigned NOT NULL                 COMMENT 'Resource Demand ID',
   `status`               tinyint      NOT NULL                 COMMENT 'Resource Demand Status: 1=proposed, 2=denied, 3=confirmed',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB;
+  PRIMARY KEY (`id`),
+  INDEX `UI_resource_id` (resource_id)
+  ) ENGINE=InnoDB;
 
 CREATE TABLE IF NOT EXISTS  `civicrm_resource_demand_condition` (
     `id`                  int unsigned   NOT NULL AUTO_INCREMENT  COMMENT 'Unique Resource Demand Condition ID',
@@ -59,5 +62,6 @@ CREATE TABLE IF NOT EXISTS  `civicrm_resource_unavailability` (
    `class_name`        varchar(127)                            COMMENT 'Class name of the implementation, a subclass of CRM_Resource_BAO_Resource_Unavailability',
    `parameters`        varchar(255)                            COMMENT 'A json encoded data blob to store the parameters of this specific unavailability',
    PRIMARY KEY (`id`),
+  INDEX `UI_resource_id` (resource_id),
    CONSTRAINT FK_civicrm_resource_unavailability_resource_id FOREIGN KEY (`resource_id`) REFERENCES `civicrm_resource`(`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB;
