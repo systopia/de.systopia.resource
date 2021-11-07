@@ -43,7 +43,9 @@ CREATE TABLE IF NOT EXISTS `civicrm_resource_assignment` (
   `status`               tinyint      NOT NULL                 COMMENT 'Resource Demand Status: 1=proposed, 2=denied, 3=confirmed',
   PRIMARY KEY (`id`),
   INDEX `UI_resource_id` (resource_id),
-  UNIQUE INDEX `UI_resource_assignment` (resource_id, resource_demand_id)
+  UNIQUE INDEX `UI_resource_assignment` (resource_id, resource_demand_id),
+  CONSTRAINT FK_civicrm_resource_assignment_resource_demand_id FOREIGN KEY (`resource_demand_id`) REFERENCES `civicrm_resource_demand`(`id`) ON DELETE CASCADE,
+  CONSTRAINT FK_civicrm_resource_assignment_resource_id FOREIGN KEY (`resource_id`) REFERENCES `civicrm_resource`(`id`) ON DELETE CASCADE
   ) ENGINE=InnoDB;
 
 CREATE TABLE IF NOT EXISTS  `civicrm_resource_demand_condition` (
