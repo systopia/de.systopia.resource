@@ -70,7 +70,7 @@ class CRM_Resource_Page_ResourceDemandsView extends CRM_Core_Page
             /** @var CRM_Resource_BAO_ResourceDemand $resource_demand_bao */
             $resource_demand = $resource_demand_bao->toArray();
             $resource_demand['id'] = $resource_demand_bao->id;
-            $resource_demand['is_met'] = !$resource_demand_bao->currentlyUnfulfilled();
+            $resource_demand['is_met'] = ($resource_demand_bao->currentlyUnfulfilled() <= 0);
             $resource_demand['type_label'] = CRM_Resource_Types::getType($resource_demand['resource_type_id'])['label'];
             $resource_demand['assign_link'] = CRM_Utils_System::url('civicrm/resource/demand/assign', "reset=1&resource_demand_id={$resource_demand_bao->id}");
             $resource_demand['edit_link'] = CRM_Utils_System::url('civicrm/resource/demand/edit', "reset=1&id={$resource_demand_bao->id}");
