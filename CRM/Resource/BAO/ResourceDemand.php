@@ -126,6 +126,39 @@ class CRM_Resource_BAO_ResourceDemand extends CRM_Resource_DAO_ResourceDemand
     }
 
     /**
+     * Get the number of conditions attached to this resource demand
+     *
+     * @return integer
+     *   number of conditions
+     */
+    public function getConditionCount()
+    {
+        return (int) CRM_Core_DAO::singleValueQuery("
+            SELECT COUNT(id) 
+            FROM civicrm_resource_demand_condition
+            WHERE resource_demand_id = %1", [
+            1 => [$this->id, 'Positive']
+        ]);
+    }
+
+    /**
+     * Get the number of assigned resources that fulfill the conditions
+     *
+     * @return integer
+     *   number of conditions
+     */
+    public function getFulfilledCount()
+    {
+        $fulfilled_count = 0;
+        foreach ($this->getAssignedResources() as $assignedResource) {
+            if ($this->isFulfilledWithResource($assignedResource)) {
+                $fulfilled_count++;
+            }
+        }
+        return $fulfilled_count;
+    }
+
+    /**
      * Check if all conditions are currently met
      *
      * @param int|array $assignment_status
@@ -229,8 +262,31 @@ class CRM_Resource_BAO_ResourceDemand extends CRM_Resource_DAO_ResourceDemand
 
         // make sure they're all integers
         $assignment_status = array_map('intval', $assignment_status);
+        $assignment_status_list = implode(',', $assignment_status);
 
-        // get the linked resource(s)
+        // use a sql query, apiv4 somehow didn't work - see below
+        $query = CRM_Core_DAO::executeQuery("
+            SELECT assignment.resource_id AS resource_id
+            FROM civicrm_resource_assignment assignment
+            WHERE assignment.resource_demand_id = %1
+              AND assignment.status IN (%2);",
+            [
+                1 => [$this->id, 'Integer'],
+                2 => [$assignment_status_list,  'CommaSeparatedIntegers']
+            ]
+        );
+
+        $results = [];
+        foreach ($query->fetchAll() as $resource) {
+            // todo: can we fetch them in one go?
+            $bao = new CRM_Resource_BAO_Resource();
+            $bao->id = $resource['resource_id'];
+            $bao->find(true);
+            $results[] = $bao;
+        }
+
+
+        /* todo: this doesn't work - fix it?
         $resource_list = civicrm_api4('Resource', 'get', [
             'select' => ['id'],
             'join' => [
@@ -253,7 +309,8 @@ class CRM_Resource_BAO_ResourceDemand extends CRM_Resource_DAO_ResourceDemand
                 $bao->find(true);
                 $results[] = $bao;
             }
-        }
+        }*/
+
         return $results;
     }
 
@@ -262,17 +319,17 @@ class CRM_Resource_BAO_ResourceDemand extends CRM_Resource_DAO_ResourceDemand
      */
     public function getDemandConditions($cached = true)
     {
-        static $demand_conditions = null;
-        if ($demand_conditions === null || !$cached) {
-            $demand_conditions = [];
+        static $demand_conditions = [];
+        if (!isset($demand_conditions[$this->id]) || !$cached) {
+            $demand_conditions[$this->id] = [];
             $condition_bao = new CRM_Resource_BAO_ResourceDemandCondition();
             $condition_bao->resource_demand_id = $this->id;
             $condition_bao->find();
             while ($condition_bao->fetch()) {
-                $demand_conditions[] = $condition_bao->getImplementation();
+                $demand_conditions[$this->id][] = $condition_bao->getImplementation();
             }
         }
-        return $demand_conditions;
+        return $demand_conditions[$this->id];
     }
 
     /**

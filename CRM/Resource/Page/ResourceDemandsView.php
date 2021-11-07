@@ -63,10 +63,11 @@ class CRM_Resource_Page_ResourceDemandsView extends CRM_Core_Page
         $this->resource_demands = CRM_Resource_BAO_ResourceDemand::getResourceDemandsFor($this->entity_id, $this->entity_table);
 
         // render resource demands
+        // todo: maybe optimise this in the future, but for a low-volume first version this should do...
         $resource_demand_list = [];
         $demands_met_count = 0;
         foreach ($this->resource_demands as $resource_demand_bao) {
-            /** @var CRM_Resource_BAO_ResourceDemand $resource_demand */
+            /** @var CRM_Resource_BAO_ResourceDemand $resource_demand_bao */
             $resource_demand = $resource_demand_bao->toArray();
             $resource_demand['id'] = $resource_demand_bao->id;
             $resource_demand['is_met'] = !$resource_demand_bao->currentlyUnfulfilled();
@@ -74,7 +75,8 @@ class CRM_Resource_Page_ResourceDemandsView extends CRM_Core_Page
             $resource_demand['assign_link'] = CRM_Utils_System::url('civicrm/resource/demand/assign', "reset=1&resource_demand_id={$resource_demand_bao->id}");
             $resource_demand['edit_link'] = CRM_Utils_System::url('civicrm/resource/demand/edit', "reset=1&id={$resource_demand_bao->id}");
             $resource_demand['assignment_count'] = $resource_demand_bao->getAssignmentCount(CRM_Resource_BAO_ResourceAssignment::STATUS_CONFIRMED);
-            $resource_demand['condition_count'] = 0; // todo
+            $resource_demand['condition_count'] = $resource_demand_bao->getConditionCount();
+            $resource_demand['fulfilled_count'] = $resource_demand_bao->getFulfilledCount();
             $demands_met_count += $resource_demand['is_met'] ? 1 : 0;
             $resource_demand_list[$resource_demand_bao->id] = $resource_demand;
         }

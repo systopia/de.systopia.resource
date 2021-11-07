@@ -31,7 +31,7 @@
                   <td>{$resource_demand.label}</td>
                   <td>{$resource_demand.type_label} ({$resource_demand.condition_count})</td>
                   <td>{$resource_demand.assignment_count} / {$resource_demand.count}</td>
-                  <td>0 / {$resource_demand.count}</td>
+                  <td>{$resource_demand.fulfilled_count} / {$resource_demand.count}</td>
                   <td class="nowrap">
                     <span>
                       <a href="{$resource_demand.edit_link}" class="action-item crm-hover-button crm-popup medium-popup" title="{ts}Edit Resource Demand{/ts}">{ts}Edit{/ts}</a>
