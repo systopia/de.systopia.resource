@@ -85,18 +85,44 @@ class CRM_Resource_Form_ResourceDemandAssign extends CRM_Core_Form
     public function postProcess()
     {
         $values = $this->exportValues();
+
+        $total_count = 0;
+        $success_count = 0;
+        $error_messages = [];
         foreach ($values as $key => $value) {
             if (!empty($value)) {
                 if (substr($key, 0, 7) == 'assign_') {
                     $resource_id = substr($key, 7);
-                    civicrm_api3('ResourceAssignment', 'create', [
-                        'resource_id' => $resource_id,
-                        'resource_demand_id' => $this->resource_demand_id,
-                        'status' => CRM_Resource_BAO_ResourceAssignment::STATUS_CONFIRMED,
-                    ]);
+                    $total_count++;
+                    try {
+                        civicrm_api3('ResourceAssignment', 'create', [
+                            'resource_id' => $resource_id,
+                            'resource_demand_id' => $this->resource_demand_id,
+                            'status' => CRM_Resource_BAO_ResourceAssignment::STATUS_CONFIRMED,
+                        ]);
+                        $success_count++;
+                    } catch (CiviCRM_API3_Exception $ex) {
+                        $error_messages[] = $ex->getMessage();
+                    }
                 }
             }
         }
+
+        if ($total_count) {
+            CRM_Core_Session::setStatus(
+                E::ts("Assigned %1 resources to this demand.", [1 => $success_count]),
+                E::ts("Success"),
+                'info'
+            );
+            if ($success_count < $total_count) {
+                CRM_Core_Session::setStatus(
+                    E::ts("%1 resources could not be assigned this demand.", [1 => $total_count - $success_count]),
+                    E::ts("Failure"),
+                    'warn'
+                );
+            }
+        }
+
         parent::postProcess();
     }
 

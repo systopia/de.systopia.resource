@@ -97,6 +97,33 @@ class CRM_Resource_BAO_ResourceDemand extends CRM_Resource_DAO_ResourceDemand
         return $resource_candidates;
     }
 
+    /**
+     * Get the number of assignments to this resource demand
+     *
+     * @param array|integer $status
+     *   the status(es) to consider
+     *
+     * @return integer
+     *   number of references
+     */
+    public function getAssignmentCount($status)
+    {
+        // prepare status list
+        if (!is_array($status)) {
+            $status = [$status];
+        }
+        $status = array_map('intval', $status);
+        $status_list = implode(',', $status);
+
+        return CRM_Core_DAO::singleValueQuery("
+            SELECT COUNT(id) 
+            FROM civicrm_resource_assignment
+            WHERE resource_demand_id = %1
+              AND status IN (%2)", [
+            1 => [$this->id, 'Positive'],
+            2 => [$status_list, 'CommaSeparatedIntegers']
+        ]);
+    }
 
     /**
      * Check if all conditions are currently met
