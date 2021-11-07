@@ -42,7 +42,8 @@ CREATE TABLE IF NOT EXISTS `civicrm_resource_assignment` (
   `resource_demand_id`   int unsigned NOT NULL                 COMMENT 'Resource Demand ID',
   `status`               tinyint      NOT NULL                 COMMENT 'Resource Demand Status: 1=proposed, 2=denied, 3=confirmed',
   PRIMARY KEY (`id`),
-  INDEX `UI_resource_id` (resource_id)
+  INDEX `UI_resource_id` (resource_id),
+  UNIQUE INDEX `UI_resource_assignment` (resource_id, resource_demand_id)
   ) ENGINE=InnoDB;
 
 CREATE TABLE IF NOT EXISTS  `civicrm_resource_demand_condition` (
