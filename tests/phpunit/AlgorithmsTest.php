@@ -42,12 +42,12 @@ class AlgorithmsTest extends ResourceTestBase implements HeadlessInterface, Hook
             [strtotime('+2 hour', $now),  strtotime('+3 hour', $now)],
             [strtotime('+4 hour', $now),  strtotime('+4 hour', $now)],
         ];
-        $test1_consolidated = CRM_Resource_BAO_ResourceDemand::consolidateTimeframes($test1);
+        $test1_consolidated = CRM_Resource_Timeframes::consolidate($test1);
         $this->assertEquals($test1, $test1_consolidated, 'this should have not been changed');
 
         // test 2: not nicely ordered and not overlapping
         $test2 = array_reverse($test1);
-        $test2_consolidated = CRM_Resource_BAO_ResourceDemand::consolidateTimeframes($test2);
+        $test2_consolidated = CRM_Resource_Timeframes::consolidate($test2);
         $this->assertEquals($test1, $test2_consolidated, 'this should have been equal to the test1 result (ordered)');
 
         // test 3: overlapping
@@ -56,7 +56,7 @@ class AlgorithmsTest extends ResourceTestBase implements HeadlessInterface, Hook
             [strtotime('+1 hour', $now),  strtotime('+3 hour', $now)],
             [strtotime('+2 hour', $now),  strtotime('+4 hour', $now)],
         ];
-        $test3_consolidated = CRM_Resource_BAO_ResourceDemand::consolidateTimeframes($test3);
+        $test3_consolidated = CRM_Resource_Timeframes::consolidate($test3);
         $test3_expected = [[strtotime('+0 hours', $now), strtotime('+4 hour', $now)]];
         $this->assertEquals($test3_expected, $test3_consolidated, 'this should have been condensed into one frame');
     }

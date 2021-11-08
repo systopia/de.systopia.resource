@@ -51,6 +51,7 @@ class CRM_Resource_BAO_ResourceDemand extends CRM_Resource_DAO_ResourceDemand
      */
     public function isFulfilledWithResource($resource, $cached = true, &$error_list = [])
     {
+        // check if the general conditions are met
         $demand_conditions = $this->getDemandConditions($cached);
         foreach ($demand_conditions as $demand_condition) {
             /** @var $demand_condition CRM_Resource_BAO_ResourceDemandCondition */
@@ -59,6 +60,33 @@ class CRM_Resource_BAO_ResourceDemand extends CRM_Resource_DAO_ResourceDemand
                 return false;
             }
         }
+
+        // also check if the resources are available at relevant times
+        $demand_timeframes = $this->getResourcesBlockedTimeframes();
+        if ($demand_timeframes->isEmpty()) {
+            // no blocked time frames means resource is ALWAYS blocked.
+            // In this case it's only true, if it's
+            //   not assigned yet OR already exclusively assigned to this demand
+            $other_assignment_count = civicrm_api4('ResourceAssignment', 'get', [
+                'select' => ['row_count',],
+                'where' => [
+                    ['resource_id', '=', $resource->id],
+                    ['resource_demand_id', '!=', $this->id],
+                    ['status', '=', CRM_Resource_BAO_ResourceAssignment::STATUS_CONFIRMED],
+                ],
+                'limit' => 1,
+            ]);
+            return $other_assignment_count->rowCount <= 0;
+
+        } else {
+            // check if the resource is available for all timeframes
+            foreach ($demand_timeframes as $demand_timeframe) {
+                if (!$resource->isAvailable($demand_timeframe[0], $demand_timeframe[1])) {
+                    return false;
+                }
+            }
+        }
+
         return true;
     }
 
@@ -180,70 +208,25 @@ class CRM_Resource_BAO_ResourceDemand extends CRM_Resource_DAO_ResourceDemand
     }
 
     /**
-     * Algorithm to consolidate overlapping timeframes
-     *
-     * @param array $all_time_frames
-     *   list of 2-int-tuples [from, to] as given by strtotime
-     *
-     * @return array
-     *   list of 2-int-tuples [from, to] as given by strtotime
-     */
-    public static function consolidateTimeframes($all_time_frames)
-    {
-        $merged_time_frames = [];
-
-        // then: sort by start time
-        usort($all_time_frames, function($a, $b) {
-            return $a[0] <=> $b[0];
-        });
-
-        // then consolidate, i.e. join overlapping time frames
-        if (!empty($all_time_frames)) {
-            // start with the first one
-            $current_time_frame = array_shift($all_time_frames);
-            while (!empty($all_time_frames)) {
-                $next_time_frame = array_shift($all_time_frames);
-                if ($current_time_frame[1] >= $next_time_frame[0]) {
-                    // there is an overlap
-                    $current_time_frame[1] = max($current_time_frame[1], $next_time_frame[1]);
-                    $next_time_frame = null;
-                } else {
-                    // there is no overlap, store the old one, and move on
-                    $merged_time_frames[] = $current_time_frame;
-                    $current_time_frame = $next_time_frame;
-                }
-            }
-            if (isset($next_time_frame)) {
-                $merged_time_frames[] = $next_time_frame;
-            } else {
-                $merged_time_frames[] = $current_time_frame;
-            }
-        }
-
-        return $merged_time_frames;
-    }
-
-    /**
      * Get a list of from-to time markers during which the
      *   assigned resources are considered to be blocked for other use
      *
      * If this list is empty, it should be considered to be
      *   blocked indefinitely
      *
-     * @return array
+     * @return \CRM_Resource_Timeframes
      *   list of 2-int-tuples [from, to] as given by strtotime
      */
     public function getResourcesBlockedTimeframes()
     {
         // first: collect all time frames
-        $all_time_frames = [];
+        $timeframes = new CRM_Resource_Timeframes();
         foreach ($this->getDemandConditions() as $demand_condition) {
             /** @var CRM_Resource_BAO_ResourceDemandCondition $demand_condition */
-            $all_time_frames = array_merge($all_time_frames, $demand_condition->getResourcesBlockedTimeframes());
+            $timeframes->joinTimeframes($demand_condition->getResourcesBlockedTimeframes());
         }
 
-        // consolidate and return
-        return CRM_Resource_BAO_ResourceDemand::consolidateTimeframes($all_time_frames);
+        return $timeframes;
     }
 
     /**

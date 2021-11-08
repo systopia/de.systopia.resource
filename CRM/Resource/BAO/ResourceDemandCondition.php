@@ -81,14 +81,14 @@ class CRM_Resource_BAO_ResourceDemandCondition extends CRM_Resource_DAO_Resource
      * If this list is empty, it should be considered to be
      *   blocked indefinitely
      *
-     * @return array
-     *   list of 2-int-tuples [from, to] as given by strtotime
+     * @return CRM_Resource_Timeframes
+     *   timeframes list
      *
      * @note this should be overwritten by the subclass implementation
      */
     public function getResourcesBlockedTimeframes()
     {
-        return [];
+        return new CRM_Resource_Timeframes();
     }
 
     /**
