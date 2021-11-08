@@ -3,13 +3,13 @@
   <item>
     <path>civicrm/resource/view</path>
     <page_callback>CRM_Resource_Page_ResourceView</page_callback>
-    <title>ResourceView</title>
+    <title>View Resource</title>
     <access_arguments>access CiviCRM</access_arguments>
   </item>
   <item>
     <path>civicrm/resource/create</path>
     <page_callback>CRM_Resource_Form_ResourceCreate</page_callback>
-    <title>ResourceCreate</title>
+    <title>Create Resource</title>
     <access_arguments>access CiviCRM</access_arguments>
   </item>
   <item>
@@ -21,7 +21,25 @@
   <item>
     <path>civicrm/resource/unavailability/edit</path>
     <page_callback>CRM_Resource_Form_UnavailabilityEdit</page_callback>
-    <title>UnavailabilityEdit</title>
+    <title>Edit Unavailability</title>
+    <access_arguments>access CiviCRM</access_arguments>
+  </item>
+  <item>
+    <path>civicrm/event/manage/resourcedemands</path>
+    <page_callback>CRM_Resource_Form_EventResourceDemands</page_callback>
+    <title>Event Resource Demands</title>
+    <access_arguments>access CiviCRM</access_arguments>
+  </item>
+  <item>
+    <path>civicrm/resource/demand/create</path>
+    <page_callback>CRM_Resource_Form_ResourceDemandCreate</page_callback>
+    <title>ResourceDemandCreate</title>
+    <access_arguments>access CiviCRM</access_arguments>
+  </item>
+  <item>
+    <path>civicrm/resource/demand/assign</path>
+    <page_callback>CRM_Resource_Form_ResourceDemandAssign</page_callback>
+    <title>ResourceDemandAssign</title>
     <access_arguments>access CiviCRM</access_arguments>
   </item>
 </menu>

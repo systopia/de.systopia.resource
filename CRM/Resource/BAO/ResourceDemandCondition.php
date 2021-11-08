@@ -75,6 +75,23 @@ class CRM_Resource_BAO_ResourceDemandCondition extends CRM_Resource_DAO_Resource
     }
 
     /**
+     * Get a list of from-to time markers during which the
+     *   assigned resources are considered to be blocked for other use
+     *
+     * If this list is empty, it should be considered to be
+     *   blocked indefinitely
+     *
+     * @return CRM_Resource_Timeframes
+     *   timeframes list
+     *
+     * @note this should be overwritten by the subclass implementation
+     */
+    public function getResourcesBlockedTimeframes()
+    {
+        return new CRM_Resource_Timeframes();
+    }
+
+    /**
      * Get a parsed version of the stored parameters
      *
      * @return array|null

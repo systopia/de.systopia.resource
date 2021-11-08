@@ -51,6 +51,7 @@ class CRM_Resource_BAO_ResourceDemand extends CRM_Resource_DAO_ResourceDemand
      */
     public function isFulfilledWithResource($resource, $cached = true, &$error_list = [])
     {
+        // check if the general conditions are met
         $demand_conditions = $this->getDemandConditions($cached);
         foreach ($demand_conditions as $demand_condition) {
             /** @var $demand_condition CRM_Resource_BAO_ResourceDemandCondition */
@@ -59,7 +60,137 @@ class CRM_Resource_BAO_ResourceDemand extends CRM_Resource_DAO_ResourceDemand
                 return false;
             }
         }
+
+        // also check if the resources are available at relevant times
+        $demand_timeframes = $this->getResourcesBlockedTimeframes();
+        if ($demand_timeframes->isEmpty()) {
+            // no blocked time frames means resource is ALWAYS blocked.
+            // In this case it's only true, if it's
+            //   not assigned yet OR already exclusively assigned to this demand
+            $other_assignment_count = civicrm_api4('ResourceAssignment', 'get', [
+                'select' => ['row_count',],
+                'where' => [
+                    ['resource_id', '=', $resource->id],
+                    ['resource_demand_id', '!=', $this->id],
+                    ['status', '=', CRM_Resource_BAO_ResourceAssignment::STATUS_CONFIRMED],
+                ],
+                'limit' => 1,
+            ]);
+            return $other_assignment_count->rowCount <= 0;
+
+        } else {
+            // check if the resource is available for all timeframes
+            foreach ($demand_timeframes as $demand_timeframe) {
+                if (!$resource->isAvailable($demand_timeframe[0], $demand_timeframe[1])) {
+                    return false;
+                }
+            }
+        }
+
         return true;
+    }
+
+    /**
+     * Get a number of candidates potentially matching this resource demand
+     *
+     * @param $count integer maximal number of resources
+     *
+     * @return array list of CRM_Resource_BAO_Resource
+     */
+    public function getResourceCandidates($count)
+    {
+        // run a query to simply find resources matching the type, and then iterate and test
+        // todo: optimise, this is a quick hack
+        // fixme: this should eventually be replaced by an elaborate, dynamically generated sql query
+        $resource_candidates = [];
+
+        // get already assigned resources
+        $assigned_resources = $this->getAssignedResources();
+
+        // build resource search query
+        $candidate_query = new CRM_Resource_BAO_Resource();
+        $candidate_query->resource_type_id = $this->resource_type_id;
+        $candidate_query->_query['order_by'] = "ORDER BY RAND()";
+        $candidate_query->find();
+
+        while ($candidate_query->fetch()) {
+            if ($this->isFulfilledWithResource($candidate_query)) {
+                // check if it's already assigned
+                if (isset($assigned_resources[$candidate_query->id])) {
+                    continue; // already assigned
+                }
+                $candidate = new CRM_Resource_BAO_Resource();
+                $candidate->setFrom($candidate_query);
+                $candidate->id = $candidate_query->id;
+                $resource_candidates[] = $candidate;
+            }
+            if (count($resource_candidates) >= $count) {
+                break;
+            }
+        }
+        $candidate_query->free();
+        return $resource_candidates;
+    }
+
+    /**
+     * Get the number of assignments to this resource demand
+     *
+     * @param array|integer $status
+     *   the status(es) to consider
+     *
+     * @return integer
+     *   number of references
+     */
+    public function getAssignmentCount($status = CRM_Resource_BAO_ResourceAssignment::STATUS_CONFIRMED)
+    {
+        // prepare status list
+        if (!is_array($status)) {
+            $status = [$status];
+        }
+        $status = array_map('intval', $status);
+        $status_list = implode(',', $status);
+
+        return CRM_Core_DAO::singleValueQuery("
+            SELECT COUNT(id) 
+            FROM civicrm_resource_assignment
+            WHERE resource_demand_id = %1
+              AND status IN (%2)", [
+            1 => [$this->id, 'Positive'],
+            2 => [$status_list, 'CommaSeparatedIntegers']
+        ]);
+    }
+
+    /**
+     * Get the number of conditions attached to this resource demand
+     *
+     * @return integer
+     *   number of conditions
+     */
+    public function getConditionCount()
+    {
+        return (int) CRM_Core_DAO::singleValueQuery("
+            SELECT COUNT(id) 
+            FROM civicrm_resource_demand_condition
+            WHERE resource_demand_id = %1", [
+            1 => [$this->id, 'Positive']
+        ]);
+    }
+
+    /**
+     * Get the number of assigned resources that fulfill the conditions
+     *
+     * @return integer
+     *   number of conditions
+     */
+    public function getFulfilledCount()
+    {
+        $fulfilled_count = 0;
+        foreach ($this->getAssignedResources() as $assignedResource) {
+            if ($this->isFulfilledWithResource($assignedResource)) {
+                $fulfilled_count++;
+            }
+        }
+        return $fulfilled_count;
     }
 
     /**
@@ -84,6 +215,28 @@ class CRM_Resource_BAO_ResourceDemand extends CRM_Resource_DAO_ResourceDemand
     }
 
     /**
+     * Get a list of from-to time markers during which the
+     *   assigned resources are considered to be blocked for other use
+     *
+     * If this list is empty, it should be considered to be
+     *   blocked indefinitely
+     *
+     * @return \CRM_Resource_Timeframes
+     *   list of 2-int-tuples [from, to] as given by strtotime
+     */
+    public function getResourcesBlockedTimeframes()
+    {
+        // first: collect all time frames
+        $timeframes = new CRM_Resource_Timeframes();
+        foreach ($this->getDemandConditions() as $demand_condition) {
+            /** @var CRM_Resource_BAO_ResourceDemandCondition $demand_condition */
+            $timeframes->joinTimeframes($demand_condition->getResourcesBlockedTimeframes());
+        }
+
+        return $timeframes;
+    }
+
+    /**
      * Get all the assigned resources
      *
      * @param int|array $assignment_status
@@ -99,8 +252,31 @@ class CRM_Resource_BAO_ResourceDemand extends CRM_Resource_DAO_ResourceDemand
 
         // make sure they're all integers
         $assignment_status = array_map('intval', $assignment_status);
+        $assignment_status_list = implode(',', $assignment_status);
 
-        // get the linked resource(s)
+        // use a sql query, apiv4 somehow didn't work - see below
+        $query = CRM_Core_DAO::executeQuery("
+            SELECT assignment.resource_id AS resource_id
+            FROM civicrm_resource_assignment assignment
+            WHERE assignment.resource_demand_id = %1
+              AND assignment.status IN (%2);",
+            [
+                1 => [$this->id, 'Integer'],
+                2 => [$assignment_status_list,  'CommaSeparatedIntegers']
+            ]
+        );
+
+        $results = [];
+        foreach ($query->fetchAll() as $resource) {
+            // todo: can we fetch them in one go?
+            $bao = new CRM_Resource_BAO_Resource();
+            $bao->id = $resource['resource_id'];
+            $bao->find(true);
+            $results[$bao->id] = $bao;
+        }
+
+
+        /* todo: this doesn't work - fix it?
         $resource_list = civicrm_api4('Resource', 'get', [
             'select' => ['id'],
             'join' => [
@@ -115,13 +291,16 @@ class CRM_Resource_BAO_ResourceDemand extends CRM_Resource_DAO_ResourceDemand
 
         // convert the result into a BAO list
         $results = [];
-        foreach ($resource_list['values'] as $resource) {
-            // todo: can we fetch them in one go?
-            $bao = new CRM_Resource_BAO_Resource();
-            $bao->id = $resource['id'];
-            $bao->find(true);
-            $results[] = $bao;
-        }
+        if (isset($resource_list['values'])) {
+            foreach ($resource_list['values'] as $resource) {
+                // todo: can we fetch them in one go?
+                $bao = new CRM_Resource_BAO_Resource();
+                $bao->id = $resource['id'];
+                $bao->find(true);
+                $results[] = $bao;
+            }
+        }*/
+
         return $results;
     }
 
@@ -130,16 +309,38 @@ class CRM_Resource_BAO_ResourceDemand extends CRM_Resource_DAO_ResourceDemand
      */
     public function getDemandConditions($cached = true)
     {
-        static $demand_conditions = null;
-        if ($demand_conditions === null || !$cached) {
-            $demand_conditions = [];
+        static $demand_conditions = [];
+        if (!isset($demand_conditions[$this->id]) || !$cached) {
+            $demand_conditions[$this->id] = [];
             $condition_bao = new CRM_Resource_BAO_ResourceDemandCondition();
             $condition_bao->resource_demand_id = $this->id;
             $condition_bao->find();
             while ($condition_bao->fetch()) {
-                $demand_conditions[] = $condition_bao->getImplementation();
+                $demand_conditions[$this->id][] = $condition_bao->getImplementation();
             }
         }
-        return $demand_conditions;
+        return $demand_conditions[$this->id];
+    }
+
+    /**
+     * Get a list of BAOs of the resource demands on the specified entity
+     *
+     * @param integer $entity_id
+     * @param string $entity_table
+     */
+    public static function getResourceDemandsFor($entity_id, $entity_table)
+    {
+        $resource_demands = [];
+        $demand_search = new CRM_Resource_BAO_ResourceDemand();
+        $demand_search->entity_id = $entity_id;
+        $demand_search->entity_table = $entity_table;
+        $demand_search->find();
+        while ($demand_search->fetch()) {
+            $demand_bao = new CRM_Resource_BAO_ResourceDemand();
+            $demand_bao->setFrom($demand_search);
+            $demand_bao->id = $demand_search->id;
+            $resource_demands[] = $demand_bao;
+        }
+        return $resource_demands;
     }
 }

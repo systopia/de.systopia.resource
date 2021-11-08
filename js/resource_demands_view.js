@@ -12,38 +12,37 @@
 | written permission from the original author(s).        |
 +--------------------------------------------------------*/
 
-/**
- * Delete the given resource unavailability and refresh
- *
- * @param unavailability_id
- */
-function delete_unavailability(unavailability_id) {
-  CRM.api3('ResourceUnavailability', 'delete', {id:unavailability_id})
-    .then(function() {
-      // try refresh: tab
-      let tab_content_id = cj("#tab_resource").attr('aria-controls');
-      if (tab_content_id) {
-        cj("#" + tab_content_id).crmSnippet('refresh');
-        let ts = CRM.ts('de.systopia.resource');
-        CRM.alert(ts("Resource Unavailability deleted"), ts("Deleted"), "info");
-      }
+cj(document).ready(function() {
+  let tab_content_id = cj("#tab_resourcedemands").attr('aria-controls');
+  if (tab_content_id) {
+    cj(document).on('crmPopupFormSuccess', function() {
+      cj("#" + tab_content_id).crmSnippet('refresh');
     });
-}
+  } else {
+    cj(document).on('crmPopupFormSuccess', function() {
+      // reload the page
+      window.location.reload(false);
+    });
+  }
+});
 
 /**
- * Delete the given resource assignment
+ * Delete the given resource demand and refresh
  *
- * @param assignment_id
+ * @param demand_id
  */
-function delete_assignment(assignment_id) {
-  CRM.api3('ResourceAssignment', 'delete', {id:assignment_id})
+function delete_resource_demand(demand_id) {
+  CRM.api3('ResourceDemand', 'delete', {id:demand_id})
     .then(function() {
       // try refresh: tab
-      let tab_content_id = cj("#tab_resource").attr('aria-controls');
+      let tab_content_id = cj("#tab_resourcedemands").attr('aria-controls');
       if (tab_content_id) {
         cj("#" + tab_content_id).crmSnippet('refresh');
         let ts = CRM.ts('de.systopia.resource');
-        CRM.alert(ts("Resource Assignment Deleted"), ts("Unassigned"), "info");
+        CRM.alert(ts("Resource Demand deleted"), ts("Deleted"), "info");
+      } else {
+        // reload the page
+        window.location.reload(false);
       }
     });
 }

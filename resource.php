@@ -191,60 +191,19 @@ function resource_civicrm_entityTypes(&$entityTypes)
  */
 function resource_civicrm_tabset($tabsetName, &$tabs, $context)
 {
-    if ($tabsetName == 'civicrm/contact/view') {
-        // add a resource tab to the summary view
-        Civi::resources()->addScriptUrl(E::url('js/contact_view.js'));
-        $resource = \Civi\Api4\Resource::get()
-            ->addWhere('entity_table', '=', 'civicrm_contact')
-            ->addWhere('entity_id', '=', $context['contact_id'])
-            ->execute()
-            ->first();
-        if (!empty($resource['id'])) { // contact already is a resource:
-            // get the assignment count
-            $assignment_count = \Civi\Api4\ResourceAssignment::get()
-                ->addWhere('resource_id', '=', $resource['id'])
-                ->selectRowCount()
-                ->execute();
+    switch ($tabsetName) {
+        case 'civicrm/contact/view':
+            CRM_Resource_UI::addContactResourceTab($tabs, $context);
+            return;
 
-            // generate tab
-            $tabs['resource'] = [
-                'id'      => 'resource',
-                'title'   => E::ts("Assignments"),
-                'url'     => CRM_Utils_System::url(
-                    'civicrm/resource/view',
-                    "id={$resource['id']}"
-                ),
-                'count'   => $assignment_count->rowCount, // todo: only active/future assignments
-                'valid'   => 1,
-                'icon' => "crm-i fa-user-md", // todo: use resource type icon
-                'active'  => 1,
-                'current' => false,
-            ];
+        case 'civicrm/event/manage':
+            CRM_Resource_UI::addEventResourceDemandTab($tabs, $context);
+            return;
 
-        } else { // contact is not a resource: offer to become one (if applicable)
-
-            // first check, if there even is an (active) resource type for contacts
-            $contact_resource_types = CRM_Resource_Types::getForEntityTable('civicrm_contact');
-            if (!empty($contact_resource_types)) {
-                // contact isn't a resource -> offer to become one
-                $tabs['resource'] = [
-                    'id'      => 'resource',
-                    'title'   => E::ts("Assignments"),
-                    'url'     => CRM_Utils_System::url(
-                        'civicrm/resource/create',
-                        "entity_id={$context['contact_id']}&entity_table=civicrm_contact"
-                    ),
-                    'icon' => "crm-i fa-question",
-                    'count'   => 0,
-                    'valid'   => 0,
-                    'active'  => 0,
-                    'current' => false,
-                ];
-            }
-        }
+        default:
+            return;
     }
 }
-
 
 /**
  * Implements hook_civicrm_themes().
