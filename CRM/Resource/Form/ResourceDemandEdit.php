@@ -20,18 +20,18 @@ use CRM_Resource_ExtensionUtil as E;
  *
  * @see https://docs.civicrm.org/dev/en/latest/framework/quickform/
  */
-class CRM_Resource_Form_ResourceDemandCreate extends CRM_Core_Form
+class CRM_Resource_Form_ResourceDemandEdit extends CRM_Core_Form
 {
     /** @var integer related entity ID */
-    protected $entity_id = null;
+    protected $id = null;
 
-    /** @var integer related entity table */
-    protected $entity_table = null;
+    /** @var array resource_demand */
+    protected $resource_demand = null;
 
     public function buildQuickForm()
     {
-        $this->entity_id = CRM_Utils_Request::retrieve('entity_id', 'Integer', $this);
-        $this->entity_table = CRM_Utils_Request::retrieve('entity_table', 'String', $this);
+        $this->id = CRM_Utils_Request::retrieve('id', 'Integer', $this);
+        $this->resource_demand = civicrm_api3('ResourceDemand', 'getsingle', ['id' => $this->id]);
 
         // add form elements
         $this->add(
@@ -40,15 +40,6 @@ class CRM_Resource_Form_ResourceDemandCreate extends CRM_Core_Form
             E::ts('Label'),
             ['placeholder' => E::ts("Resource Label")],
             true
-        );
-
-        $this->add(
-            'select',
-            'resource_type',
-            E::ts('Type'),
-            $this->getResourceTypes(),
-            true,
-            ['class' => 'crm-select2']
         );
 
         $this->add(
@@ -61,37 +52,20 @@ class CRM_Resource_Form_ResourceDemandCreate extends CRM_Core_Form
         $this->addRule('resource_count', E::ts('The demand should require a least one resource'), 'positiveInteger');
 
         $this->setDefaults([
-            'resource_count' => 1,
-        ]);
+           'resource_count' => $this->resource_demand['count'],
+           'resource_demand_name' => $this->resource_demand['label'],
+       ]);
 
         $this->addButtons([
               [
                   'type' => 'submit',
-                  'name' => E::ts('Create Resource Demand'),
-                  'icon' => 'fa-magic',
+                  'name' => E::ts('Save'),
+                  'icon' => 'fa-floppy-o',
                   'isDefault' => true,
               ],
           ]);
 
-        // add some data
-        $this->assign('entity_name', E::ts(CRM_Resource_Types::getEntityName($this->entity_table)));
-
         parent::buildQuickForm();
-    }
-    /**
-     * Get the resource types for the given entity_table
-     *
-     * @return array
-     *  resource types
-     */
-    protected function getResourceTypes()
-    {
-        $resource_types = CRM_Resource_Types::getAll();
-        $resource_type_options = [];
-        foreach ($resource_types as $resource_type) {
-            $resource_type_options[$resource_type['id']] = $resource_type['label'];
-        }
-        return $resource_type_options;
     }
 
 
@@ -99,13 +73,12 @@ class CRM_Resource_Form_ResourceDemandCreate extends CRM_Core_Form
     {
         $values = $this->exportValues();
         civicrm_api3('ResourceDemand', 'create', [
-            'entity_id' => $this->entity_id,
-            'entity_table' => $this->entity_table,
+            'id' => $this->id,
             'count' => $values['resource_count'],
             'label' => $values['resource_demand_name'],
-            'resource_type_id' => $values['resource_type']
         ]);
         parent::postProcess();
     }
+
 
 }
