@@ -35,6 +35,13 @@ class CRM_Resource_Upgrader extends CRM_Resource_Upgrader_Base
     }
 
     /**
+     * Drop all data tables
+     */
+     public function uninstall() {
+        $this->executeSqlFile('sql/drop_all_tables.sql');
+     }
+
+    /**
      * Example: Work with entities usually not available during the install step.
      *
      * This method can be used for any post-install tasks. For example, if a step
@@ -52,12 +59,6 @@ class CRM_Resource_Upgrader extends CRM_Resource_Upgrader_Base
     //  ));
     // }
 
-    /**
-     * Example: Run an external SQL script when the module is uninstalled.
-     */
-    // public function uninstall() {
-    //  $this->executeSqlFile('sql/myuninstall.sql');
-    // }
 
     /**
      * Example: Run a simple query when a module is enabled.
