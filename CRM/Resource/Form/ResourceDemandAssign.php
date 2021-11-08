@@ -47,7 +47,10 @@ class CRM_Resource_Form_ResourceDemandAssign extends CRM_Core_Form
         $this->resource_demand->find();
         $this->resource_demand->fetch(true);
 
-        // check assignment status
+        // set title
+        $this->setTitle(E::ts("Assign More \"%1\" Resources", [1 => $this->resource_demand->label]));
+
+        // gather general information
         $currently_assigned = $this->resource_demand->getAssignmentCount();
         $this->assign('assigned_now', $currently_assigned);
         $this->assign('assigned_missing', max($this->resource_demand->count - $currently_assigned, 0));

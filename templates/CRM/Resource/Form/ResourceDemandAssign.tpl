@@ -13,9 +13,7 @@
 +-------------------------------------------------------*}
 
 {crmScope extensionKey='de.systopia.resource'}
-  <h3 class="header-dark resource-view">{ts 1=$demand_label}Assign "%1" Resources{/ts}</h3>
-
-  <div class="resource-view resource-assignment-status">
+  <h3 class="resource-view resource-assignment-status">
     {if $assigned_now}
         {if $assigned_missing}
             {ts 1=$assigned_now 2=$assigned_requested 3=$demand_label 4=$assigned_missing}There are already %1 of %2 "%3" assigned, please assign %4 more.{/ts}
@@ -25,25 +23,26 @@
     {else}
       {ts 1=$demand_label 2=$assigned_missing}Please assign %2 "%1".{/ts}
     {/if}
-    {ts}Here's a list of some available resources currently matching the requirements:{/ts}
-  </div>
+    <br/>
+    {ts}Here's a random list of some available resources currently matching the requirements:{/ts}
+  </h3>
 
   <div class="resource-view resource-matching-resources">
       {if $candidates}
         <table class="crm-table resource-resource-view resource-resource-view-unavailabilities">
           <thead>
           <tr>
-            <th>{ts}Assign{/ts}</th>
             <th>{ts}Name{/ts}</th>
             <th>{ts}Entity ID{/ts}</th>
+            <th>{ts}Assign{/ts}</th>
           </tr>
           </thead>
             {foreach from=$candidates item=candidate}
               <tr id="resource-{$candidate.id}" class="resource resource-view">
                 {assign var="field_name" value=$candidate.field_name}
-                <td>{$form.$field_name.html}</td>
                 <td>{$candidate.label} [{$candidate.id}]</td>
                 <td>{$candidate.entity_id}</td>
+                <td>{$form.$field_name.html}</td>
               </tr>
             {/foreach}
         </table>
