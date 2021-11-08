@@ -34,20 +34,28 @@
           <tr>
             <th>{ts}Name{/ts}</th>
             <th>{ts}Entity ID{/ts}</th>
-            <th>{ts}Assign{/ts}</th>
+            <th>{ts}Assign{/ts}&nbsp;<span class="resource resource-all">[{ts}all{/ts}]</span></th>
           </tr>
           </thead>
+          <tbody>
             {foreach from=$candidates item=candidate}
               <tr id="resource-{$candidate.id}" class="resource resource-view">
-                {assign var="field_name" value=$candidate.field_name}
+                  {assign var="field_name" value=$candidate.field_name}
                 <td>{$candidate.label} [{$candidate.id}]</td>
                 <td>{$candidate.entity_id}</td>
                 <td>{$form.$field_name.html}</td>
               </tr>
             {/foreach}
+          </tbody>
         </table>
+      {else}
+        <div class="resource resource-missing">{ts}Sorry, no available resources found for this requirement.{/ts}</div>
       {/if}
   </div>
+
+  <h3 style="display: none;" class="resource resource-too-many">
+    {ts}You have selected more resources than you need.{/ts}
+  </h3>
 
   <div class="crm-submit-buttons">
       {include file="CRM/common/formButtons.tpl" location="bottom"}

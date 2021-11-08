@@ -104,7 +104,10 @@ class CRM_Resource_BAO_ResourceDemand extends CRM_Resource_DAO_ResourceDemand
         // fixme: this should eventually be replaced by an elaborate, dynamically generated sql query
         $resource_candidates = [];
 
-        // build query
+        // get already assigned resources
+        $assigned_resources = $this->getAssignedResources();
+
+        // build resource search query
         $candidate_query = new CRM_Resource_BAO_Resource();
         $candidate_query->resource_type_id = $this->resource_type_id;
         $candidate_query->_query['order_by'] = "ORDER BY RAND()";
@@ -112,6 +115,10 @@ class CRM_Resource_BAO_ResourceDemand extends CRM_Resource_DAO_ResourceDemand
 
         while ($candidate_query->fetch()) {
             if ($this->isFulfilledWithResource($candidate_query)) {
+                // check if it's already assigned
+                if (isset($assigned_resources[$candidate_query->id])) {
+                    continue; // already assigned
+                }
                 $candidate = new CRM_Resource_BAO_Resource();
                 $candidate->setFrom($candidate_query);
                 $candidate->id = $candidate_query->id;
@@ -265,7 +272,7 @@ class CRM_Resource_BAO_ResourceDemand extends CRM_Resource_DAO_ResourceDemand
             $bao = new CRM_Resource_BAO_Resource();
             $bao->id = $resource['resource_id'];
             $bao->find(true);
-            $results[] = $bao;
+            $results[$bao->id] = $bao;
         }
 
 

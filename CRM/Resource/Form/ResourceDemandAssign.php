@@ -89,6 +89,12 @@ class CRM_Resource_Form_ResourceDemandAssign extends CRM_Core_Form
               ],
           ]);
 
+        Civi::resources()->addVars('resource_demand_assign', [
+            'assigned_missing' => max($this->resource_demand->count - $currently_assigned, 0)
+        ]);
+        Civi::resources()->addStyleUrl(E::url('css/resource_demand_assign.css'));
+        Civi::resources()->addScriptUrl(E::url('js/resource_demand_assign.js'));
+
         parent::buildQuickForm();
     }
 
