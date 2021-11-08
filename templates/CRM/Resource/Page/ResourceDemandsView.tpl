@@ -36,6 +36,7 @@
                     <span>
                       <a href="{$resource_demand.edit_link}" class="action-item crm-hover-button crm-popup small-popup" title="{ts}Edit Resource Demand{/ts}">{ts}Edit{/ts}</a>
                       <a href="{$resource_demand.assign_link}" class="action-item crm-hover-button crm-popup medium-popup" title="{ts}Assign New Resources{/ts}">{ts}Assign{/ts}</a>
+                      <a href="{$resource_demand.conditions_link}" class="action-item crm-hover-button crm-popup medium-popup" title="{ts}Edit Conditions{/ts}">{ts}Conditions{/ts}</a>
                       <a class="action-item crm-hover-button" onclick="delete_resource_demand({$resource_demand.id});" title="{ts}Delete Resource Demand{/ts}">{ts}Delete{/ts}</a>
                     </span>
                   </td>

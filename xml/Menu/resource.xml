@@ -48,4 +48,22 @@
     <title>ResourceDemandEdit</title>
     <access_arguments>access CiviCRM</access_arguments>
   </item>
+  <item>
+    <path>civicrm/resource/demand/conditions</path>
+    <page_callback>CRM_Resource_Page_ResourceDemandConditions</page_callback>
+    <title>ResourceDemandConditions</title>
+    <access_arguments>access CiviCRM</access_arguments>
+  </item>
+  <item>
+    <path>civicrm/resource/condition/create</path>
+    <page_callback>CRM_Resource_Form_Condition</page_callback>
+    <title>Condition</title>
+    <access_arguments>access CiviCRM</access_arguments>
+  </item>
+  <item>
+    <path>civicrm/resource/condition/edit</path>
+    <page_callback>CRM_Resource_Form_ConditionEdit</page_callback>
+    <title>ConditionEdit</title>
+    <access_arguments>access CiviCRM</access_arguments>
+  </item>
 </menu>

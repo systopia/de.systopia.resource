@@ -42,6 +42,31 @@ class CRM_Resource_BAO_ResourceDemand extends CRM_Resource_DAO_ResourceDemand
         return $instance;
     }
 
+
+    /**
+     * Get the resource BAO
+     *
+     * @param integer $id
+     *   the resource ID
+     *
+     * @return CRM_Resource_BAO_ResourceDemand
+     *   the resource
+     */
+    public static function getInstance($id, $cached = true)
+    {
+        $id = (int) $id;
+        static $resource_demands = [];
+        if (!isset($resource_demands[$id]) || !$cached) {
+            $resource_demand = new CRM_Resource_BAO_ResourceDemand();
+            $resource_demand->id = $id;
+            if (!$resource_demand->find(true)) {
+                throw new CRM_Core_Exception("CRM_Resource_BAO_ResourceDemand [{$id}] not found.");
+            }
+            $resource_demands[$id] = $resource_demand;
+        }
+        return $resource_demands[$id];
+    }
+
     /**
      * Check if all given conditions are currently met by the given resource
      *

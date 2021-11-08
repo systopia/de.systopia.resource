@@ -18,6 +18,21 @@ use CRM_Resource_ExtensionUtil as E;
 class CRM_Resource_BAO_ResourceDemandCondition extends CRM_Resource_DAO_ResourceDemandCondition
 {
     /**
+     * Get a list of all condition types (class name)
+     *
+     * @param string $entity_table
+     *   can be added to filter the conditions to the given entity_table
+     */
+    public static function getAllConditionTypes($entity_table = null)
+    {
+        // todo: expose as Symfony hook
+        $types = [
+            'CRM_Resource_DemandCondition_Attribute' => [],
+            'CRM_Resource_DemandCondition_EventTime' => ['civicrm_event'],
+        ];
+    }
+
+    /**
      * Return an object of the specific class, i.e. the object that matches
      *   the provided class
      *
@@ -99,5 +114,99 @@ class CRM_Resource_BAO_ResourceDemandCondition extends CRM_Resource_DAO_Resource
     public function getParameters()
     {
         return json_decode($this->parameters);
+    }
+
+    /**
+     * Get the parsed version of the parameter column
+     *
+     * @return array parameters
+     */
+    public function getParametersParsed() : array
+    {
+        if ($this->json_parameters === null) {
+            $this->json_parameters = json_decode($this->parameters);
+            if ($this->json_parameters === null) {
+                $this->json_parameters = [];
+            }
+        }
+        return $this->json_parameters;
+    }
+
+    /**
+     * Get the proper label for this unavailability
+     */
+    public function getLabel()
+    {
+        return 'NOT IMPLEMENTED';
+    }
+
+
+    /*****************************************
+     ***          FORM INTEGRATION          **
+    /****************************************/
+
+    /**
+     * Add form fields for the given unavailability
+     *
+     * @param $form CRM_Core_Form
+     *   a form the parameters should be added to
+     *
+     * @param $prefix string
+     *   the prefix to be used to make sure there is no clash in forms
+     *
+     * @return array
+     *    list of field keys (incl. prefix)
+     */
+    public static function addFormFields($form, $prefix = '')
+    {
+        // some subclasses don't have to implement this, so no warning here
+        return [];
+    }
+
+    /**
+     * Validate our values in the form submission
+     *
+     * @param $submit_values array
+     *   the submitted values
+     *
+     * @return array
+     *    validation errors [field_name => error]
+     */
+    public static function validateFormSubmission($submit_values)
+    {
+        // some subclasses don't have to implement this, so no warning here
+        return [];
+    }
+
+    /**
+     * Generate data values
+     *
+     * @param $data array
+     *   form data
+     *
+     * @param $prefix string
+     *   the prefix to be used to make sure there is no clash in forms
+     *
+     * @return array
+     *   the data that should be written into the parameters field as a json blob
+     */
+    public static function compileParameters($data, $prefix = '')
+    {
+        // some subclasses don't have to implement this, so no warning here
+        return [];
+    }
+
+    /**
+     * Get the current values for the fields defined in ::addFormFields
+     *
+     * @param string $prefix
+     *   an optional prefix
+     *
+     * @return array
+     *   field-key => current value
+     */
+    public function getCurrentFormValues($prefix = '')
+    {
+        return [];
     }
 }
