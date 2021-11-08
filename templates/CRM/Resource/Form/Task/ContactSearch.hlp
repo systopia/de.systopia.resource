@@ -1,0 +1,29 @@
+{*-------------------------------------------------------+
+| SYSTOPIA Event Invitation                              |
+| Copyright (C) 2020 SYSTOPIA                            |
+| Author: B. Zschiedrich (zschiedrich@systopia.de)       |
++--------------------------------------------------------+
+| This program is released as free software under the    |
+| Affero GPL license. You can redistribute it and/or     |
+| modify it under the terms of this license which you    |
+| can read by viewing the included agpl.txt or online    |
+| at www.gnu.org/licenses/agpl.html. Removal of this     |
+| copyright header is strictly prohibited without        |
+| written permission from the original author(s).        |
++--------------------------------------------------------*}
+
+{crmScope extensionKey='de.systopia.eventinvitation'}
+
+{htxt id='id-template-tokens'}
+  <p>
+    {ts}The template chosen here <strong>must</strong> contain the <code>&#123;$qr_event_invite_code&#125;</code> token. It contains the personalised invitation link.{/ts}
+    {ts}Beyond that, the following special tokens are available:{/ts}
+    <ul>
+      <li>{ts}<code>&#123;$event.xxx&#125;</code>: fields of the given event. For the available 'xxx' field names, check the API explorer with <code>Event.get</code>.{/ts}</li>
+      <li>{ts}<code>&#123;$qr_event_invite_code_data&#125;</code>: QR-Code date to be used in as <code>src</code> in an html <code>img</code> tag.{/ts}</li>
+      <li>{ts}<code>&#123;$qr_event_invite_code_img&#125;</code>: QR-Code <code>img</code> element.{/ts}</li>
+    </ul>
+  </p>
+{/htxt}
+
+{/crmScope}

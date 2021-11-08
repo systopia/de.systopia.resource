@@ -205,6 +205,22 @@ function resource_civicrm_tabset($tabsetName, &$tabs, $context)
     }
 }
 
+function resource_civicrm_searchTasks($objectType, &$tasks)
+{
+    // add "Mark as resource" task to contact list
+    if ($objectType == 'contact') {
+        // ...but only, if any contact based resource type is active
+        $contact_based_resource_types = CRM_Resource_Types::getForEntityTable('civicrm_contact');
+        if (!empty($contact_based_resource_types)) {
+            $tasks[] = [
+                'title' => E::ts('Mark as Resource'),
+                'class' => 'CRM_Resource_Form_Task_CreateContactResource',
+                'result' => false
+            ];
+        }
+    }
+}
+
 /**
  * Implements hook_civicrm_themes().
  */
