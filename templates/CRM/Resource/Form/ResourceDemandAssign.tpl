@@ -13,7 +13,21 @@
 +-------------------------------------------------------*}
 
 {crmScope extensionKey='de.systopia.resource'}
-  <h3 class="header-dark resource-view">{ts}Matching Resources{/ts}</h3>
+  <h3 class="header-dark resource-view">{ts 1=$demand_label}Assign "%1" Resources{/ts}</h3>
+
+  <div class="resource-view resource-assignment-status">
+    {if $assigned_now}
+        {if $assigned_missing}
+            {ts 1=$assigned_now 2=$assigned_requested 3=$demand_label 4=$assigned_missing}There are already %1 of %2 "%3" assigned, please assign %4 more.{/ts}
+        {else}
+            {ts 1=$demand_label}There are already enough "%1" assigned, but if you want you can still assign more.{/ts}
+        {/if}
+    {else}
+      {ts 1=$demand_label 2=$assigned_missing}Please assign %2 "%1".{/ts}
+    {/if}
+    {ts}Here's a list of some available resources currently matching the requirements:{/ts}
+  </div>
+
   <div class="resource-view resource-matching-resources">
       {if $candidates}
         <table class="crm-table resource-resource-view resource-resource-view-unavailabilities">

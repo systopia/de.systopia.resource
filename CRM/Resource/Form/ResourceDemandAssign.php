@@ -47,6 +47,13 @@ class CRM_Resource_Form_ResourceDemandAssign extends CRM_Core_Form
         $this->resource_demand->find();
         $this->resource_demand->fetch(true);
 
+        // check assignment status
+        $currently_assigned = $this->resource_demand->getAssignmentCount();
+        $this->assign('assigned_now', $currently_assigned);
+        $this->assign('assigned_missing', max($this->resource_demand->count - $currently_assigned, 0));
+        $this->assign('assigned_requested', $this->resource_demand->count);
+        $this->assign('demand_label', $this->resource_demand->label);
+
         // find candidates
         $count = max($this->resource_count, $this->resource_demand->count);
         $candidates = $this->resource_demand->getResourceCandidates($count);
@@ -102,7 +109,7 @@ class CRM_Resource_Form_ResourceDemandAssign extends CRM_Core_Form
                         ]);
                         $success_count++;
                     } catch (CiviCRM_API3_Exception $ex) {
-                        $error_messages[] = $ex->getMessage();
+                        $error_messages[$resource_id] = $ex->getMessage();
                     }
                 }
             }
@@ -116,7 +123,10 @@ class CRM_Resource_Form_ResourceDemandAssign extends CRM_Core_Form
             );
             if ($success_count < $total_count) {
                 CRM_Core_Session::setStatus(
-                    E::ts("%1 resources could not be assigned this demand.", [1 => $total_count - $success_count]),
+                    E::ts("%1 resources could not be assigned this demand. Errors were: <br/><ul><li>%2</li></ul>", [
+                        1 => $total_count - $success_count,
+                        2 => implode("</li><li>", $error_messages)
+                    ]),
                     E::ts("Failure"),
                     'warn'
                 );

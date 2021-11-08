@@ -106,7 +106,7 @@ class CRM_Resource_BAO_ResourceDemand extends CRM_Resource_DAO_ResourceDemand
      * @return integer
      *   number of references
      */
-    public function getAssignmentCount($status)
+    public function getAssignmentCount($status = CRM_Resource_BAO_ResourceAssignment::STATUS_CONFIRMED)
     {
         // prepare status list
         if (!is_array($status)) {
