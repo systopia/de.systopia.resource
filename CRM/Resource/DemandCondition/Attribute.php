@@ -32,6 +32,14 @@ class CRM_Resource_DemandCondition_Attribute extends CRM_Resource_BAO_ResourceDe
     }
 
     /**
+     * Get an font-awesome icon for this condition
+     */
+    public function getIcon()
+    {
+        return 'fa-question';
+    }
+
+    /**
      * Create a new AttributeResourceDemandCondition
      *
      * @param integer $resource_demand_id

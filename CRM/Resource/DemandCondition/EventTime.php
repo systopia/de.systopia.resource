@@ -82,12 +82,29 @@ class CRM_Resource_DemandCondition_EventTime extends CRM_Resource_BAO_ResourceDe
         $event_query = civicrm_api4('ResourceDemand', 'get', [
             'select' => ['event.start_date', 'event.end_date'],
             'join'   => [['Event AS event', TRUE, NULL, ['entity_id', '=', 'event.id']]],
+            'where' =>  [['id', '=', $this->resource_demand_id]],
             'limit'  => 1,
         ]);
+        $event = $event_query->getArrayCopy()[0];
 
-        // get the offset
-        $parameters = $this->getParametersParsed();
+        // calculate the time
+        $params = $this->getParametersParsed();
+        $event_start = $event['event.start_date'];
+        $event_end = empty($event['event.end_date']) ?
+            $event['event.start_date'] : $event['event.end_date'];
 
+        // compile the timeframe
+        $timeframe_from = strtotime("-{$params[0][0]} {$params[0][1]}", strtotime($event_start));
+        $timeframe_to   = strtotime("+{$params[1][0]} {$params[1][1]}", strtotime($event_end));
+        if ($timeframe_from > $timeframe_to) {
+            Civi::log()->warning("DemandCondition_EventTime[{$this->id}] has overlapping timeframes");
+            $timeframe_tmp = $timeframe_to;
+            $timeframe_to = $timeframe_from;
+            $timeframe_from = $timeframe_tmp;
+        }
+        $timeframes->addTimeframe($timeframe_from, $timeframe_to);
+
+        return $timeframes;
     }
 
     /**
@@ -104,6 +121,14 @@ class CRM_Resource_DemandCondition_EventTime extends CRM_Resource_BAO_ResourceDe
     }
 
     /**
+     * Get an font-awesome icon for this condition
+     */
+    public function getIcon()
+    {
+        return 'fa-clock-o';
+    }
+
+    /**
      * Get the proper label for this unavailability
      */
     public function getLabel()
@@ -111,7 +136,7 @@ class CRM_Resource_DemandCondition_EventTime extends CRM_Resource_BAO_ResourceDe
         $params = $this->getParametersParsed();
         $before_term = $this->getTimeTerm($params[0][0], $params[0][1], true);
         $after_term = $this->getTimeTerm($params[1][0], $params[1][1], false);
-        return E::ts("Available from %1 until %2", [1 => $before_term, 2 => $after_term]);
+        return E::ts("Resource available from %1 until %2", [1 => $before_term, 2 => $after_term]);
     }
 
     /**
@@ -136,18 +161,18 @@ class CRM_Resource_DemandCondition_EventTime extends CRM_Resource_BAO_ResourceDe
 
         if ($quantity > 0) {
             if ($before) {
-                return E::ts("%1 %2 before event start",
+                return E::ts("<b>%1 %2(s)</b> before event starts",
                     [1 => $quantity, 2 => $unit]);
             } else {
-                return E::ts("%1 %2 after event end",
+                return E::ts("<b>%1 %2(s)</b> after event ends",
                              [1 => $quantity, 2 => $unit]);
             }
         } else {
             if ($before) {
-                return E::ts("%1 %2 after event start",
+                return E::ts("<b>%1 %2(s)</b> after event starts",
                              [1 => $quantity, 2 => $unit]);
             } else {
-                return E::ts("%1 %2 before event end",
+                return E::ts("<b>%1 %2(s)</b> before event ends",
                              [1 => $quantity, 2 => $unit]);
             }
         }
@@ -181,34 +206,32 @@ class CRM_Resource_DemandCondition_EventTime extends CRM_Resource_BAO_ResourceDe
         $form->add(
             'text',
             $prefix . '_before_quantity',
-            E::ts("From Counter"),
-            NULL,
-            FALSE,
-            []
+            E::ts("Before Event Start"),
+            ['size' => '5'],
+            true
         );
         $form->add(
             'select',
             $prefix . '_before_unit',
-            E::ts("From Unit"),
+            '',
             $units,
             true,
-            []
+            ['class' => 'crm-select2']
         );
         $form->add(
             'text',
             $prefix . '_after_quantity',
-            E::ts("After Counter"),
-            NULL,
-            FALSE,
-            []
+            E::ts("After Event End"),
+            ['size' => '5'],
+            true
         );
         $form->add(
             'select',
             $prefix . '_after_unit',
-            E::ts("After Unit"),
+           '',
             $units,
             true,
-            []
+            ['class' => 'crm-select2']
         );
         $form->addRule($prefix . '_before_quantity', E::ts("Please enter a number"), 'integer');
         $form->addRule($prefix . '_after_quantity', E::ts("Please enter a number"), 'integer');

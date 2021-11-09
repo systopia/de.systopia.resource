@@ -37,11 +37,12 @@
         <table class="crm-table resource-demand-view resource-demand-view-conditions">
             {foreach from=$conditions item=condition}
               <tr id="condition-{$condition.id}" class="condition">
+                <td><i class="crm-i {$condition.icon}" aria-hidden="true"></i></td>
                 <td>{$condition.display_name}</td>
                 <td class="nowrap">
                     <span>
                       <a href="{$condition.edit_link}" class="action-item crm-hover-button crm-popup medium-popup" title="{ts}Edit Condition{/ts}">{ts}Edit{/ts}</a>
-                      <a class="action-item crm-hover-button" onclick="delete_condition({$condition.id});" title="{ts}Delete Condition{/ts}">{ts}Delete{/ts}</a>
+                      <a class="action-item crm-hover-button" onclick="delete_resource_demand_condition({$condition.id});" title="{ts}Delete Condition{/ts}">{ts}Delete{/ts}</a>
                     </span>
                 </td>
               </tr>

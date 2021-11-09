@@ -1,27 +1,35 @@
-{* HEADER *}
+{*-------------------------------------------------------+
+| SYSTOPIA Resource Framework                            |
+| Copyright (C) 2021 SYSTOPIA                            |
+| Author: B. Endres (endres@systopia.de)                 |
++--------------------------------------------------------+
+| This program is released as free software under the    |
+| Affero GPL license. You can redistribute it and/or     |
+| modify it under the terms of this license which you    |
+| can read by viewing the included agpl.txt or online    |
+| at www.gnu.org/licenses/agpl.html. Removal of this     |
+| copyright header is strictly prohibited without        |
+| written permission from the original author(s).        |
++-------------------------------------------------------*}
 
-<div class="crm-submit-buttons">
-{include file="CRM/common/formButtons.tpl" location="top"}
-</div>
+{crmScope extensionKey='de.systopia.resource'}
 
-{* FIELD EXAMPLE: OPTION 1 (AUTOMATIC LAYOUT) *}
-
-{foreach from=$elementNames item=elementName}
   <div class="crm-section">
-    <div class="label">{$form.$elementName.label}</div>
-    <div class="content">{$form.$elementName.html}</div>
+    <div class="label">{$form.condition_type.label}</div>
+    <div class="content">{$form.condition_type.html}</div>
+    <div class="clear"></div>
+  </div>
+
+{foreach from=$type_fields item=type_field}
+  <div class="crm-section condition-form-field {$type_field}">
+    <div class="label">{$form.$type_field.label}</div>
+    <div class="content">{$form.$type_field.html}</div>
     <div class="clear"></div>
   </div>
 {/foreach}
 
-{* FIELD EXAMPLE: OPTION 2 (MANUAL LAYOUT)
 
-  <div>
-    <span>{$form.favorite_color.label}</span>
-    <span>{$form.favorite_color.html}</span>
+  <div class="crm-submit-buttons">
+      {include file="CRM/common/formButtons.tpl" location="bottom"}
   </div>
-
-{* FOOTER *}
-<div class="crm-submit-buttons">
-{include file="CRM/common/formButtons.tpl" location="bottom"}
-</div>
+{/crmScope}

@@ -159,6 +159,13 @@ class CRM_Resource_BAO_ResourceDemandCondition extends CRM_Resource_DAO_Resource
         return 'NOT IMPLEMENTED';
     }
 
+    /**
+     * Get an font-awesome icon for this condition
+     */
+    public function getIcon()
+    {
+        return 'fa-check-square-o';
+    }
 
     /*****************************************
      ***          FORM INTEGRATION          **

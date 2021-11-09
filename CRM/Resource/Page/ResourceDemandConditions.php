@@ -37,6 +37,8 @@ class CRM_Resource_Page_ResourceDemandConditions extends CRM_Core_Page
         $this->assign('demand_type_label', $resource_type['label']);
         $this->assign('demand_label', $this->resource_demand->label);
 
+        CRM_Utils_System::setTitle(E::ts("ResourceDemand '%1' Conditions", [1 => $this->resource_demand->label]));
+
         // counts
         $this->assign('demand_resources_count', $this->resource_demand->count);
         $this->assign('demand_assigned_count', $this->resource_demand->getAssignmentCount());
@@ -50,17 +52,18 @@ class CRM_Resource_Page_ResourceDemandConditions extends CRM_Core_Page
         $condition_list = [];
         foreach ($conditions as $condition) {
             $condition_data = $condition->toArray();
-            $condition_data['display_name'] = $condition_data->getLabel();
+            $condition_data['display_name'] = $condition->getLabel();
+            $condition_data['icon'] = $condition->getIcon();
             $condition_data['edit_link'] = CRM_Utils_System::url(
                 'civicrm/resource/condition/edit',
-                "id={$condition_data['id']}"
+                "id={$condition->id}"
             );
             $condition_list[] = $condition_data;
         }
         $this->assign('conditions', $condition_list);
 
-//        Civi::resources()->addStyleUrl(E::url('css/resource_demand_condition_view.css'));
-//        Civi::resources()->addScriptUrl(E::url('js/resource_demand_condition_view.js'));
+        Civi::resources()->addStyleUrl(E::url('css/resource_demand_conditions.css'));
+        Civi::resources()->addScriptUrl(E::url('js/resource_demand_conditions.js'));
 
         parent::run();
     }
