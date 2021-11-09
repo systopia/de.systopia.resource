@@ -17,6 +17,10 @@ use CRM_Resource_ExtensionUtil as E;
 
 class CRM_Resource_BAO_ResourceDemandCondition extends CRM_Resource_DAO_ResourceDemandCondition
 {
+
+    /** @var array */
+    private $json_parameters = null;
+
     /**
      * Get a list of all condition types (class name)
      *

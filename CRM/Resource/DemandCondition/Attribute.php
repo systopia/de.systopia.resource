@@ -88,7 +88,12 @@ class CRM_Resource_DemandCondition_Attribute extends CRM_Resource_BAO_ResourceDe
     public function isFulfilledWithResource($resource, &$error_messages = []) : bool
     {
         $entity = $resource->getEntity();
-        [$attribute_name, $value, $operation] = $this->getParameters();
+        $parameters = $this->getParametersParsed();
+        if (empty($parameters) || count($parameters) != 3) {
+            Civi::log()->warning("CiviResource: Attribute Condition [{$this->id}]: invalid parameters");
+            return false;
+        }
+        [$attribute_name, $value, $operation] = $parameters;
         $current_value = $entity->$attribute_name ?? null;
         switch ($operation) {
 
