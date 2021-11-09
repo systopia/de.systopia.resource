@@ -21,6 +21,17 @@ use CRM_Resource_ExtensionUtil as E;
 class CRM_Resource_DemandCondition_Attribute extends CRM_Resource_BAO_ResourceDemandCondition
 {
     /**
+     * Get the proper label for this unavailability
+     *
+     * @return string
+     *    the label of this unavailability type
+     */
+    public static function getTypeLabel()
+    {
+        return E::ts("Attribute Value");
+    }
+
+    /**
      * Create a new AttributeResourceDemandCondition
      *
      * @param integer $resource_demand_id

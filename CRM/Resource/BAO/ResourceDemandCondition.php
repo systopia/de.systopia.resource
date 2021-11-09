@@ -30,6 +30,14 @@ class CRM_Resource_BAO_ResourceDemandCondition extends CRM_Resource_DAO_Resource
             'CRM_Resource_DemandCondition_Attribute' => [],
             'CRM_Resource_DemandCondition_EventTime' => ['civicrm_event'],
         ];
+
+        $matching_types = [];
+        foreach ($types as $type => $tables) {
+            if (empty($tables) || in_array($entity_table, $tables)) {
+                $matching_types[] = $type;
+            }
+        }
+        return $matching_types;
     }
 
     /**
@@ -130,6 +138,17 @@ class CRM_Resource_BAO_ResourceDemandCondition extends CRM_Resource_DAO_Resource
             }
         }
         return $this->json_parameters;
+    }
+
+    /**
+     * Get the proper label for this unavailability
+     *
+     * @return string
+     *    the label of this unavailability type
+     */
+    public static function getTypeLabel()
+    {
+        return __CLASS__;
     }
 
     /**

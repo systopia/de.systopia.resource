@@ -21,6 +21,17 @@ use CRM_Resource_ExtensionUtil as E;
 class CRM_Resource_DemandCondition_EventTime extends CRM_Resource_BAO_ResourceDemandCondition
 {
     /**
+     * Get the proper label for this unavailability
+     *
+     * @return string
+     *    the label of this unavailability type
+     */
+    public static function getTypeLabel()
+    {
+        return E::ts("Available at event time");
+    }
+
+    /**
      * Create a new EventTime Condition
      *
      * @param integer $resource_demand_id
@@ -161,6 +172,12 @@ class CRM_Resource_DemandCondition_EventTime extends CRM_Resource_BAO_ResourceDe
      */
     public static function addFormFields($form, $prefix = '')
     {
+        $units = [
+            'minute' => E::ts("minute(s)"),
+            'hour'   => E::ts("hour(s)"),
+            'day'    => E::ts("day(s)"),
+            'week'   => E::ts("week(s)"),
+        ];
         $form->add(
             'text',
             $prefix . '_before_quantity',
@@ -173,8 +190,8 @@ class CRM_Resource_DemandCondition_EventTime extends CRM_Resource_BAO_ResourceDe
             'select',
             $prefix . '_before_unit',
             E::ts("From Unit"),
-            NULL,
-            FALSE,
+            $units,
+            true,
             []
         );
         $form->add(
@@ -189,10 +206,12 @@ class CRM_Resource_DemandCondition_EventTime extends CRM_Resource_BAO_ResourceDe
             'select',
             $prefix . '_after_unit',
             E::ts("After Unit"),
-            NULL,
-            FALSE,
+            $units,
+            true,
             []
         );
+        $form->addRule($prefix . '_before_quantity', E::ts("Please enter a number"), 'integer');
+        $form->addRule($prefix . '_after_quantity', E::ts("Please enter a number"), 'integer');
 
         return [
             $prefix . '_before_quantity',
@@ -200,21 +219,6 @@ class CRM_Resource_DemandCondition_EventTime extends CRM_Resource_BAO_ResourceDe
             $prefix . '_after_quantity',
             $prefix . '_after_unit',
         ];
-    }
-
-    /**
-     * Validate our values in the form submission
-     *
-     * @param $submit_values array
-     *   the submitted values
-     *
-     * @return array
-     *    validation errors [field_name => error]
-     */
-    public static function validateFormSubmission($submit_values)
-    {
-        // some subclasses don't have to implement this, so no warning here
-        return [];
     }
 
     /**
@@ -231,8 +235,10 @@ class CRM_Resource_DemandCondition_EventTime extends CRM_Resource_BAO_ResourceDe
      */
     public static function compileParameters($data, $prefix = '')
     {
-        // some subclasses don't have to implement this, so no warning here
-        return [];
+        return [
+            [$data[$prefix . '_before_quantity'], $data[$prefix . '_before_unit']],
+            [$data[$prefix . '_after_quantity'], $data[$prefix . '_after_unit']]
+        ];
     }
 
     /**
@@ -246,7 +252,14 @@ class CRM_Resource_DemandCondition_EventTime extends CRM_Resource_BAO_ResourceDe
      */
     public function getCurrentFormValues($prefix = '')
     {
-        return [];
+        $values = [];
+        $params = $this->getParametersParsed();
+        if (!empty($params)) {
+            $values[$prefix . '_before_quantity'] = $params[0][0];
+            $values[$prefix . '_before_unit'] = $params[0][1];
+            $values[$prefix . '_before_quantity'] = $params[1][0];
+            $values[$prefix . '_before_unit'] = $params[1][1];
+        }
+        return $values;
     }
-
 }
