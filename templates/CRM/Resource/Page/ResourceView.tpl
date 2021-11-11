@@ -52,13 +52,15 @@
     {/if}
   </div>
 
-  <h3 class="header-dark resource-view">{ts}Assignments [TODO]{/ts}</h3>
+  <h3 class="header-dark resource-view">{ts}Assignments{/ts}</h3>
   <div class="resource-view resource-view-assignments">
     {if $assignments|count}
       <table class="crm-table resource-view resource-view-unavailabilities">
           {foreach from=$assignments item=assignment}
             <tr id="assignment-{$assignment.id}" class="assignment">
-              <td>Resource Demand {$assignment.resource_demand_id}, Status {$assignment.status}</td>
+              <td>{$assignment.name} @ {$assignment.entity_label}</td>
+              <td>{$assignment.time}</td>
+              <td>{$assignment.status}</td>
               <td class="nowrap">
                     <span>
                       <a class="action-item crm-hover-button" onclick="delete_assignment({$assignment.id});" title="{ts}Unassign{/ts}">{ts}Unassign{/ts}</a>

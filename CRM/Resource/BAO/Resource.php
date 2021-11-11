@@ -70,6 +70,48 @@ class CRM_Resource_BAO_Resource extends CRM_Resource_DAO_Resource
     }
 
     /**
+     * Get all the assigned resources
+     *
+     * @param int|array $assignment_status
+     *    the status of the assignments to be considered
+     *
+     * @return array list of CRM_Resource_BAO_ResourceDemand
+     */
+    public function getAssignedDemands($assignment_status = [CRM_Resource_BAO_ResourceAssignment::STATUS_CONFIRMED])
+    {
+        if (!is_array($assignment_status)) {
+            $assignment_status = [$assignment_status];
+        }
+
+        // make sure they're all integers
+        $assignment_status = array_map('intval', $assignment_status);
+        $assignment_status_list = implode(',', $assignment_status);
+
+        // use a sql query, apiv4 somehow didn't work - see below
+        $query = CRM_Core_DAO::executeQuery("
+            SELECT assignment.resource_demand_id AS demand_id
+            FROM civicrm_resource_assignment assignment
+            WHERE assignment.resource_id = %1
+              AND assignment.status IN (%2);",
+            [
+                1 => [$this->id, 'Integer'],
+                2 => [$assignment_status_list,  'CommaSeparatedIntegers']
+            ]
+        );
+
+        $results = [];
+        foreach ($query->fetchAll() as $resource_demands) {
+            // todo: can we fetch them in one go?
+            $bao = new CRM_Resource_BAO_ResourceDemand();
+            $bao->id = $resource_demands['demand_id'];
+            $bao->find(true);
+            $results[$bao->id] = $bao;
+        }
+
+        return $results;
+    }
+
+    /**
      * Used as in the entityTypes hook als follows:
      *  'links_callback' => ['CRM_Resource_BAO_Resource::add_resource_links']
      *

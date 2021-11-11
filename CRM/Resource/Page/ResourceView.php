@@ -48,10 +48,18 @@ class CRM_Resource_Page_ResourceView extends CRM_Core_Page
         }
 
         // load assignments
-        $this->assignments = \Civi\Api4\ResourceAssignment::get()
-            ->addWhere('resource_id', '=', $this->id)
-            ->execute()
-            ->getArrayCopy();
+        $this->assignments = [];
+        $assigned_demands = $this->resource->getAssignedDemands();
+        foreach ($assigned_demands as $demand) {
+            /** @var  CRM_Resource_BAO_ResourceDemand $demand */
+            $this->assignments[] = [
+                'id' => $demand->id,
+                'name' => $demand->label,
+                'entity_label' => $demand->getEntityLabel(),
+                'time' => $demand->getRenderedTimeframe(),
+                'status' => E::ts("assigned"), // todo
+            ];
+        }
 
         // enrich data
         $this->assign('resource_type_label', CRM_Resource_Types::getType($this->resource->resource_type_id)['label']);

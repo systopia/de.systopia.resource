@@ -348,6 +348,48 @@ class CRM_Resource_BAO_ResourceDemand extends CRM_Resource_DAO_ResourceDemand
     }
 
     /**
+     * Try to get a label of the linked entity
+     *
+     * @return string a label
+     */
+    public function getEntityLabel()
+    {
+        // todo:: symfony hooks?
+        $class_name = CRM_Core_DAO_AllCoreTables::getClassForTable($this->entity_table);
+        /** @var CRM_Core_DAO $dao */
+        $dao = new $class_name();
+        $dao->id = $this->entity_id;
+        $dao->find(true);
+
+        // try to find a label/name/title
+        // @todo CRM_Core_DAO has _labelField but doesn't seem to be accessible
+        foreach (['name', 'display_name', 'title', 'label', 'subject'] as $property) {
+            if (isset($dao->$property)) {
+                return $dao->$property;
+            }
+        }
+
+        // no name found in the property
+        return CRM_Core_DAO_AllCoreTables::getEntityNameForTable($this->entity_table);
+    }
+
+    /**
+     * Get a rendered version of the blocked timeframe
+     *
+     * @return string
+     */
+    public function getRenderedTimeframe()
+    {
+        $timeframes = $this->getResourcesBlockedTimeframes()->getTimeframes(true);
+        if (empty($timeframes)) {
+            return E::ts("forever (no timespan)");
+        } else {
+            // todo: implement a more human-readable version
+            return date("Y-m-d H:i\h", $timeframes[0][0]) . ' - ' .  date("H:i\h", $timeframes[-1][1]);
+        }
+    }
+
+    /**
      * Get a list of BAOs of the resource demands on the specified entity
      *
      * @param integer $entity_id
