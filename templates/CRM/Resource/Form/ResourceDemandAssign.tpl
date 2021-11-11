@@ -49,7 +49,7 @@
           </tbody>
         </table>
       {else}
-        <div class="resource resource-missing">{ts}Sorry, no available resources found for this requirement.{/ts}</div>
+        <div class="resource resource-missing">{ts}Sorry, no more available resources found for this requirement.{/ts}</div>
       {/if}
   </div>
 

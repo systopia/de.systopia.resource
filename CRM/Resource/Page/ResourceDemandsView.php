@@ -73,6 +73,7 @@ class CRM_Resource_Page_ResourceDemandsView extends CRM_Core_Page
             $resource_demand['is_met'] = ($resource_demand_bao->currentlyUnfulfilled() <= 0);
             $resource_demand['type_label'] = CRM_Resource_Types::getType($resource_demand['resource_type_id'])['label'];
             $resource_demand['assign_link'] = CRM_Utils_System::url('civicrm/resource/demand/assign', "reset=1&resource_demand_id={$resource_demand_bao->id}");
+            $resource_demand['conditions_link'] = CRM_Utils_System::url('civicrm/resource/demand/conditions', "reset=1&resource_demand_id={$resource_demand_bao->id}");
             $resource_demand['edit_link'] = CRM_Utils_System::url('civicrm/resource/demand/edit', "reset=1&id={$resource_demand_bao->id}");
             $resource_demand['assignment_count'] = $resource_demand_bao->getAssignmentCount(CRM_Resource_BAO_ResourceAssignment::STATUS_CONFIRMED);
             $resource_demand['condition_count'] = $resource_demand_bao->getConditionCount();

@@ -12,14 +12,20 @@
 | written permission from the original author(s).        |
 +--------------------------------------------------------*/
 
-div.resource-view {
-  margin-bottom: 25px;
-}
+cj(document).ready(function() {
 
-tr.unavailability-active-now {
-  background-color: #ff9696;
-  -moz-border-radius: 20px;
-  -webkit-border-radius: 20px;
-  -khtml-border-radius: 20px;
-  border-radius: 20px;
-}
+  /**
+   * Will only show the form fields relevant for the selected
+   *  condition type
+   */
+  function only_show_relevant_fields()
+  {
+    let current_type = cj('#condition_type').val();
+    cj("div.condition-form-field").hide(100);
+    cj("[class*=" + current_type + "]").show(100);
+  }
+
+  // make sure it's triggered
+  only_show_relevant_fields();
+  cj('#condition_type').change(only_show_relevant_fields);
+});

@@ -42,6 +42,31 @@ class CRM_Resource_BAO_ResourceDemand extends CRM_Resource_DAO_ResourceDemand
         return $instance;
     }
 
+
+    /**
+     * Get the resource BAO
+     *
+     * @param integer $id
+     *   the resource ID
+     *
+     * @return CRM_Resource_BAO_ResourceDemand
+     *   the resource
+     */
+    public static function getInstance($id, $cached = true)
+    {
+        $id = (int) $id;
+        static $resource_demands = [];
+        if (!isset($resource_demands[$id]) || !$cached) {
+            $resource_demand = new CRM_Resource_BAO_ResourceDemand();
+            $resource_demand->id = $id;
+            if (!$resource_demand->find(true)) {
+                throw new CRM_Core_Exception("CRM_Resource_BAO_ResourceDemand [{$id}] not found.");
+            }
+            $resource_demands[$id] = $resource_demand;
+        }
+        return $resource_demands[$id];
+    }
+
     /**
      * Check if all given conditions are currently met by the given resource
      *
@@ -320,6 +345,48 @@ class CRM_Resource_BAO_ResourceDemand extends CRM_Resource_DAO_ResourceDemand
             }
         }
         return $demand_conditions[$this->id];
+    }
+
+    /**
+     * Try to get a label of the linked entity
+     *
+     * @return string a label
+     */
+    public function getEntityLabel()
+    {
+        // todo:: symfony hooks?
+        $class_name = CRM_Core_DAO_AllCoreTables::getClassForTable($this->entity_table);
+        /** @var CRM_Core_DAO $dao */
+        $dao = new $class_name();
+        $dao->id = $this->entity_id;
+        $dao->find(true);
+
+        // try to find a label/name/title
+        // @todo CRM_Core_DAO has _labelField but doesn't seem to be accessible
+        foreach (['name', 'display_name', 'title', 'label', 'subject'] as $property) {
+            if (isset($dao->$property)) {
+                return $dao->$property;
+            }
+        }
+
+        // no name found in the property
+        return CRM_Core_DAO_AllCoreTables::getEntityNameForTable($this->entity_table);
+    }
+
+    /**
+     * Get a rendered version of the blocked timeframe
+     *
+     * @return string
+     */
+    public function getRenderedTimeframe()
+    {
+        $timeframes = $this->getResourcesBlockedTimeframes()->getTimeframes(true);
+        if (empty($timeframes)) {
+            return E::ts("forever (no timespan)");
+        } else {
+            // todo: implement a more human-readable version
+            return date("Y-m-d H:i\h", $timeframes[0][0]) . ' - ' .  date("H:i\h", $timeframes[-1][1]);
+        }
     }
 
     /**

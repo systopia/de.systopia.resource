@@ -1,4 +1,4 @@
-/*-------------------------------------------------------+
+{*-------------------------------------------------------+
 | SYSTOPIA Resource Framework                            |
 | Copyright (C) 2021 SYSTOPIA                            |
 | Author: B. Endres (endres@systopia.de)                 |
@@ -10,16 +10,21 @@
 | at www.gnu.org/licenses/agpl.html. Removal of this     |
 | copyright header is strictly prohibited without        |
 | written permission from the original author(s).        |
-+--------------------------------------------------------*/
++-------------------------------------------------------*}
 
-div.resource-view {
-  margin-bottom: 25px;
-}
+{crmScope extensionKey='de.systopia.resource'}
 
-tr.unavailability-active-now {
-  background-color: #ff9696;
-  -moz-border-radius: 20px;
-  -webkit-border-radius: 20px;
-  -khtml-border-radius: 20px;
-  border-radius: 20px;
-}
+  <h3>{ts 1=$current_label}Editing "%1"{/ts}</h3>
+
+{foreach from=$type_fields item=type_field}
+  <div class="crm-section unavailability-form-field {$type_field}">
+    <div class="label">{$form.$type_field.label}</div>
+    <div class="content">{$form.$type_field.html}</div>
+    <div class="clear"></div>
+  </div>
+{/foreach}
+
+  <div class="crm-submit-buttons">
+      {include file="CRM/common/formButtons.tpl" location="bottom"}
+  </div>
+{/crmScope}
