@@ -78,9 +78,9 @@ class CRM_Resource_BAO_ResourceUnavailability extends CRM_Resource_DAO_ResourceU
             }
 
             // check if this assignment is valid during the given time frame
-            // todo: implement!
-            $implementation = $assignment_search->getImplementation();
-            if ($implementation->isActive($from_timestamp, $to_timestamp)) {
+            $demand = CRM_Resource_BAO_ResourceDemand::getInstance($assignment_search->resource_demand_id);
+            $blocked_timeframes = $demand->getResourcesBlockedTimeframes();
+            if ($blocked_timeframes->coversTimestamp($from_timestamp) || $blocked_timeframes->coversTimestamp($to_timestamp)) {
                 return false;
             }
         }

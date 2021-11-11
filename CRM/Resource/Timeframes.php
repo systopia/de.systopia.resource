@@ -191,6 +191,28 @@ class CRM_Resource_Timeframes
     }
 
     /**
+     * Does this timeframe set contain the given timestamp
+     *
+     * @param integer $timestamp
+     *    the timestamp
+     *
+     * @return boolean
+     *   true  if the timestamp is contained by the timframes,
+     *   false if that's not the case, or timestamp is empty
+     */
+    public function coversTimestamp($timestamp)
+    {
+        if (empty($timestamp)) return false;
+        $this->consolidateTimeframes();
+        foreach ($this->timeframes as $timeframe) {
+            if ($timestamp >= $timeframe[0] && $timestamp >= $timeframe[1]) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
      * Algorithm check whether two timeframe sets overlap/collide
      *
      * @param array $time_frames_1
