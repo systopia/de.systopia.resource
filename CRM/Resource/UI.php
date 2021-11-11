@@ -116,4 +116,17 @@ class CRM_Resource_UI
             ];
         }
     }
+
+    /**
+     * Inject eck resource tab
+     *
+     * @param array $tabs
+     *    civicrm_tabset structure
+     * @param array $context
+     *    context information
+     */
+    public static function addEckResourceTab(&$tabs, $context)
+    {
+        // todo: @jens
+    }
 }

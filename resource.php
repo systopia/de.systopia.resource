@@ -200,6 +200,10 @@ function resource_civicrm_tabset($tabsetName, &$tabs, $context)
             CRM_Resource_UI::addEventResourceDemandTab($tabs, $context);
             return;
 
+        case 'civicrm/eck/entity':
+            CRM_Resource_UI::addEckResourceTab($tabs, $context);
+            return;
+
         default:
             return;
     }
