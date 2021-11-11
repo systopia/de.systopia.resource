@@ -27,22 +27,29 @@ cj(document).ready(function() {
  * @param demand_id
  */
 function delete_resource_demand_condition(demand_id) {
-  CRM.api3('ResourceDemandCondition', 'delete', {id:demand_id})
-    .then(function() {
-      // refresh popups
-      cj("div.resource-demand-view-info")
-        .closest("div.crm-ajax-container")
-        .crmSnippet('refresh');
+  let ts = CRM.ts('de.systopia.resource');
+  CRM.confirm({
+    title: ts("Confirm Deletion"),
+    message: ts("Do you really want to delete this condition?"),
+  }).on('crmConfirm:yes', function() {
+    CRM.api3('ResourceDemandCondition', 'delete', {id:demand_id})
+      .then(function() {
+        // refresh popups
+        cj("div.resource-demand-view-info")
+          .closest("div.crm-ajax-container")
+          .crmSnippet('refresh');
 
-      // refresh tab (if exists)
-      let tab_content_id = cj("#tab_resourcedemands").attr('aria-controls');
-      if (tab_content_id) {
-        cj("#" + tab_content_id).crmSnippet('refresh');
-        let ts = CRM.ts('de.systopia.resource');
-        CRM.alert(ts("Condition deleted"), ts("Deleted"), "info");
-      } else {
-        // reload the page
-        window.location.reload(false);
-      }
-    });
+        // refresh tab (if exists)
+        let tab_content_id = cj("#tab_resourcedemands").attr('aria-controls');
+        if (tab_content_id) {
+          cj("#" + tab_content_id).crmSnippet('refresh');
+          let ts = CRM.ts('de.systopia.resource');
+          CRM.alert(ts("Condition deleted"), ts("Deleted"), "info");
+        } else {
+          // reload the page
+          window.location.reload(false);
+        }
+      });
+  });
+
 }

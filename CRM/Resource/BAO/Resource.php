@@ -75,7 +75,7 @@ class CRM_Resource_BAO_Resource extends CRM_Resource_DAO_Resource
      * @param int|array $assignment_status
      *    the status of the assignments to be considered
      *
-     * @return array list of CRM_Resource_BAO_ResourceDemand
+     * @return array assignment_id => CRM_Resource_BAO_ResourceDemand
      */
     public function getAssignedDemands($assignment_status = [CRM_Resource_BAO_ResourceAssignment::STATUS_CONFIRMED])
     {
@@ -89,7 +89,9 @@ class CRM_Resource_BAO_Resource extends CRM_Resource_DAO_Resource
 
         // use a sql query, apiv4 somehow didn't work - see below
         $query = CRM_Core_DAO::executeQuery("
-            SELECT assignment.resource_demand_id AS demand_id
+            SELECT 
+                   assignment.resource_demand_id AS demand_id,
+                   assignment.id                 AS assignment_id
             FROM civicrm_resource_assignment assignment
             WHERE assignment.resource_id = %1
               AND assignment.status IN (%2);",
@@ -105,7 +107,8 @@ class CRM_Resource_BAO_Resource extends CRM_Resource_DAO_Resource
             $bao = new CRM_Resource_BAO_ResourceDemand();
             $bao->id = $resource_demands['demand_id'];
             $bao->find(true);
-            $results[$bao->id] = $bao;
+            // store
+            $results[$resource_demands['assignment_id']] = $bao;
         }
 
         return $results;

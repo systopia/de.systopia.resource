@@ -57,13 +57,13 @@
     {if $assignments|count}
       <table class="crm-table resource-view resource-view-unavailabilities">
           {foreach from=$assignments item=assignment}
-            <tr id="assignment-{$assignment.id}" class="assignment">
+            <tr id="assignment-{$assignment_id}" class="assignment">
               <td>{$assignment.name} @ {$assignment.entity_label}</td>
               <td>{$assignment.time}</td>
               <td>{$assignment.status}</td>
               <td class="nowrap">
                     <span>
-                      <a class="action-item crm-hover-button" onclick="delete_assignment({$assignment.id});" title="{ts}Unassign{/ts}">{ts}Unassign{/ts}</a>
+                      <a class="action-item crm-hover-button" onclick="delete_assignment({$assignment.assignment_id});" title="{ts}Unassign{/ts}">{ts}Unassign{/ts}</a>
                     </span>
               </td>
             </tr>

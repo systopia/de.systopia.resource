@@ -18,16 +18,22 @@
  * @param unavailability_id
  */
 function delete_unavailability(unavailability_id) {
-  CRM.api3('ResourceUnavailability', 'delete', {id:unavailability_id})
-    .then(function() {
-      // try refresh: tab
-      let tab_content_id = cj("#tab_resource").attr('aria-controls');
-      if (tab_content_id) {
-        cj("#" + tab_content_id).crmSnippet('refresh');
-        let ts = CRM.ts('de.systopia.resource');
-        CRM.alert(ts("Resource Unavailability deleted"), ts("Deleted"), "info");
-      }
-    });
+  let ts = CRM.ts('de.systopia.resource');
+  CRM.confirm({
+    title: ts("Confirm Deletion"),
+    message: ts("Do you really want to delete this availability restriction?"),
+  }).on('crmConfirm:yes', function() {
+    CRM.api3('ResourceUnavailability', 'delete', {id: unavailability_id})
+      .then(function () {
+        // try refresh: tab
+        let tab_content_id = cj("#tab_resource").attr('aria-controls');
+        if (tab_content_id) {
+          cj("#" + tab_content_id).crmSnippet('refresh');
+          let ts = CRM.ts('de.systopia.resource');
+          CRM.alert(ts("Resource Unavailability deleted"), ts("Deleted"), "info");
+        }
+      });
+  });
 }
 
 /**
@@ -36,14 +42,19 @@ function delete_unavailability(unavailability_id) {
  * @param assignment_id
  */
 function delete_assignment(assignment_id) {
-  CRM.api3('ResourceAssignment', 'delete', {id:assignment_id})
-    .then(function() {
-      // try refresh: tab
-      let tab_content_id = cj("#tab_resource").attr('aria-controls');
-      if (tab_content_id) {
-        cj("#" + tab_content_id).crmSnippet('refresh');
-        let ts = CRM.ts('de.systopia.resource');
-        CRM.alert(ts("Resource Assignment Deleted"), ts("Unassigned"), "info");
-      }
-    });
+  CRM.confirm({
+    title: ts("Delete Assignment"),
+    message: ts("Do you really want to un-assign this resource?"),
+  }).on('crmConfirm:yes', function() {
+    CRM.api3('ResourceAssignment', 'delete', {id:assignment_id})
+      .then(function() {
+        // try refresh: tab
+        let tab_content_id = cj("#tab_resource").attr('aria-controls');
+        if (tab_content_id) {
+          cj("#" + tab_content_id).crmSnippet('refresh');
+          let ts = CRM.ts('de.systopia.resource');
+          CRM.alert(ts("Resource Assignment Removed"), ts("Unassigned"), "info");
+        }
+      });
+  });
 }
