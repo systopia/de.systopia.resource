@@ -350,9 +350,9 @@ class CRM_Resource_BAO_ResourceDemand extends CRM_Resource_DAO_ResourceDemand
     /**
      * Try to get a label of the linked entity
      *
-     * @return string a label
+     * @return CRM_Core_DAO an entity
      */
-    public function getEntityLabel()
+    public function getLinkedEntity()
     {
         // todo:: symfony hooks?
         $class_name = CRM_Core_DAO_AllCoreTables::getClassForTable($this->entity_table);
@@ -360,6 +360,17 @@ class CRM_Resource_BAO_ResourceDemand extends CRM_Resource_DAO_ResourceDemand
         $dao = new $class_name();
         $dao->id = $this->entity_id;
         $dao->find(true);
+        return $dao;
+    }
+
+    /**
+     * Try to get a label of the linked entity
+     *
+     * @return string a label
+     */
+    public function getEntityLabel()
+    {
+        $dao = $this->getLinkedEntity();
 
         // try to find a label/name/title
         // @todo CRM_Core_DAO has _labelField but doesn't seem to be accessible

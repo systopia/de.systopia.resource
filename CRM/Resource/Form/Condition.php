@@ -43,7 +43,7 @@ class CRM_Resource_Form_Condition extends CRM_Core_Form
             $condition_type2label[$condition_type] = call_user_func([$condition_type, 'getTypeLabel']);
 
             // add the fields
-            $new_fields = call_user_func([$condition_type, 'addFormFields'], $this, $condition_type . '_');
+            $new_fields = call_user_func([$condition_type, 'addFormFields'], $this, $condition_type . '_', $this->resource_demand);
             $type_fields = array_merge($type_fields, $new_fields);
         }
         $this->assign('type_fields', $type_fields);

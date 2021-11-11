@@ -141,7 +141,7 @@ class CRM_Resource_DemandCondition_AbsoluteTime extends CRM_Resource_BAO_Resourc
      * @return array
      *    list of field keys (incl. prefix)
      */
-    public static function addFormFields($form, $prefix = '')
+    public static function addFormFields($form, $prefix = '', $demand_bao = null)
     {
         // add date
         $form->add(

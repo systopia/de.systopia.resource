@@ -195,7 +195,7 @@ class CRM_Resource_DemandCondition_EventTime extends CRM_Resource_BAO_ResourceDe
      * @return array
      *    list of field keys (incl. prefix)
      */
-    public static function addFormFields($form, $prefix = '')
+    public static function addFormFields($form, $prefix = '', $demand_bao = null)
     {
         $units = [
             'minute' => E::ts("minute(s)"),
