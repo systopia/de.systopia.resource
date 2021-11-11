@@ -50,9 +50,10 @@ class CRM_Resource_Page_ResourceView extends CRM_Core_Page
         // load assignments
         $this->assignments = [];
         $assigned_demands = $this->resource->getAssignedDemands();
-        foreach ($assigned_demands as $demand) {
+        foreach ($assigned_demands as $assignment_id => $demand) {
             /** @var  CRM_Resource_BAO_ResourceDemand $demand */
             $this->assignments[] = [
+                'assignment_id' => $assignment_id,
                 'id' => $demand->id,
                 'name' => $demand->label,
                 'entity_label' => $demand->getEntityLabel(),

@@ -32,7 +32,12 @@ cj(document).ready(function() {
  * @param demand_id
  */
 function delete_resource_demand(demand_id) {
-  CRM.api3('ResourceDemand', 'delete', {id:demand_id})
+  let ts = CRM.ts('de.systopia.resource');
+  CRM.confirm({
+    title: ts("Confirm Deletion"),
+    message: ts("Do you really want to delete this resource demand, including all conditions?"),
+  }).on('crmConfirm:yes', function() {
+    CRM.api3('ResourceDemand', 'delete', {id:demand_id})
     .then(function() {
       // try refresh: tab
       let tab_content_id = cj("#tab_resourcedemands").attr('aria-controls');
@@ -45,4 +50,5 @@ function delete_resource_demand(demand_id) {
         window.location.reload(false);
       }
     });
+  });
 }
