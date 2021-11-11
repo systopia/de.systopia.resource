@@ -27,7 +27,7 @@
               </tr>
             </thead>
             {foreach from=$resource_demand_data item=resource_demand}
-              <tr id="resource_demand-{$resource_demand.id}" class="resource_demand {if $resource_demand.active_now}resource_demand-active-now{/if}">
+              <tr id="resource_demand-{$resource_demand.id}" class="resource_demand {if $resource_demand.is_met}resource_demand-met{/if}">
                   <td>{$resource_demand.label}</td>
                   <td>{$resource_demand.type_label} ({$resource_demand.condition_count})</td>
                   <td>{$resource_demand.assignment_count} / {$resource_demand.count}</td>

@@ -16,6 +16,10 @@ div.resource-view {
   margin-bottom: 25px;
 }
 
-tr.unavailability-active-now {
-  background-color: palevioletred;
+tr.resource_demand-met {
+  background-color: #57ff9a;
+  -moz-border-radius: 20px;
+  -webkit-border-radius: 20px;
+  -khtml-border-radius: 20px;
+  border-radius: 20px;
 }
