@@ -20,7 +20,7 @@
   <compatibility>
     <ver>5.0</ver>
   </compatibility>
-  <comments>This module is not offering a lot by itself, and is most likely used as a requirement for other extensions.</comments>
+  <comments></comments>
   <classloader>
     <psr4 prefix="Civi\" path="Civi"/>
   </classloader>
