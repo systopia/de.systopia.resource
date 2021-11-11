@@ -21,6 +21,9 @@ class CRM_Resource_BAO_ResourceDemandCondition extends CRM_Resource_DAO_Resource
     /** @var array */
     private $json_parameters = null;
 
+    /** @var CRM_Resource_BAO_ResourceDemand entity */
+    protected $demand = null;
+
     /**
      * Get a list of all condition types (class name)
      *
@@ -57,6 +60,24 @@ class CRM_Resource_BAO_ResourceDemandCondition extends CRM_Resource_DAO_Resource
         $implementation->setFrom($this);
         $implementation->id = $this->id;
         return $implementation;
+    }
+
+    /**
+     * Get the attached resource demand
+     *
+     * @param bool $cached
+     *   should this be cached
+     *
+     * @return CRM_Resource_BAO_ResourceDemand
+     */
+    public function getResourceDemand($cached = true)
+    {
+        if (empty($this->demand) || !$cached) {
+            $this->demand = new CRM_Resource_BAO_ResourceDemand();
+            $this->demand->id = $this->resource_demand_id;
+            $this->demand->find(true);
+        }
+        return $this->demand;
     }
 
     /**
@@ -188,9 +209,14 @@ class CRM_Resource_BAO_ResourceDemandCondition extends CRM_Resource_DAO_Resource
      *
      * @return array
      *    list of field keys (incl. prefix)
+     *
+     * @param $demand_bao CRM_Resource_BAO_ResourceDemand
+     *   the resource demand this condition belongs to
+     *
+     * @return array
+     *    list of field keys (incl. prefix)
      */
-    public static function addFormFields($form, $prefix = '')
-    {
+    public static function addFormFields($form, $prefix = '', $demand_bao = null) {
         // some subclasses don't have to implement this, so no warning here
         return [];
     }

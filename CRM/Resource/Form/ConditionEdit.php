@@ -41,7 +41,7 @@ class CRM_Resource_Form_ConditionEdit extends CRM_Core_Form
 
         // get the labels
         $this->assign('current_label', $this->condition->getLabel());
-        $type_fields = call_user_func([$this->condition->class_name, 'addFormFields'], $this);
+        $type_fields = call_user_func([$this->condition->class_name, 'addFormFields'], $this, '', $this->demand);
         $this->assign('type_fields', $type_fields);
         $this->setDefaults($this->condition->getCurrentFormValues());
 
