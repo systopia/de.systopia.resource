@@ -13,17 +13,12 @@
 +--------------------------------------------------------*/
 
 cj(document).ready(function() {
-  let tab_content_id = cj("#tab_resourcedemands").attr('aria-controls');
-  if (tab_content_id) {
-    cj(document).on('crmPopupFormSuccess', function() {
-      cj("#" + tab_content_id).crmSnippet('refresh');
-    });
-  } else {
-    cj(document).on('crmPopupFormSuccess', function() {
-      // reload the page
-      window.location.reload(false);
-    });
-  }
+  // refresh on pop close
+  cj(document).on('crmPopupFormSuccess', function() {
+    cj("div.resource-demand-view-info")
+      .closest("div.crm-ajax-container")
+      .crmSnippet('refresh');
+  });
 });
 
 /**
@@ -34,7 +29,12 @@ cj(document).ready(function() {
 function delete_resource_demand_condition(demand_id) {
   CRM.api3('ResourceDemandCondition', 'delete', {id:demand_id})
     .then(function() {
-      // try refresh: tab
+      // refresh popups
+      cj("div.resource-demand-view-info")
+        .closest("div.crm-ajax-container")
+        .crmSnippet('refresh');
+
+      // refresh tab (if exists)
       let tab_content_id = cj("#tab_resourcedemands").attr('aria-controls');
       if (tab_content_id) {
         cj("#" + tab_content_id).crmSnippet('refresh');

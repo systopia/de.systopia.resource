@@ -26,9 +26,6 @@ class CRM_Resource_Form_UnavailabilityEdit extends CRM_Core_Form
     /** @var CRM_Resource_BAO_ResourceUnavailability */
     protected $unavailability;
 
-    /** @var array list of unavailability_types */
-    protected $unavailability_types;
-
     public function buildQuickForm()
     {
         $this->unavailability_id = CRM_Utils_Request::retrieve('id', 'Integer', $this, true);

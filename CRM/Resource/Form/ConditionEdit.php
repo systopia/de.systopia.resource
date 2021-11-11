@@ -7,72 +7,75 @@ use CRM_Resource_ExtensionUtil as E;
  *
  * @see https://docs.civicrm.org/dev/en/latest/framework/quickform/
  */
-class CRM_Resource_Form_ConditionEdit extends CRM_Core_Form {
-  public function buildQuickForm() {
+class CRM_Resource_Form_ConditionEdit extends CRM_Core_Form
+{
+    /** @var integer condition id */
+    protected $condition_id = null;
 
-    // add form elements
-    $this->add(
-      'select', // field type
-      'favorite_color', // field name
-      'Favorite Color', // field label
-      $this->getColorOptions(), // list of options
-      TRUE // is required
-    );
-    $this->addButtons(array(
-      array(
-        'type' => 'submit',
-        'name' => E::ts('Submit'),
-        'isDefault' => TRUE,
-      ),
-    ));
+    /** @var CRM_Resource_BAO_ResourceDemandCondition */
+    protected $condition;
 
-    // export form elements
-    $this->assign('elementNames', $this->getRenderableElementNames());
-    parent::buildQuickForm();
-  }
+    /** @var CRM_Resource_BAO_ResourceDemand */
+    protected $demand;
 
-  public function postProcess() {
-    $values = $this->exportValues();
-    $options = $this->getColorOptions();
-    CRM_Core_Session::setStatus(E::ts('You picked color "%1"', array(
-      1 => $options[$values['favorite_color']],
-    )));
-    parent::postProcess();
-  }
+    public function buildQuickForm()
+    {
+        $this->condition_id = CRM_Utils_Request::retrieve('id', 'Integer', $this, true);
 
-  public function getColorOptions() {
-    $options = array(
-      '' => E::ts('- select -'),
-      '#f00' => E::ts('Red'),
-      '#0f0' => E::ts('Green'),
-      '#00f' => E::ts('Blue'),
-      '#f0f' => E::ts('Purple'),
-    );
-    foreach (array('1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e') as $f) {
-      $options["#{$f}{$f}{$f}"] = E::ts('Grey (%1)', array(1 => $f));
+        // load condition
+        /** @var CRM_Resource_BAO_ResourceDemandCondition  $bao */
+        $bao = CRM_Resource_BAO_ResourceDemandCondition::findById($this->condition_id);
+        if (empty($bao)) {
+            throw new Exception("Unavailability [$this->condition_id] not found.");
+        }
+        $this->condition = $bao->getImplementation();
+
+        // load demand
+        $this->demand = CRM_Resource_BAO_ResourceDemand::findById($this->condition->resource_demand_id);
+
+        // get the condition class
+        $condition_types = CRM_Resource_BAO_ResourceDemandCondition::getAllConditionTypes($this->demand->entity_table);
+        if (!in_array($this->condition->class_name, $condition_types)) {
+            throw new Exception("Undefined condition type: {$this->condition->class_name}");
+        }
+
+        // get the labels
+        $this->assign('current_label', $this->condition->getLabel());
+        $type_fields = call_user_func([$this->condition->class_name, 'addFormFields'], $this);
+        $this->assign('type_fields', $type_fields);
+        $this->setDefaults($this->condition->getCurrentFormValues());
+
+        $this->addButtons([
+              [
+                  'type' => 'submit',
+                  'name' => E::ts('Update'),
+                  'isDefault' => true,
+              ],
+          ]);
+
+        parent::buildQuickForm();
     }
-    return $options;
-  }
 
-  /**
-   * Get the fields/elements defined in this form.
-   *
-   * @return array (string)
-   */
-  public function getRenderableElementNames() {
-    // The _elements list includes some items which should not be
-    // auto-rendered in the loop -- such as "qfKey" and "buttons".  These
-    // items don't have labels.  We'll identify renderable by filtering on
-    // the 'label'.
-    $elementNames = array();
-    foreach ($this->_elements as $element) {
-      /** @var HTML_QuickForm_Element $element */
-      $label = $element->getLabel();
-      if (!empty($label)) {
-        $elementNames[] = $element->getName();
-      }
+    /**
+     * Validate the user defined fields
+     *
+     * @return bool
+     */
+    public function validate()
+    {
+        $errors = call_user_func([$this->condition->class_name, 'validateFormSubmission'], $this->_submitValues);
+        foreach ($errors as $field_key => $error) {
+            $this->_errors[$field_key] = $error;
+        }
+        return (0 == count($this->_errors));
     }
-    return $elementNames;
-  }
+
+    public function postProcess()
+    {
+        $values = $this->exportValues();
+        $this->condition->parameters = json_encode(call_user_func([$this->condition->class_name, 'compileParameters'], $values));
+        $this->condition->save();
+        parent::postProcess();
+    }
 
 }

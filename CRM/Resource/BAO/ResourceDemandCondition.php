@@ -54,6 +54,7 @@ class CRM_Resource_BAO_ResourceDemandCondition extends CRM_Resource_DAO_Resource
     {
         $implementation = new $this->class_name();
         $implementation->setFrom($this);
+        $implementation->id = $this->id;
         return $implementation;
     }
 

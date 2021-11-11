@@ -280,8 +280,8 @@ class CRM_Resource_DemandCondition_EventTime extends CRM_Resource_BAO_ResourceDe
         if (!empty($params)) {
             $values[$prefix . '_before_quantity'] = $params[0][0];
             $values[$prefix . '_before_unit'] = $params[0][1];
-            $values[$prefix . '_before_quantity'] = $params[1][0];
-            $values[$prefix . '_before_unit'] = $params[1][1];
+            $values[$prefix . '_after_quantity'] = $params[1][0];
+            $values[$prefix . '_after_unit'] = $params[1][1];
         }
         return $values;
     }

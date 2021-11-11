@@ -52,6 +52,7 @@ class CRM_Resource_Page_ResourceDemandConditions extends CRM_Core_Page
         $condition_list = [];
         foreach ($conditions as $condition) {
             $condition_data = $condition->toArray();
+            $condition_data['id'] = $condition->id;
             $condition_data['display_name'] = $condition->getLabel();
             $condition_data['icon'] = $condition->getIcon();
             $condition_data['edit_link'] = CRM_Utils_System::url(
