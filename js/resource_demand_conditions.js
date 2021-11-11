@@ -14,11 +14,15 @@
 
 cj(document).ready(function() {
   // refresh on pop close
-  cj(document).on('crmPopupFormSuccess', function() {
-    cj("div.resource-demand-view-info")
-      .closest("div.crm-ajax-container")
-      .crmSnippet('refresh');
-  });
+  if (cj(document).attr('injected_resource_demand_conditions')) {
+    cj(document).on('crmPopupFormSuccess', function() {
+      cj("div.resource-demand-view-info")
+        .closest("div.crm-ajax-container")
+        .crmSnippet('refresh');
+    });
+  }
+  // mark as injected
+  cj(document).attr('injected_resource_demand_conditions', true);
 });
 
 /**
