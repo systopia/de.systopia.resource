@@ -176,7 +176,7 @@ class CRM_Resource_BAO_Resource extends CRM_Resource_DAO_Resource
     /**
      * Get the linked entity
      *
-     * @return CRM_Core_DAO the linked entity
+     * @return array the linked entity
      */
     public function getEntity($cached = true)
     {
