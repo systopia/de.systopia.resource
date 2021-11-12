@@ -28,7 +28,10 @@
             </thead>
             {foreach from=$resource_demand_data item=resource_demand}
               <tr id="resource_demand-{$resource_demand.id}" class="resource_demand {if $resource_demand.is_met}resource_demand-met{/if}">
-                  <td>{$resource_demand.label}</td>
+                  <td>
+                      {$resource_demand.label}
+                      {if $resource_demand.is_eternal}&nbsp;<span title="{$eternal_warning}" class="resource_demand resource_demand-infinite">&#9854;</span>{/if}
+                  </td>
                   <td>{$resource_demand.type_label}</td>
                   <td>{$resource_demand.assignment_count} / {$resource_demand.count}</td>
                   <td>{$resource_demand.fulfilled_count} / {$resource_demand.count}</td>
