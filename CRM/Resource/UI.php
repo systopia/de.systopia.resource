@@ -85,6 +85,7 @@ class CRM_Resource_UI
                     'valid'   => 0,
                     'active'  => 1,
                     'current' => false,
+                    'class' => 'ajaxForm',
                 ];
             }
         }

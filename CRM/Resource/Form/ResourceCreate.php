@@ -94,6 +94,10 @@ class CRM_Resource_Form_ResourceCreate extends CRM_Core_Form
             'entity_table' => $this->entity_table,
             'label' => $values['resource_name'],
         ]);
+        if (CRM_Core_Resources::isAjaxMode()) {
+            $resourceBao = CRM_Resource_BAO_Resource::getInstance($resource['id']);
+            $this->ajaxResponse['updateTabs']['#tab_resource'] = count($resourceBao->getAssignedDemands());
+        }
 
         // reload the page
         CRM_Utils_System::redirect(CRM_Core_Session::singleton()->popUserContext());
