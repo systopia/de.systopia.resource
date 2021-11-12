@@ -78,12 +78,14 @@ class CRM_Resource_Page_ResourceDemandsView extends CRM_Core_Page
             $resource_demand['assignment_count'] = $resource_demand_bao->getAssignmentCount(CRM_Resource_BAO_ResourceAssignment::STATUS_CONFIRMED);
             $resource_demand['condition_count'] = $resource_demand_bao->getConditionCount();
             $resource_demand['fulfilled_count'] = $resource_demand_bao->getFulfilledCount();
+            $resource_demand['is_eternal'] = $resource_demand_bao->getResourcesBlockedTimeframes()->isEmpty();
             $demands_met_count += $resource_demand['is_met'] ? 1 : 0;
             $resource_demand_list[$resource_demand_bao->id] = $resource_demand;
         }
         $this->assign('resource_demand_data',$resource_demand_list);
         $this->assign('demand_count', count($resource_demand_list));
         $this->assign('demands_met_count', $demands_met_count);
+        $this->assign('eternal_warning', E::ts("This demand has no time restrictions, so any assigned resource will be blocked for all other demands."));
 
         // add links
         $this->assign('create_resource_requirement_link',

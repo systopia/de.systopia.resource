@@ -23,3 +23,9 @@ tr.resource_demand-met {
   -khtml-border-radius: 20px;
   border-radius: 20px;
 }
+
+span.resource_demand-infinite {
+  color: red;
+  font-weight: bolder;
+  font-size: large;
+}
