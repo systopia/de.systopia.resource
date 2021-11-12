@@ -70,6 +70,54 @@ class CRM_Resource_BAO_Resource extends CRM_Resource_DAO_Resource
     }
 
     /**
+     * Get a number of candidates potentially matching this resource demand
+     *
+     * @param $count integer maximal number of resources
+     *
+     * @return array list of CRM_Resource_BAO_Resource
+     */
+    public function getDemandCandidates($count = null)
+    {
+        // run a query to simply find resources matching the type, and then iterate and test
+        // todo: optimise, this is a quick hack
+        // fixme: this should eventually be replaced by an elaborate, dynamically generated sql query
+        $demand_candidates = [];
+
+        // get already assigned resources
+        $assignments = $this->getAssignedDemands();
+        $assigned_demands = [];
+        foreach ($assignments as $assignment) {
+            $assigned_demands[$assignment->id] = true;
+        }
+
+        // build resource search query
+        $resource_demand = new CRM_Resource_BAO_ResourceDemand();
+        $resource_demand->resource_type_id = $this->resource_type_id;
+        $resource_demand->_query['order_by'] = "ORDER BY entity_id DESC";
+//        $resource_demand->_query['order_by'] = "ORDER BY RAND()";
+        $resource_demand->find();
+
+        while ($resource_demand->fetch()) {
+            // check if it's already assigned
+            if (isset($assigned_demands[$resource_demand->id])) {
+                continue; // already assigned
+            }
+            if ($resource_demand->isFulfilledWithResource($this)) {
+                $candidate = new CRM_Resource_BAO_ResourceDemand();
+                $candidate->setFrom($resource_demand);
+                $candidate->id = $resource_demand->id;
+                $demand_candidates[] = $candidate;
+                if ($count && count($demand_candidates) >= $count) {
+                    break;
+                }
+            }
+        }
+        $resource_demand->free();
+        return $demand_candidates;
+    }
+
+
+    /**
      * Get all the assigned resources
      *
      * @param int|array $assignment_status
