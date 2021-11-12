@@ -14,7 +14,7 @@
 
 cj(document).ready(function() {
   // refresh on pop close
-  cj(document).on('crmPopupFormSuccess', function() {
+  cj(document).one('crmPopupFormSuccess', function() {
     cj("div.resource-demand-view-info")
       .closest("div.crm-ajax-container")
       .crmSnippet('refresh');
@@ -31,7 +31,7 @@ function delete_resource_demand_condition(demand_id) {
   CRM.confirm({
     title: ts("Confirm Deletion"),
     message: ts("Do you really want to delete this condition?"),
-  }).on('crmConfirm:yes', function() {
+  }).one('crmConfirm:yes', function() {
     CRM.api3('ResourceDemandCondition', 'delete', {id:demand_id})
       .then(function() {
         // refresh popups

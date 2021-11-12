@@ -15,11 +15,11 @@
 cj(document).ready(function() {
   let tab_content_id = cj("#tab_resourcedemands").attr('aria-controls');
   if (tab_content_id) {
-    cj(document).on('crmPopupFormSuccess', function() {
+    cj(document).one('crmPopupFormSuccess.resource-demand-view', function() {
       cj("#" + tab_content_id).crmSnippet('refresh');
     });
   } else {
-    cj(document).on('crmPopupFormSuccess', function() {
+    cj(document).one('crmPopupFormSuccess.resource-demand-view', function() {
       // reload the page
       window.location.reload(false);
     });
@@ -36,7 +36,7 @@ function delete_resource_demand(demand_id) {
   CRM.confirm({
     title: ts("Confirm Deletion"),
     message: ts("Do you really want to delete this resource demand, including all conditions?"),
-  }).on('crmConfirm:yes', function() {
+  }).one('crmConfirm:yes', function() {
     CRM.api3('ResourceDemand', 'delete', {id:demand_id})
     .then(function() {
       // try refresh: tab

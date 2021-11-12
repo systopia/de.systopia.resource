@@ -17,7 +17,7 @@ cj(document).ready(function() {
   //  todo: restrict to 'our' popup
   let tab_content_id = cj("#tab_resource").attr('aria-controls');
   if (tab_content_id) {
-    cj(document).on('crmPopupFormSuccess', function() {
+    cj(document).one('crmPopupFormSuccess', function() {
       cj("#" + tab_content_id).crmSnippet('refresh');
     });
   }
