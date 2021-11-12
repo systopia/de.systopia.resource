@@ -73,7 +73,7 @@ class CRM_Resource_DemandCondition_Attribute extends CRM_Resource_BAO_ResourceDe
      *
      * @return \CRM_Resource_BAO_ResourceDemandCondition
      */
-    public static function createCondition(string $resource_demand_id, string $attribute_name, string $value, string $operation = '=='): CRM_Resource_DemandCondition_Attribute
+    public static function createCondition(string $resource_demand_id, string $attribute_name, string $value, string $operation = '='): CRM_Resource_DemandCondition_Attribute
     {
         $params = [
             'resource_demand_id' => $resource_demand_id,
