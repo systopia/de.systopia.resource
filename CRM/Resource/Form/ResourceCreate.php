@@ -30,6 +30,21 @@ class CRM_Resource_Form_ResourceCreate extends CRM_Core_Form
 
     public function buildQuickForm()
     {
+        $resources = civicrm_api3('Resource', 'get', [
+            'entity_id' => $this->entity_id,
+            'entity_table' => $this->entity_table,
+        ]);
+        if ($resources['count']) {
+            CRM_Utils_System::redirect(
+                CRM_Utils_System::url(
+                    'civicrm/resource/view',
+                    [
+                        'id' => reset($resources['values'])['id']
+                    ]
+                )
+            );
+        }
+
         $this->entity_id = CRM_Utils_Request::retrieve('entity_id', 'Integer', $this);
         $this->entity_table = CRM_Utils_Request::retrieve('entity_table', 'String', $this);
 
