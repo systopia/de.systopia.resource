@@ -174,28 +174,6 @@ class CRM_Resource_BAO_Resource extends CRM_Resource_DAO_Resource
     }
 
     /**
-     * Get the linked entity
-     *
-     * @return array the linked entity
-     */
-    public function getEntity($cached = true)
-    {
-        if (empty($this->entity) || !$cached) {
-            $this->entity = null;
-            $entity_class = CRM_Core_DAO_AllCoreTables::getClassForTable($this->entity_table);
-            /** @var CRM_Core_DAO $entity */
-            $entity = new $entity_class();
-            $entity->id = $this->entity_id;
-            if ($entity->find(true)) {
-                $this->entity = $entity;
-            } else {
-                throw new Exception("Entity linked to resource [{$this->id}] does not exist.");
-            }
-        }
-        return $this->entity;
-    }
-
-    /**
      * Check if the resource is available, judging by
      *  - the attached availabilities
      *  - current assignments
