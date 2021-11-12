@@ -89,8 +89,8 @@ class CRM_Resource_Page_ResourceDemandsView extends CRM_Core_Page
         $this->assign('create_resource_requirement_link',
             CRM_Utils_System::url('civicrm/resource/demand/create', "reset=1&entity_id={$this->entity_id}&entity_table={$this->entity_table}"));
 
-        Civi::resources()->addStyleUrl(E::url('css/resource_demands_view.css'));
-        Civi::resources()->addScriptUrl(E::url('js/resource_demands_view.js'));
+        Civi::resources()->addStyleUrl(E::url('css/resource_demands_view.css'), 10, 'page-header');
+        Civi::resources()->addScriptUrl(E::url('js/resource_demands_view.js'), 10, 'page-header');
     }
 
     /**

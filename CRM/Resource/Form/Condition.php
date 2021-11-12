@@ -65,7 +65,7 @@ class CRM_Resource_Form_Condition extends CRM_Core_Form
               ],
           ]);
 
-        Civi::resources()->addScriptUrl(E::url('js/condition_create.js'));
+        Civi::resources()->addScriptUrl(E::url('js/condition_create.js'), 10, 'page-header');
 
         parent::buildQuickForm();
     }

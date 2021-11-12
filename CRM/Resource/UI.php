@@ -59,7 +59,7 @@ class CRM_Resource_UI
             ];
 
             // add our tab's JS file
-            Civi::resources()->addScriptUrl(E::url('js/contact_view.js'));
+            Civi::resources()->addScriptUrl(E::url('js/contact_view.js'), 10, 'page-header');
 
         } else { // contact is not a resource: offer to become one (if applicable)
 

@@ -77,8 +77,8 @@ class CRM_Resource_Page_ResourceView extends CRM_Core_Page
         $this->assign('unavailability_create_link',
                       CRM_Utils_System::url('civicrm/resource/unavailability/create', "resource_id={$this->id}"));
 
-        Civi::resources()->addStyleUrl(E::url('css/resource_view.css'));
-        Civi::resources()->addScriptUrl(E::url('js/resource_view.js'));
+        Civi::resources()->addStyleUrl(E::url('css/resource_view.css'), 10, 'page-header');
+        Civi::resources()->addScriptUrl(E::url('js/resource_view.js'), 10, 'page-header');
 
         parent::run();
     }
