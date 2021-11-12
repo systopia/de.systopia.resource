@@ -28,7 +28,7 @@ class CRM_Resource_DemandCondition_EventTime extends CRM_Resource_BAO_ResourceDe
      */
     public static function getTypeLabel()
     {
-        return E::ts("Available (Event)");
+        return E::ts("Availability (Event)");
     }
 
     /**
