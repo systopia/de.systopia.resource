@@ -70,7 +70,7 @@ class CRM_Resource_Form_Unavailability extends CRM_Core_Form
             ],
         ]);
 
-        Civi::resources()->addScriptUrl(E::url('js/unavailability_create.js'));
+        Civi::resources()->addScriptUrl(E::url('js/unavailability_create.js'), 10, 'page-header');
 
         parent::buildQuickForm();
     }

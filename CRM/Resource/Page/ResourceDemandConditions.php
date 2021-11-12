@@ -63,8 +63,8 @@ class CRM_Resource_Page_ResourceDemandConditions extends CRM_Core_Page
         }
         $this->assign('conditions', $condition_list);
 
-        Civi::resources()->addStyleUrl(E::url('css/resource_demand_conditions.css'));
-        Civi::resources()->addScriptUrl(E::url('js/resource_demand_conditions.js'));
+        Civi::resources()->addStyleUrl(E::url('css/resource_demand_conditions.css'), 10, 'page-header');
+        Civi::resources()->addScriptUrl(E::url('js/resource_demand_conditions.js'), 10, 'page-header');
 
         parent::run();
     }

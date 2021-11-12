@@ -22,7 +22,7 @@ function delete_unavailability(unavailability_id) {
   CRM.confirm({
     title: ts("Confirm Deletion"),
     message: ts("Do you really want to delete this availability restriction?"),
-  }).on('crmConfirm:yes', function() {
+  }).one('crmConfirm:yes', function() {
     CRM.api3('ResourceUnavailability', 'delete', {id: unavailability_id})
       .then(function () {
         // try refresh: tab
