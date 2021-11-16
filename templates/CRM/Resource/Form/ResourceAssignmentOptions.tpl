@@ -13,9 +13,11 @@
 +-------------------------------------------------------*}
 
 {crmScope extensionKey='de.systopia.resource'}
+  {if $candidates}
   <h3 class="resource-view resource-assignment-status">
     {ts}Here's a list of demands that this resource would be suitable for:{/ts}
   </h3>
+  {/if}
 
   <div class="demand-view resource-matching-demands">
       {if $candidates}
@@ -38,7 +40,7 @@
           </tbody>
         </table>
       {else}
-        <div class="resource resource-missing">{ts}Sorry, no more available demands found for this resource.{/ts}</div>
+        <div class="resource resource-missing">{ts}Sorry, there's currently no more open resource demands matching this resource.{/ts}</div>
       {/if}
   </div>
 
