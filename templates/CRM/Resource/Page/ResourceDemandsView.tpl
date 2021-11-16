@@ -33,8 +33,8 @@
                       {if $resource_demand.is_eternal}&nbsp;<span title="{$eternal_warning}" class="resource_demand resource_demand-infinite">&#9854;</span>{/if}
                   </td>
                   <td>{$resource_demand.type_label}</td>
-                  <td>{$resource_demand.assignment_count} / {$resource_demand.count}</td>
-                  <td>{$resource_demand.fulfilled_count} / {$resource_demand.count}</td>
+                  <td>{$resource_demand.assignment_count} / {$resource_demand.count} {if $resource_demand.assignment_count gt $resource_demand.count}<i aria-hidden="true" class="crm-i fa-angle-double-up" title="{ts}more resources assigned than required{/ts}">{/if}</td>
+                  <td>{$resource_demand.fulfilled_count} / {$resource_demand.count} {if $resource_demand.fulfilled_count gt $resource_demand.count}<i aria-hidden="true" class="crm-i fa-angle-double-up" title="{ts}more resources assigned than required{/ts}">{/if}</td>
                   <td class="nowrap">
                     <span>
                       <a href="{$resource_demand.edit_link}" class="action-item crm-hover-button crm-popup small-popup" title="{ts}Edit Resource Demand{/ts}">{ts}Edit{/ts}</a>
