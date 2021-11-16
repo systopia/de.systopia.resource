@@ -31,15 +31,11 @@ class CRM_Resource_UI
     public static function addContactResourceTab(&$tabs, $context)
     {
         // add a resource tab to the summary view
-        $resource = \Civi\Api4\Resource::get()
-            ->addWhere('entity_table', '=', 'civicrm_contact')
-            ->addWhere('entity_id', '=', $context['contact_id'])
-            ->execute()
-            ->first();
-        if (!empty($resource['id'])) { // contact already is a resource:
+        $resource = CRM_Resource_BAO_Resource::getResource($context['contact_id'], 'civicrm_contact');
+        if ($resource) { // contact already is a resource:
             // get the assignment count
             $assignment_count = \Civi\Api4\ResourceAssignment::get()
-                ->addWhere('resource_id', '=', $resource['id'])
+                ->addWhere('resource_id', '=', $resource->id)
                 ->selectRowCount()
                 ->execute();
 
@@ -49,7 +45,7 @@ class CRM_Resource_UI
                 'title'   => E::ts("Assignments"),
                 'url'     => CRM_Utils_System::url(
                     'civicrm/resource/view',
-                    "id={$resource['id']}"
+                    "id={$resource->id}"
                 ),
                 'count'   => $assignment_count->rowCount, // todo: only active/future assignments
                 'valid'   => 1,

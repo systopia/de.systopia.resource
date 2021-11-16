@@ -282,4 +282,33 @@ class CRM_Resource_BAO_Resource extends CRM_Resource_DAO_Resource
 
         return $unavailabilities;
     }
+
+    /**
+     * Get the resource with the given parameters
+     *
+     * @param integer $entity_id
+     *   the ID of the entity this the resource is attached to
+     *
+     * @param string $entity_table
+     *   the table name of the entity this the resource is attached to
+     *
+     * @return CRM_Resource_BAO_Resource|null the resource if it exists
+     */
+    public static function getResource($entity_id, $entity_table)
+    {
+        // make sure this is sensible data
+        if (empty($entity_id) || empty($entity_table)) {
+            return null;
+        }
+
+        // find the resource
+        $bao = new CRM_Resource_BAO_Resource();
+        $bao->entity_table = $entity_table;
+        $bao->entity_id = $entity_id;
+        if ($bao->find(true)) {
+            return $bao;
+        } else {
+            return null;
+        }
+    }
 }
