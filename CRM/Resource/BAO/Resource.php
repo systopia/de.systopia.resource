@@ -226,14 +226,15 @@ class CRM_Resource_BAO_Resource extends CRM_Resource_DAO_Resource
      *  - the attached availabilities
      *  - current assignments
      *
-     * @param null $from_timestamp
-     * @param null $to_timestamp
+     * @param integer $from_timestamp timestamp start
+     * @param integer $to_timestamp   timestamp end
+     * @param array $ignore_demand_ids  list of demand IDs to be ignored, e.g. because already assigned
      *
      * @return boolean true iff the resource is available (wrt to the time parameters)
      * @see CRM_Resource_BAO_Resource::isAvailableSqlClause
      *
      */
-    public function isAvailable($from_timestamp = null, $to_timestamp = null) : bool
+    public function isAvailable($from_timestamp = null, $to_timestamp = null, $ignore_demand_ids = []) : bool
     {
         // check unavailabilities
         $unavailabilities = $this->getUnavailabilities();
@@ -248,12 +249,14 @@ class CRM_Resource_BAO_Resource extends CRM_Resource_DAO_Resource
         $demands = $this->getAssignedDemands();
         /** @var \CRM_Resource_BAO_ResourceDemand $demand */
         foreach ($demands as $demand) {
-            $demand_timeframes = $demand->getResourcesBlockedTimeframes();
-            if ($demand_timeframes->isEmpty()) {
-                // we're assigned to an eternal demand (one without temporal constrictions)
-                return false;
-            } else {
-                $assigned_timeframes->joinTimeframes($demand_timeframes);
+            if (!in_array($demand->id, $ignore_demand_ids)) {
+                $demand_timeframes = $demand->getResourcesBlockedTimeframes();
+                if ($demand_timeframes->isEmpty()) {
+                    // we're assigned to an eternal demand (one without temporal constrictions)
+                    return false;
+                } else {
+                    $assigned_timeframes->joinTimeframes($demand_timeframes);
+                }
             }
         }
 
