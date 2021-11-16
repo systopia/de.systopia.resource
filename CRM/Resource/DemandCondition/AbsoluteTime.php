@@ -45,7 +45,7 @@ class CRM_Resource_DemandCondition_AbsoluteTime extends CRM_Resource_BAO_Resourc
      *
      * @return \CRM_Resource_BAO_ResourceDemandCondition
      */
-    public static function createCondition(string $resource_demand_id, $from_timestamp, $to_timestamp): CRM_Resource_DemandCondition_EventTime
+    public static function createCondition(string $resource_demand_id, $from_timestamp, $to_timestamp): CRM_Resource_DemandCondition_AbsoluteTime
     {
         $params = [
             'resource_demand_id' => $resource_demand_id,

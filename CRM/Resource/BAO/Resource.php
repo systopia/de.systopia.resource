@@ -145,7 +145,7 @@ class CRM_Resource_BAO_Resource extends CRM_Resource_DAO_Resource
               AND assignment.status IN (%2);",
             [
                 1 => [$this->id, 'Integer'],
-                2 => [$assignment_status_list,  'CommaSeparatedIntegers']
+                2 => [$assignment_status_list,  'CommaSeparatedIntegers'],
             ]
         );
 
@@ -233,9 +233,34 @@ class CRM_Resource_BAO_Resource extends CRM_Resource_DAO_Resource
      * @see CRM_Resource_BAO_Resource::isAvailableSqlClause
      *
      */
-    public function isAvailable($from_timestamp = null, $to_timestamp = null)
+    public function isAvailable($from_timestamp = null, $to_timestamp = null) : bool
     {
-        return CRM_Resource_BAO_ResourceUnavailability::isResourceAvailable($this->id, $from_timestamp, $to_timestamp);
+        // check unavailabilities
+        $unavailabilities = $this->getUnavailabilities();
+        foreach ($unavailabilities as $unavailability) {
+            if ($unavailability->isActive($from_timestamp, $to_timestamp)) {
+                return false;
+            }
+        }
+
+        // gather the current assignments
+        $assigned_timeframes = new CRM_Resource_Timeframes();
+        $demands = $this->getAssignedDemands();
+        /** @var \CRM_Resource_BAO_ResourceDemand $demand */
+        foreach ($demands as $demand) {
+            $demand_timeframes = $demand->getResourcesBlockedTimeframes();
+            if ($demand_timeframes->isEmpty()) {
+                // we're assigned to an eternal demand (one without temporal constrictions)
+                return false;
+            } else {
+                $assigned_timeframes->joinTimeframes($demand_timeframes);
+            }
+        }
+
+        // check whether the current assignments collide with the requested time
+        $requested_timeframe = new CRM_Resource_Timeframes();
+        $requested_timeframe->addTimeframe($from_timestamp, $to_timestamp);
+        return !$assigned_timeframes->overlapsWith($requested_timeframe);
     }
 
     /**

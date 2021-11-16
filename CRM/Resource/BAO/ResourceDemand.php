@@ -105,7 +105,7 @@ class CRM_Resource_BAO_ResourceDemand extends CRM_Resource_DAO_ResourceDemand
 
         } else {
             // check if the resource is available for all timeframes
-            foreach ($demand_timeframes as $demand_timeframe) {
+            foreach ($demand_timeframes->getTimeframes() as $demand_timeframe) {
                 if (!$resource->isAvailable($demand_timeframe[0], $demand_timeframe[1])) {
                     return false;
                 }

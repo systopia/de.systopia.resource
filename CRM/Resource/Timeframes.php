@@ -77,7 +77,7 @@ class CRM_Resource_Timeframes
      */
     public function overlapsWith($timeframes)
     {
-        return self::overlaps($this->getTimeframes(), $timeframes->getTimeframes(), true);
+        return self::overlaps($this->getTimeframes(), $timeframes->getTimeframes());
     }
 
     /**
@@ -233,6 +233,6 @@ class CRM_Resource_Timeframes
         // @todo: implement something smarter and faster?
         $all_entries = array_merge($time_frames_1, $time_frames_2);
         $consolidated_entries = self::consolidate($all_entries, false);
-        return count($all_entries) > $consolidated_entries;
+        return count($all_entries) > count($consolidated_entries);
     }
 }

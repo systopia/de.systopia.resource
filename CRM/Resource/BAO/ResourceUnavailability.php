@@ -45,51 +45,6 @@ class CRM_Resource_BAO_ResourceUnavailability extends CRM_Resource_DAO_ResourceU
     }
 
     /**
-     * Check whether the given resource is available (in the given time frame)
-     *
-     * @todo move to resource
-     *
-     * @param integer $resource_id
-     * @param string $from_timestamp
-     * @param string $to_timestamp
-     *
-     * @return bool true iff available wrt the given time frame
-     */
-    public static function isResourceAvailable($resource_id, $from_timestamp = null, $to_timestamp = null) : bool
-    {
-        $resource = CRM_Resource_BAO_Resource::getInstance($resource_id);
-        $unavailabilities = $resource->getUnavailabilities();
-        foreach ($unavailabilities as $unavailability) {
-            if ($unavailability->isActive($from_timestamp, $to_timestamp)) {
-                return false;
-            }
-        }
-
-        // check for currently assignments
-        $assignment_search = new CRM_Resource_BAO_ResourceAssignment();
-        $assignment_search->resource_id = (int)$resource_id;
-        $assignment_search->status = CRM_Resource_BAO_ResourceAssignment::STATUS_CONFIRMED;
-        $assignment_search->find();
-
-        while ($assignment_search->fetch()) {
-            if ($from_timestamp == null && $to_timestamp == null) {
-                // in this case *any* assignment would render it unavailable
-                return false;
-            }
-
-            // check if this assignment is valid during the given time frame
-            $demand = CRM_Resource_BAO_ResourceDemand::getInstance($assignment_search->resource_demand_id);
-            $blocked_timeframes = $demand->getResourcesBlockedTimeframes();
-            if ($blocked_timeframes->coversTimestamp($from_timestamp) || $blocked_timeframes->coversTimestamp($to_timestamp)) {
-                return false;
-            }
-        }
-
-        // no problems found
-        return true;
-    }
-
-    /**
      * Return an object of the specific class, i.e. the object that matches
      *   the provided class
      *
