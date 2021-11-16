@@ -80,7 +80,8 @@ class CRM_Resource_Form_ResourceCreate extends CRM_Core_Form
             'label' => $values['resource_name'],
         ]);
 
-        
+        // reload the page
+        CRM_Utils_System::redirect(CRM_Core_Session::singleton()->popUserContext());
     }
 
     /**
