@@ -37,6 +37,7 @@ class CRM_Resource_BAO_ResourceDemandCondition extends CRM_Resource_DAO_Resource
             'CRM_Resource_DemandCondition_Attribute' => [],
             'CRM_Resource_DemandCondition_EventTime' => ['civicrm_event'],
             'CRM_Resource_DemandCondition_AbsoluteTime' => [],
+            'CRM_Resource_DemandCondition_Tagged' => [],
         ];
 
         $matching_types = [];
