@@ -262,4 +262,23 @@ class ResourceTestBase extends TestCase implements HeadlessInterface, HookInterf
         // todo use SQL
         //$resource_bao->isAvailableSQL();
     }
+
+    /**
+     * Assign the given resource to the demand
+     *
+     * @param int $resource_id
+     *    ID of the resource
+     * @param int $demand_id
+     *    ID of the demand
+     * @param int $status
+     *    assignment status, default is "confirmed"
+     */
+    public function assignResourceToDemand($resource_id, $demand_id, $status = CRM_Resource_BAO_ResourceAssignment::STATUS_CONFIRMED)
+    {
+        $this->callAPI34('ResourceAssignment', 'create', [
+            'resource_id' => $resource_id,
+            'resource_demand_id' => $demand_id,
+            'status' => $status
+        ]);
+    }
 }

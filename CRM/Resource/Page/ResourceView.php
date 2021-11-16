@@ -76,6 +76,8 @@ class CRM_Resource_Page_ResourceView extends CRM_Core_Page
         // generate links
         $this->assign('unavailability_create_link',
                       CRM_Utils_System::url('civicrm/resource/unavailability/create', "resource_id={$this->id}"));
+        $this->assign('assignment_create_link',
+                      CRM_Utils_System::url('civicrm/resource/assignment/options', "resource_id={$this->id}"));
 
         Civi::resources()->addStyleUrl(E::url('css/resource_view.css'), 10, 'page-header');
         Civi::resources()->addScriptUrl(E::url('js/resource_view.js'), 10, 'page-header');

@@ -52,7 +52,7 @@
     {/if}
   </div>
 
-  <h3 class="header-dark resource-view">{ts}Assignments{/ts}</h3>
+  <h3 class="header-dark resource-view">{ts}Assignments{/ts} <a href="{$assignment_create_link}" title="{ts}Assign to Other Demands{/ts}" class="crm-popup small-popup">[+]</a></h3>
   <div class="resource-view resource-view-assignments">
     {if $assignments|count}
       <table class="crm-table resource-view resource-view-unavailabilities">

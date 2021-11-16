@@ -66,4 +66,10 @@
     <title>ConditionEdit</title>
     <access_arguments>access CiviCRM</access_arguments>
   </item>
+  <item>
+    <path>civicrm/resource/assignment/options</path>
+    <page_callback>CRM_Resource_Form_ResourceAssignmentOptions</page_callback>
+    <title>ResourceAssignmentOptions</title>
+    <access_arguments>access CiviCRM</access_arguments>
+  </item>
 </menu>
