@@ -89,9 +89,9 @@ class CRM_Resource_Form_ResourceCreate extends CRM_Core_Form
             $resourceBao = CRM_Resource_BAO_Resource::getInstance($resource->id);
             $this->ajaxResponse['updateTabs']['#tab_resource'] = count($resourceBao->getAssignedDemands());
         }
-
-        // reload the page
-        CRM_Utils_System::redirect(CRM_Core_Session::singleton()->popUserContext());
+        else {
+            CRM_Utils_System::redirect(CRM_Utils_System::url('civicrm/resource/view', ['id' => $resource->id]));
+        }
     }
 
     /**
