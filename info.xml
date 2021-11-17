@@ -16,7 +16,7 @@
   </urls>
   <releaseDate></releaseDate>
   <version>0.1-dev</version>
-  <develStage></develStage>
+  <develStage>dev</develStage>
   <compatibility>
     <ver>5.0</ver>
   </compatibility>
