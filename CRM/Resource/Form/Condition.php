@@ -36,7 +36,7 @@ class CRM_Resource_Form_Condition extends CRM_Core_Form
 
         // gather information of the unavailabilities
         $this->condition_types = CRM_Resource_BAO_ResourceDemandCondition::getAllConditionTypes($this->resource_demand->entity_table);
-        $condition_type2label = [];
+        $condition_type2label = ['not_selected' => E::ts("- select condition type -")];
         $type_fields = [];
         foreach ($this->condition_types as $condition_type) {
             // get the labels
@@ -78,10 +78,14 @@ class CRM_Resource_Form_Condition extends CRM_Core_Form
     public function validate()
     {
         $condition_type = $this->_submitValues['condition_type'];
-        if (in_array($condition_type, $this->condition_types)) {
-            $errors = call_user_func([$condition_type, 'validateFormSubmission'], $this->_submitValues, $condition_type . '_');
-            foreach ($errors as $field_key => $error) {
-                $this->_errors[$field_key] = $error;
+        if ($condition_type == 'not_selected') {
+            $this->_errors['condition_type'] = E::ts("Please select a condition type");
+        } else {
+            if (in_array($condition_type, $this->condition_types)) {
+                $errors = call_user_func([$condition_type, 'validateFormSubmission'], $this->_submitValues, $condition_type . '_');
+                foreach ($errors as $field_key => $error) {
+                    $this->_errors[$field_key] = $error;
+                }
             }
         }
 
