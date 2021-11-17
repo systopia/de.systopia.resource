@@ -41,8 +41,9 @@ class CRM_Resource_UI
                 break;
         }
         // add a resource tab to the summary view
-        $resource = CRM_Resource_BAO_Resource::getResource($context['contact_id'], 'civicrm_contact');
-        if ($resource) { // contact already is a resource:
+        $resource = CRM_Resource_BAO_Resource::getResource($entity_id, $entity_table);
+        if ($resource) {
+            // Entity already is a resource:
             // get the assignment count
             $assignment_count = \Civi\Api4\ResourceAssignment::get()
                 ->addWhere('resource_id', '=', $resource->id)
@@ -67,7 +68,8 @@ class CRM_Resource_UI
             // add our tab's JS file
             Civi::resources()->addScriptUrl(E::url('js/contact_view.js'), 10, 'page-header');
 
-        } else { // contact is not a resource: offer to become one (if applicable)
+        } else {
+            // Entity is not a resource: offer to become one (if applicable)
 
             // first check, if there even is an (active) resource type for contacts
             $entity_resource_types = CRM_Resource_Types::getForEntityTable($entity_table);
