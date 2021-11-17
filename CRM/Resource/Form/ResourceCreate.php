@@ -133,7 +133,22 @@ class CRM_Resource_Form_ResourceCreate extends CRM_Core_Form
 
             default:
                 $entity_name = E::ts(CRM_Resource_Types::getEntityName($this->entity_table));
-                return E::ts("%1 Resource [%2]", [1 => $entity_name, 2 => $this->entity_id]);
+                try {
+                    $bao = CRM_Core_DAO_AllCoreTables::getClassForTable($this->entity_table);
+                    if ($label_field = $bao::$_labelField) {
+                        $entity_label = civicrm_api3($entity_name, 'getvalue', [
+                            'return' => $label_field,
+                            'id' => $this->entity_id,
+                        ]);
+                    }
+                    else {
+                        throw new Exception('Could not determine entity label.');
+                    }
+                }
+                catch (Exception $esception) {
+                    $entity_label = $entity_name;
+                }
+                return E::ts("%1 Resource [%2]", [1 => $entity_label, 2 => $this->entity_id]);
         }
     }
 }
