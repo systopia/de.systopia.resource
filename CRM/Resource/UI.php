@@ -101,7 +101,7 @@ class CRM_Resource_UI
      * @param array $context
      *    context information
      */
-    public static function addEventResourceDemandTab(&$tabs, $tabsetName, $context)
+    public static function addEventResourceDemandTab(&$tabs, $context)
     {
         // todo: add setting to enable event demands?
 
