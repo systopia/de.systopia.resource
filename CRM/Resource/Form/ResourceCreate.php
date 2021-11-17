@@ -33,19 +33,8 @@ class CRM_Resource_Form_ResourceCreate extends CRM_Core_Form
         $this->entity_id = CRM_Utils_Request::retrieve('entity_id', 'Integer', $this);
         $this->entity_table = CRM_Utils_Request::retrieve('entity_table', 'String', $this);
 
-        $resources = civicrm_api3('Resource', 'get', [
-            'entity_id' => $this->entity_id,
-            'entity_table' => $this->entity_table,
-        ]);
-        if ($resources['count']) {
-            CRM_Utils_System::redirect(
-                CRM_Utils_System::url(
-                    'civicrm/resource/view',
-                    [
-                        'id' => reset($resources['values'])['id']
-                    ]
-                )
-            );
+        if ($resource = CRM_Resource_BAO_Resource::getResource($this->entity_id, $this->entity_table)) {
+            CRM_Utils_System::redirect(CRM_Utils_System::url('civicrm/resource/view', ['id' => $resource->id]));
         }
 
         // add form elements
@@ -88,14 +77,16 @@ class CRM_Resource_Form_ResourceCreate extends CRM_Core_Form
     public function postProcess()
     {
         $values = $this->exportValues();
-        $resource = civicrm_api3('Resource', 'create', [
-            'resource_type_id' => $values['resource_type'],
-            'entity_id' => $this->entity_id,
-            'entity_table' => $this->entity_table,
-            'label' => $values['resource_name'],
-        ]);
+        $resource = CRM_Resource_BAO_Resource::create(
+            [
+                'resource_type_id' => $values['resource_type'],
+                'entity_id' => $this->entity_id,
+                'entity_table' => $this->entity_table,
+                'label' => $values['resource_name'],
+            ]
+        );
         if (CRM_Core_Resources::isAjaxMode()) {
-            $resourceBao = CRM_Resource_BAO_Resource::getInstance($resource['id']);
+            $resourceBao = CRM_Resource_BAO_Resource::getInstance($resource->id);
             $this->ajaxResponse['updateTabs']['#tab_resource'] = count($resourceBao->getAssignedDemands());
         }
 
