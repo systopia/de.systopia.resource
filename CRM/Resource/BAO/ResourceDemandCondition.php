@@ -34,10 +34,10 @@ class CRM_Resource_BAO_ResourceDemandCondition extends CRM_Resource_DAO_Resource
     {
         // todo: expose as Symfony hook
         $types = [
-            'CRM_Resource_DemandCondition_Attribute' => [],
             'CRM_Resource_DemandCondition_EventTime' => ['civicrm_event'],
             'CRM_Resource_DemandCondition_AbsoluteTime' => [],
             'CRM_Resource_DemandCondition_Tagged' => [],
+            'CRM_Resource_DemandCondition_Attribute' => [],
         ];
 
         $matching_types = [];
