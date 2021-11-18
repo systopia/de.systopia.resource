@@ -33,6 +33,10 @@ class CRM_Resource_Form_ResourceCreate extends CRM_Core_Form
         $this->entity_id = CRM_Utils_Request::retrieve('entity_id', 'Integer', $this);
         $this->entity_table = CRM_Utils_Request::retrieve('entity_table', 'String', $this);
 
+        if ($resource = CRM_Resource_BAO_Resource::getResource($this->entity_id, $this->entity_table)) {
+            CRM_Utils_System::redirect(CRM_Utils_System::url('civicrm/resource/view', ['id' => $resource->id]));
+        }
+
         // add form elements
         $this->add(
             'select',
@@ -73,15 +77,21 @@ class CRM_Resource_Form_ResourceCreate extends CRM_Core_Form
     public function postProcess()
     {
         $values = $this->exportValues();
-        $resource = civicrm_api3('Resource', 'create', [
-            'resource_type_id' => $values['resource_type'],
-            'entity_id' => $this->entity_id,
-            'entity_table' => $this->entity_table,
-            'label' => $values['resource_name'],
-        ]);
-
-        // reload the page
-        CRM_Utils_System::redirect(CRM_Core_Session::singleton()->popUserContext());
+        $resource = CRM_Resource_BAO_Resource::create(
+            [
+                'resource_type_id' => $values['resource_type'],
+                'entity_id' => $this->entity_id,
+                'entity_table' => $this->entity_table,
+                'label' => $values['resource_name'],
+            ]
+        );
+        if (CRM_Core_Resources::isAjaxMode()) {
+            $resourceBao = CRM_Resource_BAO_Resource::getInstance($resource->id);
+            $this->ajaxResponse['updateTabs']['#tab_resource'] = count($resourceBao->getAssignedDemands());
+        }
+        else {
+            CRM_Utils_System::redirect(CRM_Utils_System::url('civicrm/resource/view', ['id' => $resource->id]));
+        }
     }
 
     /**
@@ -114,7 +124,22 @@ class CRM_Resource_Form_ResourceCreate extends CRM_Core_Form
 
             default:
                 $entity_name = E::ts(CRM_Resource_Types::getEntityName($this->entity_table));
-                return E::ts("%1 Resource [%2]", [1 => $entity_name, 2 => $this->entity_id]);
+                try {
+                    $bao = CRM_Core_DAO_AllCoreTables::getClassForTable($this->entity_table);
+                    if ($label_field = $bao::$_labelField) {
+                        $entity_label = civicrm_api3($entity_name, 'getvalue', [
+                            'return' => $label_field,
+                            'id' => $this->entity_id,
+                        ]);
+                    }
+                    else {
+                        throw new Exception('Could not determine entity label.');
+                    }
+                }
+                catch (Exception $esception) {
+                    $entity_label = $entity_name;
+                }
+                return E::ts("%1 Resource [%2]", [1 => $entity_label, 2 => $this->entity_id]);
         }
     }
 }

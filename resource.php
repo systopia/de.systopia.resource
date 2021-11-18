@@ -193,15 +193,12 @@ function resource_civicrm_tabset($tabsetName, &$tabs, $context)
 {
     switch ($tabsetName) {
         case 'civicrm/contact/view':
-            CRM_Resource_UI::addContactResourceTab($tabs, $context);
+        case 'civicrm/eck/entity':
+            CRM_Resource_UI::addResourceTab($tabs, $tabsetName, $context);
             return;
 
         case 'civicrm/event/manage':
             CRM_Resource_UI::addEventResourceDemandTab($tabs, $context);
-            return;
-
-        case 'civicrm/eck/entity':
-            CRM_Resource_UI::addEckResourceTab($tabs, $context);
             return;
 
         default:

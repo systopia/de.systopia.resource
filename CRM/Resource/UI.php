@@ -28,11 +28,22 @@ class CRM_Resource_UI
      * @param array $context
      *    context information
      */
-    public static function addContactResourceTab(&$tabs, $context)
+    public static function addResourceTab(&$tabs, $tabsetName, $context)
     {
+        switch ($tabsetName) {
+            case 'civicrm/contact/view':
+                $entity_table = 'civicrm_contact';
+                $entity_id = $context['contact_id'];
+                break;
+            case 'civicrm/eck/entity':
+                $entity_table = $context['entity_type']['table_name'];
+                $entity_id = $context['entity_id'];
+                break;
+        }
         // add a resource tab to the summary view
-        $resource = CRM_Resource_BAO_Resource::getResource($context['contact_id'], 'civicrm_contact');
-        if ($resource) { // contact already is a resource:
+        $resource = CRM_Resource_BAO_Resource::getResource($entity_id, $entity_table);
+        if ($resource) {
+            // Entity already is a resource:
             // get the assignment count
             $assignment_count = \Civi\Api4\ResourceAssignment::get()
                 ->addWhere('resource_id', '=', $resource->id)
@@ -57,24 +68,26 @@ class CRM_Resource_UI
             // add our tab's JS file
             Civi::resources()->addScriptUrl(E::url('js/contact_view.js'), 10, 'page-header');
 
-        } else { // contact is not a resource: offer to become one (if applicable)
+        } else {
+            // Entity is not a resource: offer to become one (if applicable)
 
             // first check, if there even is an (active) resource type for contacts
-            $contact_resource_types = CRM_Resource_Types::getForEntityTable('civicrm_contact');
-            if (!empty($contact_resource_types)) {
+            $entity_resource_types = CRM_Resource_Types::getForEntityTable($entity_table);
+            if (!empty($entity_resource_types)) {
                 // contact isn't a resource -> offer to become one
                 $tabs['resource'] = [
                     'id'      => 'resource',
                     'title'   => E::ts("Assignments"),
                     'url'     => CRM_Utils_System::url(
                         'civicrm/resource/create',
-                        "entity_id={$context['contact_id']}&entity_table=civicrm_contact"
+                        "entity_id={$entity_id}&entity_table={$entity_table}"
                     ),
                     'icon' => "crm-i fa-question",
                     'count'   => 0,
                     'valid'   => 0,
-                    'active'  => 0,
+                    'active'  => 1,
                     'current' => false,
+                    'class' => 'ajaxForm',
                 ];
             }
         }
@@ -111,18 +124,5 @@ class CRM_Resource_UI
                 'current' => false,
             ];
         }
-    }
-
-    /**
-     * Inject eck resource tab
-     *
-     * @param array $tabs
-     *    civicrm_tabset structure
-     * @param array $context
-     *    context information
-     */
-    public static function addEckResourceTab(&$tabs, $context)
-    {
-        // todo: @jens
     }
 }
