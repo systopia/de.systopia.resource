@@ -16,9 +16,9 @@
 use CRM_Resource_ExtensionUtil as E;
 
 /**
- * This resource demand tests if a resource entity is currently tagged with a specific tag
+ * This resource demand tests if a contact resource is currently member of a (static) group
  */
-class CRM_Resource_DemandCondition_Tagged extends CRM_Resource_BAO_ResourceDemandCondition
+class CRM_Resource_DemandCondition_StaticGroup extends CRM_Resource_BAO_ResourceDemandCondition
 {
     /**
      * Get the proper label for this unavailability
@@ -28,7 +28,7 @@ class CRM_Resource_DemandCondition_Tagged extends CRM_Resource_BAO_ResourceDeman
      */
     public static function getTypeLabel()
     {
-        return E::ts("Tags");
+        return E::ts("Contact Group (static)");
     }
 
     /**
@@ -36,7 +36,7 @@ class CRM_Resource_DemandCondition_Tagged extends CRM_Resource_BAO_ResourceDeman
      */
     public function getIcon()
     {
-        return 'fa-tag';
+        return 'fa-users';
     }
 
     /**
@@ -45,20 +45,20 @@ class CRM_Resource_DemandCondition_Tagged extends CRM_Resource_BAO_ResourceDeman
      * @param integer $resource_demand_id
      *   resource demand ID
      *
-     * @param integer $tag_id
-     *   the ID of the tag
+     * @param integer $group_id
+     *   the ID of the group
      *
      * @return \CRM_Resource_BAO_ResourceDemandCondition
      */
-    public static function createCondition(string $resource_demand_id, int $tag_id): CRM_Resource_DemandCondition_Attribute
+    public static function createCondition(string $resource_demand_id, int $group_id): CRM_Resource_DemandCondition_Attribute
     {
         $params = [
             'resource_demand_id' => $resource_demand_id,
-            'class_name'  => 'CRM_Resource_DemandCondition_Tagged',
+            'class_name'  => 'CRM_Resource_DemandCondition_StaticGroup',
         ];
 
         // "pack" the parameters
-        $params['parameters'] = [$tag_id];
+        $params['parameters'] = [$group_id];
 
         // we're good, run the creation
         /** @var CRM_Resource_BAO_ResourceDemandCondition $condition_bao */
@@ -81,21 +81,24 @@ class CRM_Resource_DemandCondition_Tagged extends CRM_Resource_BAO_ResourceDeman
      */
     public function isFulfilledWithResource($resource, &$error_messages = []) : bool
     {
-        list($tag_id) = $this->getParametersParsed();
-        $tag_id = (int) $tag_id;
+        // this only works for contacts
+        if ($resource->entity_table != 'civicrm_contact') {
+            return false;
+        }
 
-        $matched = CRM_Core_DAO::singleValueQuery("
+        list($group_id) = $this->getParametersParsed();
+        $group_id = (int) $group_id;
+        $group_member = CRM_Core_DAO::singleValueQuery("
             SELECT COUNT(*) 
-            FROM civicrm_entity_tag
-            WHERE tag_id = %1
-              AND entity_id = %2
-              AND entity_table = %3", [
-            1 => [$tag_id, 'Integer'],
+            FROM civicrm_group_contact
+            WHERE group_id = %1
+              AND contact_id = %2
+              AND status = 'Added'", [
+            1 => [$group_id, 'Integer'],
             2 => [$resource->entity_id, 'Integer'],
-            3 => [$resource->entity_table, 'String'],
         ]);
 
-        return $matched > 0;
+        return $group_member > 0;
     }
 
     /**
@@ -103,15 +106,15 @@ class CRM_Resource_DemandCondition_Tagged extends CRM_Resource_BAO_ResourceDeman
      */
     public function getLabel()
     {
-        list($tag_id) = $this->getParametersParsed();
-        $tags = \Civi\Api4\Tag::get()
-            ->addSelect('name')
-            ->addWhere('id', '=', (int) $tag_id)
+        list($group) = $this->getParametersParsed();
+        $groups = \Civi\Api4\Group::get()
+            ->addSelect('title')
+            ->addWhere('id', '=', (int) $group)
             ->execute();
 
-        return E::ts("Resource is tagged as \"%1\"",
+        return E::ts("Contact is member of group \"%1\"",
             [
-                1 => $tags->first()['name']
+                1 => $groups->first()['title']
             ]
         );
     }
@@ -137,25 +140,28 @@ class CRM_Resource_DemandCondition_Tagged extends CRM_Resource_BAO_ResourceDeman
      */
     public static function addFormFields($form, $prefix = '', $demand_bao = null)
     {
-        // get tags
-        $tag_list = [];
-        $tags = \Civi\Api4\Tag::get()->addSelect('name', 'id')->execute();
-        foreach ($tags as $tag) {
+        // get groups
+        $group_list = [];
+        $groups = \Civi\Api4\Group::get()
+            ->addSelect('title', 'id')
+            ->addWhere('saved_search_id', 'IS NULL') // static groups only
+            ->execute();
+        foreach ($groups as $group) {
             // do something
-            $tag_list[$tag['id']] = $tag['name'];
+            $group_list[$group['id']] = $group['title'];
         }
 
         $form->add(
             'select',
-            $prefix . '_tag_id',
-            E::ts("Tag"),
-            $tag_list,
+            $prefix . '_group_id',
+            E::ts("Group"),
+            $group_list,
             true,
             ['class' => 'crm-select2']
         );
 
         return [
-            $prefix . '_tag_id',
+            $prefix . '_group_id',
         ];
     }
 
@@ -190,7 +196,7 @@ class CRM_Resource_DemandCondition_Tagged extends CRM_Resource_BAO_ResourceDeman
     {
         // format the from/to values properly
         return [
-            $data["{$prefix}_tag_id"],
+            $data["{$prefix}_group_id"],
         ];
     }
 
@@ -209,7 +215,7 @@ class CRM_Resource_DemandCondition_Tagged extends CRM_Resource_BAO_ResourceDeman
 
         if (isset($params[0])) {
             return [
-                "{$prefix}_tag_id" => $params[0],
+                "{$prefix}_group_id" => $params[0],
             ];
         } else {
             return [];
