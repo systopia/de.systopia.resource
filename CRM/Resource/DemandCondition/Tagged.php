@@ -85,7 +85,6 @@ class CRM_Resource_DemandCondition_Tagged extends CRM_Resource_BAO_ResourceDeman
     {
         list($tag_id) = $this->getParametersParsed();
         $tag_id = (int) $tag_id;
-        $demand = $this->getResourceDemand();
 
         $matched = CRM_Core_DAO::singleValueQuery("
             SELECT COUNT(*) 
@@ -94,8 +93,8 @@ class CRM_Resource_DemandCondition_Tagged extends CRM_Resource_BAO_ResourceDeman
               AND entity_id = %2
               AND entity_table = %3", [
             1 => [$tag_id, 'Integer'],
-            2 => [$demand->entity_id, 'Integer'],
-            3 => [$demand->entity_table, 'String'],
+            2 => [$resource->entity_id, 'Integer'],
+            3 => [$resource->entity_table, 'String'],
         ]);
 
         return $matched > 0;
