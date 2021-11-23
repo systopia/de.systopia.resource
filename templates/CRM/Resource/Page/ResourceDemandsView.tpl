@@ -34,7 +34,14 @@
                       {if $resource_demand.is_eternal}&nbsp;<span title="{$eternal_warning}" class="resource_demand resource_demand-infinite">&#9854;</span>{/if}
                   </td>
                   <td>{$resource_demand.type_label}</td>
-                  <td>{$resource_demand.assignment_count} / {$resource_demand.count} {if $resource_demand.assignment_count gt $resource_demand.count}<i aria-hidden="true" class="crm-i fa-angle-double-up" title="{ts}more resources assigned than required{/ts}">{/if}</td>
+                  <td>
+                      {if $resource_demand.assignment_count}
+                        <a href="{$resource_demand.unassign_link}" class="action-item crm-hover-button crm-popup medium-popup" title="{ts}Manage Assignments{/ts}">{$resource_demand.assignment_count} / {$resource_demand.count}</a>
+                      {else}
+                        <a href="#" class="action-item crm-hover-button" title="{ts}No Assignments{/ts}">{$resource_demand.assignment_count} / {$resource_demand.count}</a>
+                      {/if}
+                      {if $resource_demand.assignment_count gt $resource_demand.count}<i aria-hidden="true" class="crm-i fa-angle-double-up" title="{ts}more resources assigned than required{/ts}">{/if}
+                  </td>
                   <td>{$resource_demand.fulfilled_count} / {$resource_demand.count} {if $resource_demand.fulfilled_count gt $resource_demand.count}<i aria-hidden="true" class="crm-i fa-angle-double-up" title="{ts}more resources assigned than required{/ts}">{/if}</td>
                   <td class="nowrap">
                       <span>
