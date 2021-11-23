@@ -42,7 +42,7 @@ class CRM_Resource_Page_ResourceDemandConditions extends CRM_Core_Page
         // counts
         $this->assign('demand_resources_count', $this->resource_demand->count);
         $this->assign('demand_assigned_count', $this->resource_demand->getAssignmentCount());
-        $this->assign('demand_matching_count', 'TODO');
+        $this->assign('demand_matching_count', $this->resource_demand->getFulfilledCount());
 
         $this->assign('condition_create_link',
                       CRM_Utils_System::url('civicrm/resource/condition/create', "resource_demand_id={$this->resource_demand_id}"));

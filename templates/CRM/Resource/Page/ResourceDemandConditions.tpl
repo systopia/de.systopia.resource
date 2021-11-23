@@ -26,7 +26,7 @@
       </tr>
       <tr>
         <td>{ts}Resources{/ts}</td>
-        <td><span title="{ts}Required / Assigned / Matching Conditions{/ts}">{$demand_resources_count} / {$demand_assigned_count} / {$demand_matching_count}</span></td>
+        <td><span>{$demand_matching_count} of {$demand_assigned_count} matching ({$demand_resources_count} {ts}required{/ts})</span></td>
       </tr>
     </table>
   </div>
