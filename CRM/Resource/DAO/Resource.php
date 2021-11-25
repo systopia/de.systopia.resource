@@ -153,6 +153,14 @@ class CRM_Resource_DAO_Resource extends CRM_Core_DAO {
           'bao' => 'CRM_Resource_DAO_Resource',
           'localizable' => 0,
           'add' => NULL,
+          'html' => [
+            'type' => 'Select',
+          ],
+          'pseudoconstant' => [
+            'optionGroupName' => 'resource_types',
+              // TODO: Add configuration UI.
+//            'optionEditPath' => 'civicrm/admin/resource/resource-types',
+          ],
         ],
         'entity_table' => [
           'name' => 'entity_table',

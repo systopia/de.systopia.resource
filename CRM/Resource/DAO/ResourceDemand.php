@@ -162,6 +162,14 @@ class CRM_Resource_DAO_ResourceDemand extends CRM_Core_DAO {
           'bao' => 'CRM_Resource_DAO_ResourceDemand',
           'localizable' => 0,
           'add' => NULL,
+          'html' => [
+            'type' => 'Select',
+          ],
+          'pseudoconstant' => [
+            'optionGroupName' => 'resource_types',
+            // TODO: Add configuration UI.
+//            'optionEditPath' => 'civicrm/admin/resource/resource-types',
+          ],
         ],
         'count' => [
           'name' => 'count',

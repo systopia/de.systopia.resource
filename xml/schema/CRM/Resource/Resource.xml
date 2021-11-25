@@ -37,6 +37,12 @@
     <title>Resource Type</title>
     <required>true</required>
     <comment>Resource Type ID</comment>
+    <pseudoconstant>
+      <optionGroupName>resource_types</optionGroupName>
+    </pseudoconstant>
+    <html>
+      <type>Select</type>
+    </html>
   </field>
 
   <field>
