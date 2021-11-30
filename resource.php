@@ -230,30 +230,26 @@ function resource_civicrm_themes(&$themes)
     _resource_civix_civicrm_themes($themes);
 }
 
-// --- Functions below this ship commented out. Uncomment as required. ---
-
 /**
- * Implements hook_civicrm_preProcess().
- *
- * @link https://docs.civicrm.org/dev/en/latest/hooks/hook_civicrm_preProcess
+ * Implementation of hook_civicrm_copy
  */
-//function resource_civicrm_preProcess($formName, &$form) {
-//
-//}
+function resource_civicrm_copy($objectName, &$object)
+{
+    if ($objectName == 'Event') {
+        // we have the new event ID...
+        $new_event_id = $object->id;
 
-/**
- * Implements hook_civicrm_navigationMenu().
- *
- * @link https://docs.civicrm.org/dev/en/latest/hooks/hook_civicrm_navigationMenu
- */
-//function resource_civicrm_navigationMenu(&$menu) {
-//  _resource_civix_insert_navigation_menu($menu, 'Mailings', [
-//    'label' => E::ts('New subliminal message'),
-//    'name' => 'mailing_subliminal_message',
-//    'url' => 'civicrm/mailing/subliminal',
-//    'permission' => 'access CiviMail',
-//    'operator' => 'OR',
-//    'separator' => 0,
-//  ]);
-//  _resource_civix_navigationMenu($menu);
-//}
+        // ...unfortunately, we have to dig up the original event ID:
+        $callstack = debug_backtrace();
+        foreach ($callstack as $call) {
+            if (isset($call['class']) && isset($call['function'])) {
+                if ($call['class'] == 'CRM_Event_BAO_Event' && $call['function'] == 'copy') {
+                    // this should be it:
+                    $original_event_id = $call['args'][0];
+                    CRM_Resource_BAO_ResourceDemand::copyAllDemands('civicrm_event', $original_event_id, $new_event_id);
+                    break;
+                }
+            }
+        }
+    }
+}
