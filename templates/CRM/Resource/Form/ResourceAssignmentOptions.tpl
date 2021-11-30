@@ -25,13 +25,17 @@
           <thead>
           <tr>
             <th>{ts}Resource Demand{/ts}</th>
-            <th>{ts}Assign{/ts}</th>
+            <th>{ts}Current{/ts}</th>
+            <th></th>
           </tr>
           </thead>
           <tbody>
           {foreach from=$candidates item=candidate}
-            <tr id="demand-{$candidate.id}" class="resource-demand resource-demand-view">
+            <tr id="demand-{$candidate.id}" class="resource-demand {if $candidate.current_count lt $candidate.required_count}resource-demand-assignment-good{else}resource-demand-assignment-full{/if}">
               <td>{$candidate.label} @ {$candidate.demand_label} [{$candidate.id}]</td>
+              <td class="resource-demand-assignment">
+                  {$candidate.current_count} / {$candidate.required_count}
+              </td>
               <td>
                 <button type="button" class="button crm-hover-button resource-demand resource-demand-assign" data-demand-id="{$candidate.id}" data-resource-id="{$resource_id}">{ts}Assign{/ts}</button>
               </td>
