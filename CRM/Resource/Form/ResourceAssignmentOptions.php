@@ -67,6 +67,8 @@ class CRM_Resource_Form_ResourceAssignmentOptions extends CRM_Core_Form
             $display_candidate['id'] = $candidate->id;
             $display_candidate['field_name'] = "assign_{$candidate->id}";
             $display_candidate['demand_label'] = $candidate->getEntityLabel();
+            $display_candidate['required_count'] = $candidate->count;
+            $display_candidate['current_count'] = $candidate->getAssignmentCount();
             $display_candidates[] = $display_candidate;
         }
         $this->assign('candidates', $display_candidates);

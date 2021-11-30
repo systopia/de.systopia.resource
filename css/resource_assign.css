@@ -12,4 +12,10 @@
 | written permission from the original author(s).        |
 +--------------------------------------------------------*/
 
-/* todo? */
+tr.resource-demand-assignment-good {
+  background-color: lightgreen;
+}
+
+tr.resource-demand-assignment-full {
+  background-color: palevioletred;
+}
