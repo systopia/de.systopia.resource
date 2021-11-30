@@ -269,4 +269,27 @@ class CRM_Resource_BAO_ResourceDemandCondition extends CRM_Resource_DAO_Resource
     {
         return [];
     }
+
+    /**
+     * Clone all resource demand conditions of the given demand to another demand
+     * This would most likely be triggered if the entity->copy function is used
+     *
+     * @param integer $source_demand_id
+     *   ID of the source (old) entity
+     *
+     * @param integer $target_demand_id
+     *   ID of the target (new) entity
+     */
+    public static function copyAllConditions($source_demand_id, $target_demand_id)
+    {
+        $condition_search = new CRM_Resource_BAO_ResourceDemandCondition();
+        $condition_search->resource_demand_id = $source_demand_id;
+        $condition_search->find();
+        while ($condition_search->fetch()) {
+            $condition_bao = new CRM_Resource_BAO_ResourceDemandCondition();
+            $condition_bao->setFrom($condition_search);
+            $condition_bao->resource_demand_id = $target_demand_id;
+            $condition_bao->save();
+        }
+    }
 }

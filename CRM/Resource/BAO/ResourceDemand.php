@@ -421,4 +421,37 @@ class CRM_Resource_BAO_ResourceDemand extends CRM_Resource_DAO_ResourceDemand
         }
         return $resource_demands;
     }
+
+    /**
+     * Clone all resource demands of the given entity to another instance of that entity.
+     * This would most likely be triggered if the entity->copy function is used
+     *
+     * @param string $entity_table
+     *   the entity table all of this relates to, e.g. 'civicrm_event'
+     *
+     * @param integer $source_entity_id
+     *   ID of the source (old) entity
+     *
+     * @param integer $target_entity_id
+     *   ID of the target (new) entity
+     *
+     * @param bool $clone_conditions
+     *   should the conditions be cloned as well?
+     */
+    public static function copyAllDemands($entity_table, $source_entity_id, $target_entity_id, $clone_conditions = true)
+    {
+        $demand_search = new CRM_Resource_BAO_ResourceDemand();
+        $demand_search->entity_id = $source_entity_id;
+        $demand_search->entity_table = $entity_table;
+        $demand_search->find();
+        while ($demand_search->fetch()) {
+            $demand_bao = new CRM_Resource_BAO_ResourceDemand();
+            $demand_bao->setFrom($demand_search);
+            $demand_bao->entity_id = $target_entity_id;
+            $demand_bao->save();
+            if ($clone_conditions) {
+                CRM_Resource_BAO_ResourceDemandCondition::copyAllConditions($demand_search->id, $demand_bao->id);
+            }
+        }
+    }
 }
