@@ -1,0 +1,764 @@
+#: ./CRM/Resource/BAO/ResourceDemand.php
+msgid "forever (no timespan)"
+msgstr ""
+
+#: ./CRM/Resource/DAO/Resource.php ./templates/CRM/Resource/Page/ResourceDemandConditions.tpl
+msgid "Resources"
+msgstr ""
+
+#: ./CRM/Resource/DAO/Resource.php ./templates/CRM/Resource/Page/ResourceDemandsView.tpl
+msgid "Resource"
+msgstr ""
+
+#: ./CRM/Resource/DAO/Resource.php
+msgid "Unique Resource ID"
+msgstr ""
+
+#: ./CRM/Resource/DAO/Resource.php ./CRM/Resource/Form/ResourceCreate.php ./CRM/Resource/Form/ResourceDemandCreate.php ./CRM/Resource/Form/ResourceDemandEdit.php ./CRM/Resource/Form/Task/CreateContactResource.php
+msgid "Resource Label"
+msgstr ""
+
+#: ./CRM/Resource/DAO/Resource.php ./CRM/Resource/DAO/ResourceDemand.php ./CRM/Resource/Form/ResourceCreate.php ./CRM/Resource/Form/Task/CreateContactResource.php
+msgid "Resource Type"
+msgstr ""
+
+#: ./CRM/Resource/DAO/Resource.php ./CRM/Resource/DAO/ResourceDemand.php
+msgid "Resource Type ID"
+msgstr ""
+
+#: ./CRM/Resource/DAO/Resource.php ./CRM/Resource/DAO/ResourceDemand.php
+msgid "Entity Table"
+msgstr ""
+
+#: ./CRM/Resource/DAO/Resource.php
+msgid "Entity ID "
+msgstr ""
+
+#: ./CRM/Resource/DAO/ResourceAssignment.php
+msgid "Resource Assignments"
+msgstr ""
+
+#: ./CRM/Resource/DAO/ResourceAssignment.php
+msgid "Resource Assignment"
+msgstr ""
+
+#: ./CRM/Resource/DAO/ResourceAssignment.php
+msgid "Unique Resource Assignment ID"
+msgstr ""
+
+#: ./CRM/Resource/DAO/ResourceAssignment.php ./api/v3/Resource.php
+msgid "Resource ID"
+msgstr ""
+
+#: ./CRM/Resource/DAO/ResourceAssignment.php ./CRM/Resource/DAO/ResourceDemandCondition.php ./CRM/Resource/DAO/ResourceUnavailability.php ./api/v3/Resource.php
+msgid "Resource Demand ID"
+msgstr ""
+
+#: ./CRM/Resource/DAO/ResourceAssignment.php
+msgid "Status"
+msgstr ""
+
+#: ./CRM/Resource/DAO/ResourceAssignment.php
+msgid "Resource Demand Status: 1=proposed, 2=denied, 3=confirmed"
+msgstr ""
+
+#: ./CRM/Resource/DAO/ResourceDemand.php
+msgid "Resource Demands"
+msgstr ""
+
+#: ./CRM/Resource/DAO/ResourceDemand.php ./templates/CRM/Resource/Form/ResourceAssignmentOptions.tpl ./templates/CRM/Resource/Page/ResourceDemandConditions.tpl
+msgid "Resource Demand"
+msgstr ""
+
+#: ./CRM/Resource/DAO/ResourceDemand.php
+msgid "Unique Resource Demand ID"
+msgstr ""
+
+#: ./CRM/Resource/DAO/ResourceDemand.php
+msgid "Resource Demand Label"
+msgstr ""
+
+#: ./CRM/Resource/DAO/ResourceDemand.php ./CRM/Resource/Form/ResourceDemandCreate.php ./CRM/Resource/Form/ResourceDemandEdit.php
+msgid "Count"
+msgstr ""
+
+#: ./CRM/Resource/DAO/ResourceDemand.php
+msgid "Number of resources required"
+msgstr ""
+
+#: ./CRM/Resource/DAO/ResourceDemand.php ./templates/CRM/Resource/Form/DemandAssignments.tpl ./templates/CRM/Resource/Form/ResourceDemandAssign.tpl
+msgid "Entity ID"
+msgstr ""
+
+#: ./CRM/Resource/DAO/ResourceDemand.php
+msgid "Resource linked entity ID"
+msgstr ""
+
+#: ./CRM/Resource/DAO/ResourceDemand.php
+msgid "Resource linked entity table name"
+msgstr ""
+
+#: ./CRM/Resource/DAO/ResourceDemand.php
+msgid "Is this a demand template?"
+msgstr ""
+
+#: ./CRM/Resource/DAO/ResourceDemand.php
+msgid "Marks demand templates"
+msgstr ""
+
+#: ./CRM/Resource/DAO/ResourceDemandCondition.php
+msgid "Resource Demand Conditions"
+msgstr ""
+
+#: ./CRM/Resource/DAO/ResourceDemandCondition.php
+msgid "Resource Demand Condition"
+msgstr ""
+
+#: ./CRM/Resource/DAO/ResourceDemandCondition.php
+msgid "Unique Resource Demand Condition ID"
+msgstr ""
+
+#: ./CRM/Resource/DAO/ResourceDemandCondition.php ./CRM/Resource/DAO/ResourceUnavailability.php
+msgid "Implementation Class Name"
+msgstr ""
+
+#: ./CRM/Resource/DAO/ResourceDemandCondition.php ./CRM/Resource/DAO/ResourceUnavailability.php
+msgid "Class name of the implementation, a subclass of CRM_Resource_BAO_Resource_Unavailability"
+msgstr ""
+
+#: ./CRM/Resource/DAO/ResourceDemandCondition.php ./CRM/Resource/DAO/ResourceUnavailability.php
+msgid "Parameters for the unavailability"
+msgstr ""
+
+#: ./CRM/Resource/DAO/ResourceDemandCondition.php ./CRM/Resource/DAO/ResourceUnavailability.php
+msgid "A json encoded data blob to store the parameters of this specific unavailability"
+msgstr ""
+
+#: ./CRM/Resource/DAO/ResourceUnavailability.php
+msgid "Resource Unavailabilities"
+msgstr ""
+
+#: ./CRM/Resource/DAO/ResourceUnavailability.php
+msgid "Resource Unavailability"
+msgstr ""
+
+#: ./CRM/Resource/DAO/ResourceUnavailability.php
+msgid "Unique Resource Unavailability ID"
+msgstr ""
+
+#: ./CRM/Resource/DAO/ResourceUnavailability.php ./CRM/Resource/Form/Unavailability.php ./CRM/Resource/Form/UnavailabilityEdit.php
+msgid "Reason"
+msgstr ""
+
+#: ./CRM/Resource/DAO/ResourceUnavailability.php
+msgid "Reason for the unavailability"
+msgstr ""
+
+#: ./CRM/Resource/DemandCondition/AbsoluteTime.php
+msgid "Availability (fixed)"
+msgstr ""
+
+#: ./CRM/Resource/DemandCondition/AbsoluteTime.php
+msgid "Resource required on %1 between <b>%2 and %3</b>"
+msgstr ""
+
+#: ./CRM/Resource/DemandCondition/AbsoluteTime.php
+msgid "Resource required between <b>%1 and %2</b>"
+msgstr ""
+
+#: ./CRM/Resource/DemandCondition/AbsoluteTime.php ./CRM/Resource/Unavailability/DateRange.php
+msgid "From"
+msgstr ""
+
+#: ./CRM/Resource/DemandCondition/AbsoluteTime.php ./CRM/Resource/Unavailability/DateRange.php
+msgid "To"
+msgstr ""
+
+#: ./CRM/Resource/DemandCondition/AbsoluteTime.php ./CRM/Resource/Unavailability/DateRange.php
+msgid "No start date given"
+msgstr ""
+
+#: ./CRM/Resource/DemandCondition/AbsoluteTime.php ./CRM/Resource/Unavailability/DateRange.php
+msgid "No end date given"
+msgstr ""
+
+#: ./CRM/Resource/DemandCondition/AbsoluteTime.php ./CRM/Resource/Unavailability/DateRange.php
+msgid "This has be after the start date"
+msgstr ""
+
+#: ./CRM/Resource/DemandCondition/Attribute.php
+msgid "Attribute Value (experimental)"
+msgstr ""
+
+#: ./CRM/Resource/DemandCondition/Attribute.php
+msgid "Attribute \"%1\" <code>%2</code> \"%3\""
+msgstr ""
+
+#: ./CRM/Resource/DemandCondition/Attribute.php
+msgid "Field"
+msgstr ""
+
+#: ./CRM/Resource/DemandCondition/Attribute.php
+msgid "Operator"
+msgstr ""
+
+#: ./CRM/Resource/DemandCondition/Attribute.php
+msgid "Value"
+msgstr ""
+
+#: ./CRM/Resource/DemandCondition/EventTime.php
+msgid "Availability (Event)"
+msgstr ""
+
+#: ./CRM/Resource/DemandCondition/EventTime.php
+msgid "Resource available from %1 until %2"
+msgstr ""
+
+#: ./CRM/Resource/DemandCondition/EventTime.php
+msgid "event start"
+msgstr ""
+
+#: ./CRM/Resource/DemandCondition/EventTime.php
+msgid "event end"
+msgstr ""
+
+#: ./CRM/Resource/DemandCondition/EventTime.php
+msgid "<b>%1 %2(s)</b> before event starts"
+msgstr ""
+
+#: ./CRM/Resource/DemandCondition/EventTime.php
+msgid "<b>%1 %2(s)</b> after event ends"
+msgstr ""
+
+#: ./CRM/Resource/DemandCondition/EventTime.php
+msgid "<b>%1 %2(s)</b> after event starts"
+msgstr ""
+
+#: ./CRM/Resource/DemandCondition/EventTime.php
+msgid "<b>%1 %2(s)</b> before event ends"
+msgstr ""
+
+#: ./CRM/Resource/DemandCondition/EventTime.php
+msgid "minute(s)"
+msgstr ""
+
+#: ./CRM/Resource/DemandCondition/EventTime.php
+msgid "hour(s)"
+msgstr ""
+
+#: ./CRM/Resource/DemandCondition/EventTime.php
+msgid "day(s)"
+msgstr ""
+
+#: ./CRM/Resource/DemandCondition/EventTime.php
+msgid "week(s)"
+msgstr ""
+
+#: ./CRM/Resource/DemandCondition/EventTime.php
+msgid "Before Event Start"
+msgstr ""
+
+#: ./CRM/Resource/DemandCondition/EventTime.php
+msgid "After Event End"
+msgstr ""
+
+#: ./CRM/Resource/DemandCondition/EventTime.php
+msgid "Please enter a number"
+msgstr ""
+
+#: ./CRM/Resource/DemandCondition/StaticGroup.php
+msgid "Contact Group (static)"
+msgstr ""
+
+#: ./CRM/Resource/DemandCondition/StaticGroup.php
+msgid "Contact is member of group \"%1\""
+msgstr ""
+
+#: ./CRM/Resource/DemandCondition/StaticGroup.php
+msgid "Group"
+msgstr ""
+
+#: ./CRM/Resource/DemandCondition/Tagged.php
+msgid "Tags"
+msgstr ""
+
+#: ./CRM/Resource/DemandCondition/Tagged.php
+msgid "Resource is tagged as \"%1\""
+msgstr ""
+
+#: ./CRM/Resource/DemandCondition/Tagged.php
+msgid "Tag"
+msgstr ""
+
+#: ./CRM/Resource/Form/Condition.php
+msgid "- select condition type -"
+msgstr ""
+
+#: ./CRM/Resource/Form/Condition.php ./CRM/Resource/Form/ResourceDemandCreate.php ./CRM/Resource/Form/Unavailability.php ./templates/CRM/Resource/Page/ResourceDemandConditions.tpl ./templates/CRM/Resource/Page/ResourceDemandsView.tpl ./templates/CRM/Resource/Page/ResourceView.tpl
+msgid "Type"
+msgstr ""
+
+#: ./CRM/Resource/Form/Condition.php ./CRM/Resource/Form/Unavailability.php
+msgid "Create"
+msgstr ""
+
+#: ./CRM/Resource/Form/Condition.php
+msgid "Please select a condition type"
+msgstr ""
+
+#: ./CRM/Resource/Form/ConditionEdit.php ./CRM/Resource/Form/UnavailabilityEdit.php
+msgid "Update"
+msgstr ""
+
+#: ./CRM/Resource/Form/DemandAssignments.php
+msgid "Resources currently assigned to '%1'"
+msgstr ""
+
+#: ./CRM/Resource/Form/DemandAssignments.php
+msgid "Unassign Selected"
+msgstr ""
+
+#: ./CRM/Resource/Form/DemandAssignments.php
+msgid "Removed (unassigned) %1 resources from this demand."
+msgstr ""
+
+#: ./CRM/Resource/Form/DemandAssignments.php ./CRM/Resource/Form/ResourceAssignmentOptions.php ./CRM/Resource/Form/ResourceDemandAssign.php
+msgid "Success"
+msgstr ""
+
+#: ./CRM/Resource/Form/DemandAssignments.php
+msgid "%1 resources could not be unassigned from this demand. Errors were: <br/><ul><li>%2</li></ul>"
+msgstr ""
+
+#: ./CRM/Resource/Form/DemandAssignments.php ./CRM/Resource/Form/ResourceAssignmentOptions.php ./CRM/Resource/Form/ResourceDemandAssign.php
+msgid "Failure"
+msgstr ""
+
+#: ./CRM/Resource/Form/ResourceAssignmentOptions.php
+msgid "Assign \"%1\""
+msgstr ""
+
+#: ./CRM/Resource/Form/ResourceAssignmentOptions.php ./CRM/Resource/Form/ResourceDemandAssign.php
+msgid "Assign Selected"
+msgstr ""
+
+#: ./CRM/Resource/Form/ResourceAssignmentOptions.php
+msgid "Assigned %1 demands to this resource."
+msgstr ""
+
+#: ./CRM/Resource/Form/ResourceAssignmentOptions.php
+msgid "%1 demands could not be assigned this resource. Errors were: <br/><ul><li>%2</li></ul>"
+msgstr ""
+
+#: ./CRM/Resource/Form/ResourceCreate.php
+msgid "Create Resource"
+msgstr ""
+
+#: ./CRM/Resource/Form/ResourceCreate.php
+msgid "%1 Resource [%2]"
+msgstr ""
+
+#: ./CRM/Resource/Form/ResourceDemandAssign.php
+msgid "Assign More \"%1\" Resources"
+msgstr ""
+
+#: ./CRM/Resource/Form/ResourceDemandAssign.php
+msgid "Assigned %1 resources to this demand."
+msgstr ""
+
+#: ./CRM/Resource/Form/ResourceDemandAssign.php
+msgid "%1 resources could not be assigned this demand. Errors were: <br/><ul><li>%2</li></ul>"
+msgstr ""
+
+#: ./CRM/Resource/Form/ResourceDemandCreate.php ./CRM/Resource/Form/ResourceDemandEdit.php ./templates/CRM/Resource/Page/ResourceDemandConditions.tpl ./templates/CRM/Resource/Page/ResourceView.tpl
+msgid "Label"
+msgstr ""
+
+#: ./CRM/Resource/Form/ResourceDemandCreate.php ./CRM/Resource/Form/ResourceDemandEdit.php
+msgid "The demand should require a least one resource"
+msgstr ""
+
+#: ./CRM/Resource/Form/ResourceDemandCreate.php
+msgid "Create Resource Demand"
+msgstr ""
+
+#: ./CRM/Resource/Form/ResourceDemandEdit.php
+msgid "Save"
+msgstr ""
+
+#: ./CRM/Resource/Form/Task/CreateContactResource.php
+msgid "Use %1 Contacts as Resources"
+msgstr ""
+
+#: ./CRM/Resource/Form/Task/CreateContactResource.php
+msgid "Display Name"
+msgstr ""
+
+#: ./CRM/Resource/Form/Task/CreateContactResource.php
+msgid "%1 contacts have been made available as a resource."
+msgstr ""
+
+#: ./CRM/Resource/Form/Task/CreateContactResource.php
+msgid "Resources Created"
+msgstr ""
+
+#: ./CRM/Resource/Page/ResourceDemandConditions.php
+msgid "ResourceDemand '%1' Conditions"
+msgstr ""
+
+#: ./CRM/Resource/Page/ResourceDemandsView.php
+msgid "This demand has no time restrictions, so any assigned resource will be blocked for all other demands."
+msgstr ""
+
+#: ./CRM/Resource/Page/ResourceView.php
+msgid "assigned"
+msgstr ""
+
+#: ./CRM/Resource/UI.php ./templates/CRM/Resource/Page/ResourceView.tpl
+msgid "Assignments"
+msgstr ""
+
+#: ./CRM/Resource/UI.php
+msgid "Required Resources"
+msgstr ""
+
+#: ./CRM/Resource/Unavailability/Absolute.php
+msgid "[general]: %1"
+msgstr ""
+
+#: ./CRM/Resource/Unavailability/Absolute.php
+msgid "General Unavailability"
+msgstr ""
+
+#: ./CRM/Resource/Unavailability/DateRange.php
+msgid "[%1 - %2]: %3"
+msgstr ""
+
+#: ./CRM/Resource/Unavailability/DateRange.php
+msgid "Date Range"
+msgstr ""
+
+#: ./CRM/Resource/Upgrader/Base.php
+msgid "Upgrade %1 to revision %2"
+msgstr ""
+
+#: ./Civi/Api4/Action/Resource/MeetsDemand.php ./api/v3/Resource.php
+msgid "At least one criteria was not met."
+msgstr ""
+
+#: ./api/v3/Resource.php
+msgid "Resource ID to be tested"
+msgstr ""
+
+#: ./api/v3/Resource.php
+msgid "The demand that the resource should be tested against"
+msgstr ""
+
+#: ./api/v3/Resource.php
+msgid "Cache conditions?"
+msgstr ""
+
+#: ./api/v3/Resource.php
+msgid "Caching might speed up the processing of multiple calls, but intermediate changes to the resource demand and conditions would be ignored."
+msgstr ""
+
+#: ./js/resource_assign.js ./js/resource_demand_conditions.js ./js/resource_demands_view.js ./js/resource_view.js
+msgid "de.systopia.resource"
+msgstr ""
+
+#: ./js/resource_assign.js
+msgid "Resource Assigned"
+msgstr ""
+
+#: ./js/resource_assign.js ./templates/CRM/Resource/Page/ResourceDemandsView.tpl
+msgid "Assigned"
+msgstr ""
+
+#: ./js/resource_demand_conditions.js ./js/resource_demands_view.js ./js/resource_view.js
+msgid "Confirm Deletion"
+msgstr ""
+
+#: ./js/resource_demand_conditions.js
+msgid "Do you really want to delete this condition?"
+msgstr ""
+
+#: ./js/resource_demand_conditions.js
+msgid "Condition deleted"
+msgstr ""
+
+#: ./js/resource_demand_conditions.js ./js/resource_demands_view.js ./js/resource_view.js
+msgid "Deleted"
+msgstr ""
+
+#: ./js/resource_demands_view.js
+msgid "Do you really want to delete this resource demand, including all conditions?"
+msgstr ""
+
+#: ./js/resource_demands_view.js
+msgid "Resource Demand deleted"
+msgstr ""
+
+#: ./js/resource_view.js
+msgid "Do you really want to delete this availability restriction?"
+msgstr ""
+
+#: ./js/resource_view.js
+msgid "Resource Unavailability deleted"
+msgstr ""
+
+#: ./js/resource_view.js
+msgid "Delete Assignment"
+msgstr ""
+
+#: ./js/resource_view.js
+msgid "Do you really want to un-assign this resource?"
+msgstr ""
+
+#: ./js/resource_view.js
+msgid "Resource Assignment Removed"
+msgstr ""
+
+#: ./js/resource_view.js
+msgid "Unassigned"
+msgstr ""
+
+#: ./resource.php
+msgid "Mark as Resource"
+msgstr ""
+
+#: ./templates/CRM/Resource/Form/ConditionEdit.tpl ./templates/CRM/Resource/Form/UnavailabilityEdit.tpl
+msgid "Editing \"%1\""
+msgstr ""
+
+#: ./templates/CRM/Resource/Form/DemandAssignments.tpl
+msgid "There are currently %1 of %2 required resources assigned."
+msgstr ""
+
+#: ./templates/CRM/Resource/Form/DemandAssignments.tpl ./templates/CRM/Resource/Form/ResourceDemandAssign.tpl
+msgid "Name"
+msgstr ""
+
+#: ./templates/CRM/Resource/Form/DemandAssignments.tpl
+msgid "Meets Conditions"
+msgstr ""
+
+#: ./templates/CRM/Resource/Form/DemandAssignments.tpl ./templates/CRM/Resource/Page/ResourceView.tpl
+msgid "Unassign"
+msgstr ""
+
+#: ./templates/CRM/Resource/Form/DemandAssignments.tpl ./templates/CRM/Resource/Form/ResourceDemandAssign.tpl
+msgid "all"
+msgstr ""
+
+#: ./templates/CRM/Resource/Form/DemandAssignments.tpl
+msgid "resource-demand-met"
+msgstr ""
+
+#: ./templates/CRM/Resource/Form/DemandAssignments.tpl
+msgid "resource-demand-not-met"
+msgstr ""
+
+#: ./templates/CRM/Resource/Form/DemandAssignments.tpl
+msgid "yes"
+msgstr ""
+
+#: ./templates/CRM/Resource/Form/DemandAssignments.tpl
+msgid "no"
+msgstr ""
+
+#: ./templates/CRM/Resource/Form/DemandAssignments.tpl
+msgid "You have removed all resources from this demand."
+msgstr ""
+
+#: ./templates/CRM/Resource/Form/DemandAssignments.tpl
+msgid "You have selected more demands than you need."
+msgstr ""
+
+#: ./templates/CRM/Resource/Form/ResourceAssignmentOptions.tpl
+msgid "Here's a list of demands that this resource would be suitable for:"
+msgstr ""
+
+#: ./templates/CRM/Resource/Form/ResourceAssignmentOptions.tpl
+msgid "Current"
+msgstr ""
+
+#: ./templates/CRM/Resource/Form/ResourceAssignmentOptions.tpl ./templates/CRM/Resource/Form/ResourceDemandAssign.tpl ./templates/CRM/Resource/Page/ResourceDemandsView.tpl
+msgid "Assign"
+msgstr ""
+
+#: ./templates/CRM/Resource/Form/ResourceAssignmentOptions.tpl
+msgid "Sorry, there's currently no more open resource demands matching this resource."
+msgstr ""
+
+#: ./templates/CRM/Resource/Form/ResourceAssignmentOptions.tpl ./templates/CRM/Resource/Form/ResourceDemandAssign.tpl
+msgid "You have selected more resources than you need."
+msgstr ""
+
+#: ./templates/CRM/Resource/Form/ResourceDemandAssign.tpl
+msgid "There are already %1 of %2 \"%3\" assigned, please assign %4 more."
+msgstr ""
+
+#: ./templates/CRM/Resource/Form/ResourceDemandAssign.tpl
+msgid "There are already enough \"%1\" assigned, but if you want you can still assign more."
+msgstr ""
+
+#: ./templates/CRM/Resource/Form/ResourceDemandAssign.tpl
+msgid "Please assign %2 \"%1\"."
+msgstr ""
+
+#: ./templates/CRM/Resource/Form/ResourceDemandAssign.tpl
+msgid "Here's a random list of some available resources currently matching the requirements:"
+msgstr ""
+
+#: ./templates/CRM/Resource/Form/ResourceDemandAssign.tpl
+msgid "Sorry, no more available resources found for this requirement."
+msgstr ""
+
+#: ./templates/CRM/Resource/Form/Task/ContactSearch.hlp
+msgid "The template chosen here <strong>must</strong> contain the <code>&#123;$qr_event_invite_code&#125;</code> token. It contains the personalised invitation link."
+msgstr ""
+
+#: ./templates/CRM/Resource/Form/Task/ContactSearch.hlp
+msgid "Beyond that, the following special tokens are available:"
+msgstr ""
+
+#: ./templates/CRM/Resource/Form/Task/ContactSearch.hlp
+msgid "<code>&#123;$event.xxx&#125;</code>: fields of the given event. For the available 'xxx' field names, check the API explorer with <code>Event.get</code>."
+msgstr ""
+
+#: ./templates/CRM/Resource/Form/Task/ContactSearch.hlp
+msgid "<code>&#123;$qr_event_invite_code_data&#125;</code>: QR-Code date to be used in as <code>src</code> in an html <code>img</code> tag."
+msgstr ""
+
+#: ./templates/CRM/Resource/Form/Task/ContactSearch.hlp
+msgid "<code>&#123;$qr_event_invite_code_img&#125;</code>: QR-Code <code>img</code> element."
+msgstr ""
+
+#: ./templates/CRM/Resource/Form/Task/CreateContactResource.tpl
+msgid "Remark: %1 of the selected contacts are already in use as a resource."
+msgstr ""
+
+#: ./templates/CRM/Resource/Page/ResourceDemandConditions.tpl
+msgid "required"
+msgstr ""
+
+#: ./templates/CRM/Resource/Page/ResourceDemandConditions.tpl ./templates/CRM/Resource/Page/ResourceDemandsView.tpl
+msgid "Conditions"
+msgstr ""
+
+#: ./templates/CRM/Resource/Page/ResourceDemandConditions.tpl
+msgid "Add Resource Condition"
+msgstr ""
+
+#: ./templates/CRM/Resource/Page/ResourceDemandConditions.tpl
+msgid "Edit Condition"
+msgstr ""
+
+#: ./templates/CRM/Resource/Page/ResourceDemandConditions.tpl ./templates/CRM/Resource/Page/ResourceDemandsView.tpl ./templates/CRM/Resource/Page/ResourceView.tpl
+msgid "Edit"
+msgstr ""
+
+#: ./templates/CRM/Resource/Page/ResourceDemandConditions.tpl
+msgid "Delete Condition"
+msgstr ""
+
+#: ./templates/CRM/Resource/Page/ResourceDemandConditions.tpl ./templates/CRM/Resource/Page/ResourceDemandsView.tpl ./templates/CRM/Resource/Page/ResourceView.tpl
+msgid "Delete"
+msgstr ""
+
+#: ./templates/CRM/Resource/Page/ResourceDemandConditions.tpl
+msgid "no resource conditions specified"
+msgstr ""
+
+#: ./templates/CRM/Resource/Page/ResourceDemandsView.tpl
+msgid "Required Resources (%1 of %2 ok)"
+msgstr ""
+
+#: ./templates/CRM/Resource/Page/ResourceDemandsView.tpl
+msgid "Fulfilled"
+msgstr ""
+
+#: ./templates/CRM/Resource/Page/ResourceDemandsView.tpl
+msgid "Actions"
+msgstr ""
+
+#: ./templates/CRM/Resource/Page/ResourceDemandsView.tpl
+msgid "Manage Assignments"
+msgstr ""
+
+#: ./templates/CRM/Resource/Page/ResourceDemandsView.tpl
+msgid "No Assignments"
+msgstr ""
+
+#: ./templates/CRM/Resource/Page/ResourceDemandsView.tpl
+msgid "more resources assigned than required"
+msgstr ""
+
+#: ./templates/CRM/Resource/Page/ResourceDemandsView.tpl
+msgid "Edit Conditions"
+msgstr ""
+
+#: ./templates/CRM/Resource/Page/ResourceDemandsView.tpl
+msgid "Modify (%1)"
+msgstr ""
+
+#: ./templates/CRM/Resource/Page/ResourceDemandsView.tpl
+msgid "Assign New Resources"
+msgstr ""
+
+#: ./templates/CRM/Resource/Page/ResourceDemandsView.tpl
+msgid "Edit Resource Demand"
+msgstr ""
+
+#: ./templates/CRM/Resource/Page/ResourceDemandsView.tpl
+msgid "Delete Resource Demand"
+msgstr ""
+
+#: ./templates/CRM/Resource/Page/ResourceDemandsView.tpl
+msgid "Add More Resource Requirement"
+msgstr ""
+
+#: ./templates/CRM/Resource/Page/ResourceView.tpl
+msgid "Resource Information"
+msgstr ""
+
+#: ./templates/CRM/Resource/Page/ResourceView.tpl
+msgid "Available Now"
+msgstr ""
+
+#: ./templates/CRM/Resource/Page/ResourceView.tpl
+msgid "Yes"
+msgstr ""
+
+#: ./templates/CRM/Resource/Page/ResourceView.tpl
+msgid "No"
+msgstr ""
+
+#: ./templates/CRM/Resource/Page/ResourceView.tpl
+msgid "Availability Restrictions"
+msgstr ""
+
+#: ./templates/CRM/Resource/Page/ResourceView.tpl
+msgid "Add Availability Restriction"
+msgstr ""
+
+#: ./templates/CRM/Resource/Page/ResourceView.tpl
+msgid "Edit Unavailability"
+msgstr ""
+
+#: ./templates/CRM/Resource/Page/ResourceView.tpl
+msgid "Delete Unavailability"
+msgstr ""
+
+#: ./templates/CRM/Resource/Page/ResourceView.tpl
+msgid "always available"
+msgstr ""
+
+#: ./templates/CRM/Resource/Page/ResourceView.tpl
+msgid "Assign to Other Demands"
+msgstr ""
+
+#: ./templates/CRM/Resource/Page/ResourceView.tpl
+msgid "no assignments"
+msgstr ""
+
