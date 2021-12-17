@@ -56,6 +56,7 @@ class CRM_Resource_Form_DemandAssignments extends CRM_Core_Form
             $display_candidate['id'] = $resource->id;
             $display_candidate['field_name'] = "unassign_{$resource->id}";
             $display_candidate['meets_demand'] = $this->resource_demand->isFulfilledWithResource($resource);
+            $display_candidate['paths']['view'] = $candidate->getEntityUrl('view');
             $display_resources[] = $display_candidate;
         }
 

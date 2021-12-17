@@ -68,6 +68,7 @@ class CRM_Resource_Form_ResourceDemandAssign extends CRM_Core_Form
             $display_candidate = $candidate->toArray();
             $display_candidate['id'] = $candidate->id;
             $display_candidate['field_name'] = "assign_{$candidate->id}";
+            $display_candidate['paths']['view'] = $candidate->getEntityUrl('view');
             $display_candidates[] = $display_candidate;
         }
         $this->assign('candidates', $display_candidates);

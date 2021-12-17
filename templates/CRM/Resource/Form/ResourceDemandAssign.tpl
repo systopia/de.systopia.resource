@@ -41,7 +41,11 @@
             {foreach from=$candidates item=candidate}
               <tr id="resource-{$candidate.id}" class="resource resource-view">
                   {assign var="field_name" value=$candidate.field_name}
-                <td>{$candidate.label} [{$candidate.id}]</td>
+                <td>
+                  <a href="{$candidate.paths.view}">
+                      {$candidate.label} [{$candidate.id}]
+                  </a>
+                </td>
                 <td>{$candidate.entity_id}</td>
                 <td>{$form.$field_name.html}</td>
               </tr>

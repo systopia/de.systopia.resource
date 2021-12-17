@@ -32,7 +32,11 @@
           {foreach from=$resources item=resource}
             <tr id="demand-{$resource.id}" class="demand resource-view {if $resource.meets_demand}resource-demand-met{else}resource-demand-not-met{/if}">
                 {assign var="field_name" value=$resource.field_name}
-              <td>{$resource.label} [{$resource.id}]</td>
+              <td>
+                <a href="{$candidate.paths.view}">
+                    {$resource.label} [{$resource.id}]
+                </a>
+              </td>
               <td>{$resource.entity_id}</td>
               <td>{if $resource.meets_demand}{ts}yes{/ts}{else}{ts}no{/ts}{/if}</td>
               <td>{$form.$field_name.html}</td>
