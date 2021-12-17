@@ -222,6 +222,41 @@ class CRM_Resource_BAO_Resource extends CRM_Resource_DAO_Resource
     }
 
     /**
+     * Get the linked entity
+     *
+     * @return array the linked entity
+     */
+    public function getEntity($cached = true)
+    {
+        if (empty($this->entity) || !$cached) {
+            $this->entity = null;
+            $entity_class = CRM_Core_DAO_AllCoreTables::getClassForTable($this->entity_table);
+            // Support special instantiation. This might have to be streamlined in the future, when Core fully supports
+            // entity types to share DAO classes.
+            switch ($entity_class) {
+                case 'CRM_Eck_DAO_Entity':
+                    // ECK entities need their type for instantiation.
+                    /** @var CRM_Eck_DAO_Entity $entity */
+                    $entity = new $entity_class(
+                        substr(CRM_Core_DAO_AllCoreTables::getEntityNameForTable($this->entity_table), strlen('Eck'))
+                    );
+                    break;
+                default:
+                    /** @var CRM_Core_DAO $entity */
+                    $entity = new $entity_class();
+                    break;
+            }
+            $entity->id = $this->entity_id;
+            if ($entity->find(true)) {
+                $this->entity = $entity;
+            } else {
+                throw new Exception("Entity linked to resource [{$this->id}] does not exist.");
+            }
+        }
+        return $this->entity;
+    }
+
+    /**
      * Check if the resource is available, judging by
      *  - the attached availabilities
      *  - current assignments
