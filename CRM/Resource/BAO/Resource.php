@@ -349,4 +349,44 @@ class CRM_Resource_BAO_Resource extends CRM_Resource_DAO_Resource
             return null;
         }
     }
+
+    /**
+     * @param string $action
+     *
+     * @return null
+     */
+    public function getEntityUrl($action = 'view')
+    {
+        if (!in_array($action, [
+            'view',
+            'update',
+            // TODO: Links for more actions needed?
+        ])) {
+            throw new Exception(E::ts('Invalid action %1 for retrieving entity URL.', [1 => $action]));
+        }
+        $url = null;
+
+        // Get path template for the requested action.
+        if ($path = $this->getEntity()::getEntityPaths()[$action]) {
+            // Replace "[id]" with the entity ID.
+            $path = str_replace('[id]', $this->entity_id, $path);
+
+            // Process paths for specific entity types.
+            switch (CRM_Core_DAO_AllCoreTables::getClassForTable($this->entity_table)) {
+                case 'CRM_Eck_DAO_Entity':
+                    // ECK entities need their type in the URLs.
+                    $path = str_replace(
+                        '[eck_type]',
+                        substr(
+                            CRM_Core_DAO_AllCoreTables::getEntityNameForTable($this->entity_table),
+                            strlen('Eck')
+                        ),
+                        $path
+                    );
+                    break;
+            }
+            $url = CRM_Utils_System::url($path . '&selectedChild=resource');
+        }
+        return $url;
+    }
 }
