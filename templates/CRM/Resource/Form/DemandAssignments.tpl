@@ -33,7 +33,7 @@
             <tr id="demand-{$resource.id}" class="demand resource-view {if $resource.meets_demand}resource-demand-met{else}resource-demand-not-met{/if}">
                 {assign var="field_name" value=$resource.field_name}
               <td>
-                <a href="{$candidate.paths.view}">
+                <a href="{$resource.paths.view}">
                     {$resource.label} [{$resource.id}]
                 </a>
               </td>
