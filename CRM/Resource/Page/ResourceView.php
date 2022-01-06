@@ -79,8 +79,8 @@ class CRM_Resource_Page_ResourceView extends CRM_Core_Page
         $this->assign('assignment_create_link',
                       CRM_Utils_System::url('civicrm/resource/assignment/options', "resource_id={$this->id}"));
 
-        Civi::resources()->addStyleUrl(E::url('css/resource_view.css'), 10, 'page-header');
-        Civi::resources()->addScriptUrl(E::url('js/resource_view.js'), 10, 'page-header');
+        Civi::resources()->addStyleFile(E::LONG_NAME, 'css/resource_view.css', 10, 'page-header');
+        Civi::resources()->addScriptFile(E::LONG_NAME, 'js/resource_view.js', 10, 'page-header');
 
         parent::run();
     }

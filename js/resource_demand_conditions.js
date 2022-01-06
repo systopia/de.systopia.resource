@@ -43,8 +43,9 @@ function delete_resource_demand_condition(demand_id) {
         let tab_content_id = cj("#tab_resourcedemands").attr('aria-controls');
         if (tab_content_id) {
           cj("#" + tab_content_id).crmSnippet('refresh');
-          let ts = CRM.ts('de.systopia.resource');
-          CRM.alert(ts("Condition deleted"), ts("Deleted"), "info");
+          (function($, _, ts) {
+            CRM.alert(ts("Condition deleted"), ts("Deleted"), "info");
+          })(CRM.$, CRM._, CRM.ts('de.systopia.resource'));
         } else {
           // reload the page
           window.location.reload(false);

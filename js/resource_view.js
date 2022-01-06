@@ -29,8 +29,9 @@ function delete_unavailability(unavailability_id) {
         let tab_content_id = cj("#tab_resource").attr('aria-controls');
         if (tab_content_id) {
           cj("#" + tab_content_id).crmSnippet('refresh');
-          let ts = CRM.ts('de.systopia.resource');
-          CRM.alert(ts("Resource Unavailability deleted"), ts("Deleted"), "info");
+          (function($, _, ts) {
+            CRM.alert(ts("Resource Unavailability deleted"), ts("Deleted"), "info");
+          })(CRM.$, CRM._, CRM.ts('de.systopia.resource'));
         }
       });
   });
@@ -52,8 +53,9 @@ function delete_assignment(assignment_id) {
         let tab_content_id = cj("#tab_resource").attr('aria-controls');
         if (tab_content_id) {
           cj("#" + tab_content_id).crmSnippet('refresh');
-          let ts = CRM.ts('de.systopia.resource');
-          CRM.alert(ts("Resource Assignment Removed"), ts("Unassigned"), "info");
+          (function($, _, ts) {
+            CRM.alert(ts("Resource Assignment Removed"), ts("Unassigned"), "info");
+          })(CRM.$, CRM._, CRM.ts('de.systopia.resource'));
         }
       });
   });

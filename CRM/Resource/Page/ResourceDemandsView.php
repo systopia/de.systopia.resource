@@ -90,8 +90,8 @@ class CRM_Resource_Page_ResourceDemandsView extends CRM_Core_Page
         $this->assign('entity_table', $this->entity_table);
         $this->assign('entity_id', $this->entity_id);
 
-        Civi::resources()->addStyleUrl(E::url('css/resource_demands_view.css'), 10, 'page-header');
-        Civi::resources()->addScriptUrl(E::url('js/resource_demands_view.js'), 10, 'page-header');
+        Civi::resources()->addStyleFile(E::LONG_NAME, 'css/resource_demands_view.css', 10, 'page-header');
+        Civi::resources()->addScriptFile(E::LONG_NAME, 'js/resource_demands_view.js', 10, 'page-header');
     }
 
     /**
