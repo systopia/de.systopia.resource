@@ -53,7 +53,7 @@ class CRM_Resource_UI
             // generate tab
             $tabs['resource'] = [
                 'id'      => 'resource',
-                'title'   => E::ts("Assignments"),
+                'title'   => E::ts("Resource Assignments"),
                 'url'     => CRM_Utils_System::url(
                     'civicrm/resource/view',
                     "id={$resource->id}"
@@ -77,7 +77,7 @@ class CRM_Resource_UI
                 // contact isn't a resource -> offer to become one
                 $tabs['resource'] = [
                     'id'      => 'resource',
-                    'title'   => E::ts("Assignments"),
+                    'title'   => E::ts("Resource Assignments"),
                     'url'     => CRM_Utils_System::url(
                         'civicrm/resource/create',
                         "entity_id={$entity_id}&entity_table={$entity_table}"
