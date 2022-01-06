@@ -3,14 +3,18 @@ msgstr ""
 "Project-Id-Version: \n"
 "POT-Creation-Date: \n"
 "PO-Revision-Date: \n"
+"Last-Translator: \n"
 "Language-Team: \n"
+"Language: de_DE\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Poedit 2.3\n"
-"Last-Translator: \n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"Language: de_DE\n"
+
+#: CRM/Resource/BAO/Resource.php
+msgid "Invalid action %1 for retrieving entity URL."
+msgstr "Ungültige Aktion %1 beim Erzeugen der Entitäts-URL."
 
 #: CRM/Resource/BAO/ResourceDemand.php
 msgid "forever (no timespan)"
@@ -51,8 +55,10 @@ msgstr "Ressourcenart-ID"
 msgid "Entity Table"
 msgstr "Entity-Tabelle"
 
-#: CRM/Resource/DAO/Resource.php
-msgid "Entity ID "
+#: CRM/Resource/DAO/Resource.php CRM/Resource/DAO/ResourceDemand.php
+#: templates/CRM/Resource/Form/DemandAssignments.tpl
+#: templates/CRM/Resource/Form/ResourceDemandAssign.tpl
+msgid "Entity ID"
 msgstr "Entitäts-ID"
 
 #: CRM/Resource/DAO/ResourceAssignment.php
@@ -114,18 +120,12 @@ msgid "Number of resources required"
 msgstr "Anzahl der benötigten Ressourcen"
 
 #: CRM/Resource/DAO/ResourceDemand.php
-#: templates/CRM/Resource/Form/DemandAssignments.tpl
-#: templates/CRM/Resource/Form/ResourceDemandAssign.tpl
-msgid "Entity ID"
-msgstr "Entitäts-ID"
-
-#: CRM/Resource/DAO/ResourceDemand.php
 msgid "Resource linked entity ID"
-msgstr ""
+msgstr "ID der mit der Ressource verknüpfte Entität"
 
 #: CRM/Resource/DAO/ResourceDemand.php
 msgid "Resource linked entity table name"
-msgstr ""
+msgstr "Tabellenname der mit der Ressource verknüpften Entität"
 
 #: CRM/Resource/DAO/ResourceDemand.php
 msgid "Is this a demand template?"
@@ -150,7 +150,7 @@ msgstr "Eindeutige ID der Ressourcenbedarfs-Bedingung"
 #: CRM/Resource/DAO/ResourceDemandCondition.php
 #: CRM/Resource/DAO/ResourceUnavailability.php
 msgid "Implementation Class Name"
-msgstr ""
+msgstr "Implementierungsklassenname"
 
 #: CRM/Resource/DAO/ResourceDemandCondition.php
 #: CRM/Resource/DAO/ResourceUnavailability.php
@@ -158,6 +158,8 @@ msgid ""
 "Class name of the implementation, a subclass of "
 "CRM_Resource_BAO_Resource_Unavailability"
 msgstr ""
+"Klassenname der Implementierung, eine von "
+"CRM_Resource_BAO_Resource_Unavailability abgeleitete Klasse"
 
 #: CRM/Resource/DAO/ResourceDemandCondition.php
 #: CRM/Resource/DAO/ResourceUnavailability.php
@@ -238,7 +240,7 @@ msgstr "Attributwert (experimentell)"
 
 #: CRM/Resource/DemandCondition/Attribute.php
 msgid "Attribute \"%1\" <code>%2</code> \"%3\""
-msgstr ""
+msgstr "Attribute \"%1\" <code>%2</code> \"%3\""
 
 #: CRM/Resource/DemandCondition/Attribute.php
 msgid "Field"
@@ -421,7 +423,7 @@ msgstr "Ressource anlegen"
 
 #: CRM/Resource/Form/ResourceCreate.php
 msgid "%1 Resource [%2]"
-msgstr ""
+msgstr "%1-Ressource [%2]"
 
 #: CRM/Resource/Form/ResourceDemandAssign.php
 msgid "Assign More \"%1\" Resources"
@@ -477,7 +479,7 @@ msgstr "Ressourcen erzeugt"
 
 #: CRM/Resource/Page/ResourceDemandConditions.php
 msgid "ResourceDemand '%1' Conditions"
-msgstr ""
+msgstr "Bedingungen für Ressourcenbedarf <em>%1</em>"
 
 #: CRM/Resource/Page/ResourceDemandsView.php
 msgid ""
@@ -517,7 +519,7 @@ msgstr "Datumsbereich"
 
 #: CRM/Resource/Upgrader/Base.php
 msgid "Upgrade %1 to revision %2"
-msgstr ""
+msgstr "%1 auf Revision %2 aktualisieren"
 
 #: Civi/Api4/Action/Resource/MeetsDemand.php api/v3/Resource.php
 msgid "At least one criteria was not met."
@@ -525,7 +527,7 @@ msgstr "Mindestens ein Kriterium wurde nicht erfüllt."
 
 #: api/v3/Resource.php
 msgid "Resource ID to be tested"
-msgstr ""
+msgstr "ID der zu prüfenden Ressource"
 
 #: api/v3/Resource.php
 msgid "The demand that the resource should be tested against"
@@ -641,14 +643,6 @@ msgstr "Zuweisung entfernen"
 #: templates/CRM/Resource/Form/ResourceDemandAssign.tpl
 msgid "all"
 msgstr "alle"
-
-#: templates/CRM/Resource/Form/DemandAssignments.tpl
-msgid "resource-demand-met"
-msgstr ""
-
-#: templates/CRM/Resource/Form/DemandAssignments.tpl
-msgid "resource-demand-not-met"
-msgstr ""
 
 #: templates/CRM/Resource/Form/DemandAssignments.tpl
 msgid "yes"
@@ -848,8 +842,8 @@ msgid "Delete Resource Demand"
 msgstr "Ressourcenbedarf löschen"
 
 #: templates/CRM/Resource/Page/ResourceDemandsView.tpl
-msgid "Add More Resource Requirement"
-msgstr "Weiteren Ressourcenbedarf hinzufügen"
+msgid "Add Resource Demand"
+msgstr "Ressourcenbedarf hinzufügen"
 
 #: templates/CRM/Resource/Page/ResourceView.tpl
 msgid "Resource Information"
@@ -884,13 +878,19 @@ msgid "Delete Unavailability"
 msgstr "Verfügbarkeitseinschränkung löschen"
 
 #: templates/CRM/Resource/Page/ResourceView.tpl
-msgid "always available"
-msgstr "immer verfügbar"
+msgid "Always available"
+msgstr "Immer verfügbar"
 
 #: templates/CRM/Resource/Page/ResourceView.tpl
 msgid "Assign to Other Demands"
 msgstr "Anderen Bedarfen zuweisen"
 
 #: templates/CRM/Resource/Page/ResourceView.tpl
-msgid "no assignments"
-msgstr "keine Zuweisungen"
+msgid "No assignments"
+msgstr "Keine Zuweisungen"
+
+#~ msgid "Entity ID "
+#~ msgstr "Entitäts-ID"
+
+#~ msgid "Add More Resource Requirement"
+#~ msgstr "Weiteren Ressourcenbedarf hinzufügen"
