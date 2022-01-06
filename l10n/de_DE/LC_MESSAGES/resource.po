@@ -555,7 +555,7 @@ msgstr "Resource zugewiesen"
 
 #: js/resource_assign.js templates/CRM/Resource/Page/ResourceDemandsView.tpl
 msgid "Assigned"
-msgstr "Zugeweisen"
+msgstr "Zugewiesen"
 
 #: js/resource_demand_conditions.js js/resource_demands_view.js
 #: js/resource_view.js
