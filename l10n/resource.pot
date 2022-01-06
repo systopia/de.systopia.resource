@@ -1,3 +1,7 @@
+#: ./CRM/Resource/BAO/Resource.php
+msgid "Invalid action %1 for retrieving entity URL."
+msgstr ""
+
 #: ./CRM/Resource/BAO/ResourceDemand.php
 msgid "forever (no timespan)"
 msgstr ""
@@ -30,11 +34,11 @@ msgstr ""
 msgid "Entity Table"
 msgstr ""
 
-#: ./CRM/Resource/DAO/Resource.php
-msgid "Entity ID "
+#: ./CRM/Resource/DAO/Resource.php ./CRM/Resource/DAO/ResourceDemand.php ./templates/CRM/Resource/Form/DemandAssignments.tpl ./templates/CRM/Resource/Form/ResourceDemandAssign.tpl
+msgid "Entity ID"
 msgstr ""
 
-#: ./CRM/Resource/DAO/ResourceAssignment.php
+#: ./CRM/Resource/DAO/ResourceAssignment.php ./CRM/Resource/UI.php
 msgid "Resource Assignments"
 msgstr ""
 
@@ -84,10 +88,6 @@ msgstr ""
 
 #: ./CRM/Resource/DAO/ResourceDemand.php
 msgid "Number of resources required"
-msgstr ""
-
-#: ./CRM/Resource/DAO/ResourceDemand.php ./templates/CRM/Resource/Form/DemandAssignments.tpl ./templates/CRM/Resource/Form/ResourceDemandAssign.tpl
-msgid "Entity ID"
 msgstr ""
 
 #: ./CRM/Resource/DAO/ResourceDemand.php
@@ -414,10 +414,6 @@ msgstr ""
 msgid "assigned"
 msgstr ""
 
-#: ./CRM/Resource/UI.php ./templates/CRM/Resource/Page/ResourceView.tpl
-msgid "Assignments"
-msgstr ""
-
 #: ./CRM/Resource/UI.php
 msgid "Required Resources"
 msgstr ""
@@ -548,14 +544,6 @@ msgstr ""
 
 #: ./templates/CRM/Resource/Form/DemandAssignments.tpl ./templates/CRM/Resource/Form/ResourceDemandAssign.tpl
 msgid "all"
-msgstr ""
-
-#: ./templates/CRM/Resource/Form/DemandAssignments.tpl
-msgid "resource-demand-met"
-msgstr ""
-
-#: ./templates/CRM/Resource/Form/DemandAssignments.tpl
-msgid "resource-demand-not-met"
 msgstr ""
 
 #: ./templates/CRM/Resource/Form/DemandAssignments.tpl
@@ -715,7 +703,7 @@ msgid "Delete Resource Demand"
 msgstr ""
 
 #: ./templates/CRM/Resource/Page/ResourceDemandsView.tpl
-msgid "Add More Resource Requirement"
+msgid "Add Resource Demand"
 msgstr ""
 
 #: ./templates/CRM/Resource/Page/ResourceView.tpl
@@ -751,7 +739,11 @@ msgid "Delete Unavailability"
 msgstr ""
 
 #: ./templates/CRM/Resource/Page/ResourceView.tpl
-msgid "always available"
+msgid "Always available"
+msgstr ""
+
+#: ./templates/CRM/Resource/Page/ResourceView.tpl
+msgid "Assignments"
 msgstr ""
 
 #: ./templates/CRM/Resource/Page/ResourceView.tpl
@@ -759,6 +751,6 @@ msgid "Assign to Other Demands"
 msgstr ""
 
 #: ./templates/CRM/Resource/Page/ResourceView.tpl
-msgid "no assignments"
+msgid "No assignments"
 msgstr ""
 

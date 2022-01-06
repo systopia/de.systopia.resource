@@ -179,7 +179,7 @@ class CRM_Resource_DAO_Resource extends CRM_Core_DAO {
         'entity_id' => [
           'name' => 'entity_id',
           'type' => CRM_Utils_Type::T_INT,
-          'title' => E::ts('Entity ID '),
+          'title' => E::ts('Entity ID'),
           'required' => TRUE,
           'where' => 'civicrm_resource.entity_id',
           'table_name' => 'civicrm_resource',

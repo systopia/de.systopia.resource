@@ -118,7 +118,6 @@ class CRM_Resource_Types
      */
     public static function getEntityName($entity_table)
     {
-        // todo: l10n? eck?
         return CRM_Core_DAO_AllCoreTables::getEntityNameForTable($entity_table);
     }
 }

@@ -74,7 +74,7 @@ class CRM_Resource_Form_ResourceDemandCreate extends CRM_Core_Form
           ]);
 
         // add some data
-        $this->assign('entity_name', E::ts(CRM_Resource_Types::getEntityName($this->entity_table)));
+        $this->assign('entity_name', CRM_Resource_Types::getEntityName($this->entity_table));
 
         parent::buildQuickForm();
     }

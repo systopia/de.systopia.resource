@@ -65,7 +65,7 @@ class CRM_Resource_Form_ResourceCreate extends CRM_Core_Form
           ]);
 
         // add some data
-        $this->assign('entity_name', E::ts(CRM_Resource_Types::getEntityName($this->entity_table)));
+        $this->assign('entity_name', CRM_Resource_Types::getEntityName($this->entity_table));
         $this->setDefaults([
             'resource_name' => $this->getDefaultLabel()
         ]);
@@ -123,7 +123,7 @@ class CRM_Resource_Form_ResourceCreate extends CRM_Core_Form
                 return civicrm_api3('Contact', 'getvalue', ['return' => 'display_name', 'id' => $this->entity_id]);
 
             default:
-                $entity_name = E::ts(CRM_Resource_Types::getEntityName($this->entity_table));
+                $entity_name = CRM_Resource_Types::getEntityName($this->entity_table);
                 try {
                     $bao = CRM_Core_DAO_AllCoreTables::getClassForTable($this->entity_table);
                     if ($label_field = $bao::$_labelField) {

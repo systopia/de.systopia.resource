@@ -30,7 +30,7 @@
           </thead>
           <tbody>
           {foreach from=$resources item=resource}
-            <tr id="demand-{$resource.id}" class="demand resource-view {if $resource.meets_demand}{ts}resource-demand-met{/ts}{else}{ts}resource-demand-not-met{/ts}{/if}">
+            <tr id="demand-{$resource.id}" class="demand resource-view {if $resource.meets_demand}resource-demand-met{else}resource-demand-not-met{/if}">
                 {assign var="field_name" value=$resource.field_name}
               <td>{$resource.label} [{$resource.id}]</td>
               <td>{$resource.entity_id}</td>
