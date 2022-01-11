@@ -12,33 +12,36 @@
 | written permission from the original author(s).        |
 +--------------------------------------------------------*/
 
-cj(document).ready(function() {
-  //
-  cj("button.resource-demand-assign").click(function() {
-    // first: disable all buttons
-    cj("button.resource-demand-assign").attr("disabled","disabled");
+(function ($, _, ts) {
+  $(document).ready(function () {
+    //
+    $("button.resource-demand-assign").click(function () {
+      // first: disable all buttons
+      $("button.resource-demand-assign").attr("disabled", "disabled");
 
-    // evaluate our button:
-    let demand_id = cj(this).attr('data-demand-id');
-    let resource_id = cj(this).attr('data-resource-id');
-    CRM.api3('ResourceAssignment', 'create', {resource_demand_id:demand_id,resource_id:resource_id,status:3})
-      .then(function() {
-        // let them know
-        (function($, _, ts) {
+      // evaluate our button:
+      let demand_id = $(this).attr('data-demand-id');
+      let resource_id = $(this).attr('data-resource-id');
+      CRM.api3('ResourceAssignment', 'create', {
+        resource_demand_id: demand_id,
+        resource_id: resource_id,
+        status: 3
+      })
+        .then(function () {
+          // let them know
           CRM.alert(ts("Resource Assigned"), ts("Assigned"), "info");
-        })(CRM.$, CRM._, CRM.ts('de.systopia.resource'));
 
-        // refresh the popup
-        cj("button.resource-demand-assign")
-          .closest("div.crm-ajax-container")
-          .crmSnippet('refresh');
+          // refresh the popup
+          $("button.resource-demand-assign")
+            .closest("div.crm-ajax-container")
+            .crmSnippet('refresh');
 
-        // try refresh: tab
-        let tab_content_id = cj("#tab_resource").attr('aria-controls');
-        if (tab_content_id) {
-          cj("#" + tab_content_id).crmSnippet('refresh');
-        }
-      });
+          // try refresh: tab
+          let tab_content_id = $("#tab_resource").attr('aria-controls');
+          if (tab_content_id) {
+            $("#" + tab_content_id).crmSnippet('refresh');
+          }
+        });
+    });
   });
-});
-
+})(CRM.$, CRM._, CRM.ts('de.systopia.resource'));

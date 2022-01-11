@@ -12,25 +12,27 @@
 | written permission from the original author(s).        |
 +--------------------------------------------------------*/
 
-cj(document).ready(function() {
-  // add assign checkbox handler
-  cj("input[id^=assign_]").change(function() {
-    // count the selected checkboxes and see if it's too many
-    let checked_checkboxes = cj("input[id^=assign_]").filter(":checked").length;
-    if (checked_checkboxes > CRM.vars.resource_demand_assign.assigned_missing) {
-      cj(".resource-too-many")
-        .show(100);
-    } else {
-      cj(".resource-too-many")
-        .hide(100);
-    }
-  });
+(function ($, _, ts) {
+  $(document).ready(function () {
+    // add assign checkbox handler
+    $("input[id^=assign_]").change(function () {
+      // count the selected checkboxes and see if it's too many
+      let checked_checkboxes = $("input[id^=assign_]").filter(":checked").length;
+      if (checked_checkboxes > CRM.vars.resource_demand_assign.assigned_missing) {
+        $(".resource-too-many")
+          .show(100);
+      }
+      else {
+        $(".resource-too-many")
+          .hide(100);
+      }
+    });
 
-  // add 'select all' handler
-  cj("span.resource-all").click(function() {
-    cj("input[id^=assign_]")
-      .prop('checked', true)
-      .change();
+    // add 'select all' handler
+    $("span.resource-all").click(function () {
+      $("input[id^=assign_]")
+        .prop('checked', true)
+        .change();
+    });
   });
-});
-
+})(CRM.$, CRM._, CRM.ts('de.systopia.resource'));

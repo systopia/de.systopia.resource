@@ -42,7 +42,7 @@
                   <td class="nowrap">
                     <span>
                       <a href="{$unavailability.edit_link}" class="action-item crm-hover-button crm-popup medium-popup" title="{ts}Edit Unavailability{/ts}">{ts}Edit{/ts}</a>
-                      <a class="action-item crm-hover-button" onclick="delete_unavailability({$unavailability.id});" title="{ts}Delete Unavailability{/ts}">{ts}Delete{/ts}</a>
+                      <a class="action-item crm-hover-button action--resource--unavailability-delete" title="{ts}Delete Unavailability{/ts}" data-unavailability-id="{$unavailability.id}">{ts}Delete{/ts}</a>
                     </span>
                   </td>
                 </tr>
@@ -66,7 +66,7 @@
                   <td>{$assignment.status}</td>
                   <td class="nowrap">
                     <span>
-                      <a class="action-item crm-hover-button" onclick="delete_assignment({$assignment.assignment_id});" title="{ts}Unassign{/ts}">{ts}Unassign{/ts}</a>
+                      <a class="action-item crm-hover-button action--resource--assignment-delete" data-assignment-id="{$assignment.assignment_id}" title="{ts}Unassign{/ts}">{ts}Unassign{/ts}</a>
                     </span>
                   </td>
                 </tr>

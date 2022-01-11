@@ -12,13 +12,14 @@
 | written permission from the original author(s).        |
 +--------------------------------------------------------*/
 
-cj(document).ready(function() {
-  // add 'select all' handler
-  cj("span.resource-all").click(function() {
-    let checked = cj("input[id^=unassign_]").prop('checked');
-    cj("input[id^=unassign_]")
-      .prop('checked', !checked)
-      .change();
+(function ($, _, ts) {
+  $(document).ready(function () {
+    // add 'select all' handler
+    $("span.resource-all").click(function () {
+      let checked = $("input[id^=unassign_]").prop('checked');
+      $("input[id^=unassign_]")
+        .prop('checked', !checked)
+        .change();
+    });
   });
-});
-
+})(CRM.$, CRM._, CRM.ts('de.systopia.resource'));

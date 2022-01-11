@@ -15,9 +15,9 @@
 {crmScope extensionKey='de.systopia.resource'}
   <div class="crm-block crm-content-block">
     <h3 class="header-dark resource-demand-view">{ts 1=$demands_met_count 2=$demand_count}Required Resources (%1 of %2 ok){/ts}</h3>
-    <div class="resource-demand-view resource-demand-view-availabilities">
+    <div class="resource-demand-view resource-demand-view-demands">
       {if $resource_demand_data}
-          <table class="crm-table row-highlight resource-demand-view resource-demand-view-unavailabilities">
+          <table class="crm-table row-highlight resource-demand-view-demands">
               <thead>
                 <tr>
                   <th>{ts}Resource{/ts}</th>
@@ -53,7 +53,7 @@
                       <span>
                         <a href="{$resource_demand.assign_link}" class="action-item crm-hover-button crm-popup medium-popup" title="{ts}Assign New Resources{/ts}">{ts}Assign{/ts}</a>
                         <a href="{$resource_demand.edit_link}" class="action-item crm-hover-button crm-popup small-popup" title="{ts}Edit Resource Demand{/ts}">{ts}Edit{/ts}</a>
-                        <a class="action-item crm-hover-button" onclick="delete_resource_demand({$resource_demand.id});" title="{ts}Delete Resource Demand{/ts}">{ts}Delete{/ts}</a>
+                        <a class="action-item crm-hover-button action--resource--demand-delete" data-demand-id="{$resource_demand.id}" title="{ts}Delete Resource Demand{/ts}">{ts}Delete{/ts}</a>
                       </span>
                     </td>
                 </tr>
