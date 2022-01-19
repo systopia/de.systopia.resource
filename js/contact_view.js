@@ -15,12 +15,11 @@
 (function ($, _, ts) {
   $(document).ready(function () {
     // add handler to refresh tab if in resource tab if popup closed
-    //  todo: restrict to 'our' popup
-    let tab_content_id = $("#tab_resource").attr('aria-controls');
-    if (tab_content_id) {
-      $(document).one('crmPopupFormSuccess', function () {
-        $("#" + tab_content_id).crmSnippet('refresh');
+    $(document)
+      .on('crmPopupFormSuccess.resource', function (event) {
+        if ($(event.target).attr('id') == 'resource--unavailability--add') {
+          CRM.refreshParent(event);
+        }
       });
-    }
   });
 })(CRM.$, CRM._, CRM.ts('de.systopia.resource'));

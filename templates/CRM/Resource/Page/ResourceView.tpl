@@ -32,7 +32,7 @@
       </table>
     </div>
 
-    <h3 class="header-dark resource-view">{ts}Availability Restrictions{/ts} <a href="{$unavailability_create_link}" title="{ts}Add Availability Restriction{/ts}" class="crm-popup medium-popup">[+]</a></h3>
+    <h3 class="header-dark resource-view">{ts}Availability Restrictions{/ts} <a href="{$unavailability_create_link}" title="{ts}Add Availability Restriction{/ts}" class="crm-popup medium-popup" id="resource--unavailability--add">[+]</a></h3>
     <div class="crm-container section-shown resource-view resource-view-availabilities">
           <table class="crm-table row-highlight resource-view resource-view-unavailabilities">
               {if $unavailabilities}
