@@ -14,49 +14,26 @@
 
 (function ($, _, ts) {
   $(document).ready(function () {
-    // refresh on pop close
-    $(document).one('crmPopupFormSuccess', function () {
-      $("div.resource-demand-view-info")
-        .closest("div.crm-ajax-container")
-        .crmSnippet('refresh');
-    });
 
     $('.resource-demand-view-conditions .action--resource--demand_condition-delete')
-      .on('click', function (event, target) {
-        delete_resource_demand_condition($(this).data('condition-id'));
+      .on('click', function (event) {
+        var condition_id = $(this).data('condition-id');
+        CRM.confirm({
+          title: ts("Confirm Deletion"),
+          message: ts("Do you really want to delete this condition?")
+        }).on('crmConfirm:yes', function () {
+          CRM.api3('ResourceDemandCondition', 'delete', {id: condition_id})
+            .then(function () {
+              CRM.alert(ts("Condition deleted"), ts("Deleted"), "info");
+              CRM.refreshParent(event);
+              $(event.target)
+                .closest('.crm-ajax-container, #crm-main-content-wrapper')
+                .trigger('crmPopupFormSuccess');
+            });
+        });
+        // Avoid fragment jump.
         return false;
       });
   });
-
-  /**
-   * Delete the given resource demand and refresh
-   *
-   * @param demand_id
-   */
-  function delete_resource_demand_condition(demand_id) {
-    CRM.confirm({
-      title: ts("Confirm Deletion"),
-      message: ts("Do you really want to delete this condition?")
-    }).on('crmConfirm:yes', function () {
-      CRM.api3('ResourceDemandCondition', 'delete', {id: demand_id})
-        .then(function () {
-          // refresh popups
-          $("div.resource-demand-view-conditions")
-            .closest("div.crm-ajax-container")
-            .crmSnippet('refresh');
-
-          // refresh tab (if exists)
-          let tab_content_id = $("#tab_resourcedemands").attr('aria-controls');
-          if (tab_content_id) {
-            $("#" + tab_content_id).crmSnippet('refresh');
-            CRM.alert(ts("Condition deleted"), ts("Deleted"), "info");
-          }
-          else {
-            // reload the page
-            window.location.reload(false);
-          }
-        });
-    });
-  }
 
 })(CRM.$, CRM._, CRM.ts('de.systopia.resource'));

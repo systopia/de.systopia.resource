@@ -33,4 +33,3 @@
       {include file="CRM/common/formButtons.tpl" location="bottom"}
   </div>
 {/crmScope}
-</script>
