@@ -52,11 +52,12 @@ class CRM_Resource_Form_DemandAssignments extends CRM_Core_Form
         $display_resources = [];
         foreach ($this->assigned_resources as $resource) {
             /** @var CRM_Resource_BAO_Resource $resource */
-            $display_candidate = $resource->toArray();
-            $display_candidate['id'] = $resource->id;
-            $display_candidate['field_name'] = "unassign_{$resource->id}";
-            $display_candidate['meets_demand'] = $this->resource_demand->isFulfilledWithResource($resource);
-            $display_resources[] = $display_candidate;
+            $display_resource = $resource->toArray();
+            $display_resource['id'] = $resource->id;
+            $display_resource['field_name'] = "unassign_{$resource->id}";
+            $display_resource['meets_demand'] = $this->resource_demand->isFulfilledWithResource($resource);
+            $display_resource['paths']['view'] = $resource->getEntityUrl('view');
+            $display_resources[] = $display_resource;
         }
 
         // assign some stuff

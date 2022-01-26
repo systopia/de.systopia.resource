@@ -120,7 +120,8 @@ class CRM_Resource_BAO_ResourceDemand extends CRM_Resource_DAO_ResourceDemand
      *
      * @param $count integer maximal number of resources
      *
-     * @return array list of CRM_Resource_BAO_Resource
+     * @return CRM_Resource_BAO_Resource[]
+     *   A list of possible resources to fulfill the demand.
      */
     public function getResourceCandidates($count)
     {

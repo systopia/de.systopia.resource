@@ -222,6 +222,41 @@ class CRM_Resource_BAO_Resource extends CRM_Resource_DAO_Resource
     }
 
     /**
+     * Get the linked entity
+     *
+     * @return array the linked entity
+     */
+    public function getEntity($cached = true)
+    {
+        if (empty($this->entity) || !$cached) {
+            $this->entity = null;
+            $entity_class = CRM_Core_DAO_AllCoreTables::getClassForTable($this->entity_table);
+            // Support special instantiation. This might have to be streamlined in the future, when Core fully supports
+            // entity types to share DAO classes.
+            switch ($entity_class) {
+                case 'CRM_Eck_DAO_Entity':
+                    // ECK entities need their type for instantiation.
+                    /** @var CRM_Eck_DAO_Entity $entity */
+                    $entity = new $entity_class(
+                        substr(CRM_Core_DAO_AllCoreTables::getEntityNameForTable($this->entity_table), strlen('Eck'))
+                    );
+                    break;
+                default:
+                    /** @var CRM_Core_DAO $entity */
+                    $entity = new $entity_class();
+                    break;
+            }
+            $entity->id = $this->entity_id;
+            if ($entity->find(true)) {
+                $this->entity = $entity;
+            } else {
+                throw new Exception("Entity linked to resource [{$this->id}] does not exist.");
+            }
+        }
+        return $this->entity;
+    }
+
+    /**
      * Check if the resource is available, judging by
      *  - the attached availabilities
      *  - current assignments
@@ -313,5 +348,45 @@ class CRM_Resource_BAO_Resource extends CRM_Resource_DAO_Resource
         } else {
             return null;
         }
+    }
+
+    /**
+     * @param string $action
+     *
+     * @return null
+     */
+    public function getEntityUrl($action = 'view')
+    {
+        if (!in_array($action, [
+            'view',
+            'update',
+            // TODO: Links for more actions needed?
+        ])) {
+            throw new Exception(E::ts('Invalid action %1 for retrieving entity URL.', [1 => $action]));
+        }
+        $url = null;
+
+        // Get path template for the requested action.
+        if ($path = $this->getEntity()::getEntityPaths()[$action]) {
+            // Replace "[id]" with the entity ID.
+            $path = str_replace('[id]', $this->entity_id, $path);
+
+            // Process paths for specific entity types.
+            switch (CRM_Core_DAO_AllCoreTables::getClassForTable($this->entity_table)) {
+                case 'CRM_Eck_DAO_Entity':
+                    // ECK entities need their type in the URLs.
+                    $path = str_replace(
+                        '[eck_type]',
+                        substr(
+                            CRM_Core_DAO_AllCoreTables::getEntityNameForTable($this->entity_table),
+                            strlen('Eck')
+                        ),
+                        $path
+                    );
+                    break;
+            }
+            $url = CRM_Utils_System::url($path . '&selectedChild=resource');
+        }
+        return $url;
     }
 }
