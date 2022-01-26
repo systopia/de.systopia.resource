@@ -54,7 +54,12 @@ class CRM_Resource_Form_ResourceAssignmentOptions extends CRM_Core_Form
             $assigned_demands[$assignment->id] = true;
         }
 
-        $candidates = $this->resource->getDemandCandidates();
+        // find candidates, but only once for this form to avoid differing results during postprocessing.
+        $candidates = $this->get('candidates');
+        if (!isset($candidates)) {
+            $candidates = $this->resource_demand->getDemandCandidates();
+            $this->set('candidates', $candidates);
+        }
 
         // prep for display
         $display_candidates = [];
