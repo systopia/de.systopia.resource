@@ -57,9 +57,13 @@ class CRM_Resource_Form_ResourceDemandAssign extends CRM_Core_Form
         $this->assign('assigned_requested', $this->resource_demand->count);
         $this->assign('demand_label', $this->resource_demand->label);
 
-        // find candidates
-        $count = max($this->resource_count, $this->resource_demand->count);
-        $candidates = $this->resource_demand->getResourceCandidates($count);
+        // find candidates, but only once for this form to avoid differing results during postprocessing.
+        $candidates = $this->get('candidates');
+        if (!isset($candidates)) {
+            $count = max($this->resource_count, $this->resource_demand->count);
+            $candidates = $this->resource_demand->getResourceCandidates($count);
+            $this->set('candidates', $candidates);
+        }
 
         // prep for display
         $display_candidates = [];
