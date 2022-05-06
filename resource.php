@@ -253,3 +253,15 @@ function resource_civicrm_copy($objectName, &$object)
         }
     }
 }
+
+/**
+ * Implements hook_civicrm_alterAdminPanel().
+ */
+function resource_civicrm_alterAdminPanel(&$adminPanel) {
+    // Add a group to the administration console and display items belonging to it.
+    $values = CRM_Core_Menu::getAdminLinks();
+    $adminPanel['CiviResource'] = [
+        'title' => E::ts('CiviResource'),
+    ] + $values['CiviResource'];
+
+}
