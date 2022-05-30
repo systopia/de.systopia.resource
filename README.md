@@ -12,11 +12,11 @@ The extension is licensed under [AGPL-3.0](https://github.com/systopia/de.systop
 
 ## Scope & Features
 ### [Resource Management extension](https://github.com/systopia/de.systopia.resource)
-The main extension provides an UI to define resources and demands and an algorhytm to match those. When a resource is assigned to a demand it will be blocked for the specified timeframe. You can also manage resource's general availability restrictions (such as holidays).
+The main extension provides an UI to define resources and demands and an algorithm to match those. When a resource is assigned to a demand it will be blocked for the specified timeframe. You can also manage resource's general availability restrictions (such as holidays).
 
 For each resource demand, conditions can be specified, particularly in which time frame the resource is required but also other conditions such as groups the resource needs to be a part of and much more.
 
-The extension will the suggest resources matching your demands and allow you to assign them. Also some online integration features are already implemented (inviting contacts to participate in a matching opportunitiy) and much more is planned for the future
+The extension will suggest resources matching your demands and allow you to assign them. Also some online integration features are already implemented (inviting contacts to participate in a matching opportunity) and much more is planned for the future
 
 ### [Entity Construction Kit](https://github.com/systopia/de.systopia.eck)
 This extension enables you to create custom entities via CiviCRM's UI and assign custom fields to your entities. In the context of resource management you will only need it if you want to manage physical / non-CiviCRM-contact resources.
@@ -24,7 +24,7 @@ This extension enables you to create custom entities via CiviCRM's UI and assign
 In that case you would create a custom entity type and/or sub types for each category of resource you want to manage.
 
 ### Search Kit
-CiviCRM's search kit (core) extension allows you to build versatile searches, list views and much more. As the entity construction kit does only provide limited UI by itself you will have to use the search kit if you want to find, create and edit your custom entities.
+CiviCRM's search kit (core) extension allows you to build versatile searches, list views and much more. As the entity construction kit only provides limited UI by itself you will have to use the search kit if you want to find, create and edit your custom entities.
 
 If you only manage contact resources you do not neccesarily need the search kit but it can help you to build much better searches and views.
 
@@ -59,7 +59,7 @@ After adding a demand it is usually advisable to create a condition by clicking 
 You can also add other conditions that need to be met in order to assign / match resources, e.g. that the contacts need to be in a specific group or have a certain tag.
 
 ### Resource availability restrictions
-Resources that are assigned to a demand wont be matched to / suggested for conflicting demands. In addition, for any resource, general availability restrictions (e.g. holidays / other absence) can be specified within the Resource Assignments tab. These general availability restrictions will aso prevent the resource to be suggested for other assignments during that timespan(s).
+Resources that are assigned to a demand won't be matched to / suggested for conflicting demands. In addition, for any resource, general availability restrictions (e.g. holidays / other absence) can be specified within the Resource Assignments tab. These general availability restrictions will aso prevent the resource to be suggested for other assignments during that timespan(s).
 
 ### Matching & mananging resources for a demand
 In order to find resources that fulfill the specified conditions click on "assign" in the actions column of the demand configuration screen. You will be presented with a list of matching resources (if any). You can choose selected or all resources from that list and assign them to the demand.
@@ -67,10 +67,10 @@ In order to find resources that fulfill the specified conditions click on "assig
 The columns "assigned" and "fulfilled" will show the number of all resources that are assigned and those that fulfill all currently defined conditions. Clicking on a number in the assigned-column will bring up a list of the currently assigned resources and allow you to unassign them if required. 
 
 ### Find matching demands for resources
-From a resource's assignment tab, demands with conditions met by te resources can be found by klicking on the "+" in the Assignments-area". Assign a resource to a demand from the list of demands the resource would be suitable for. You can also unassign a resource from the list of current assignments. 
+From a resource's assignment tab, demands with conditions met by the resources can be found by clicking on the "+" in the Assignments-area". Assign a resource to a demand from the list of demands the resource would be suitable for. You can also unassign a resource from the list of current assignments. 
 
 ### Event Resource Extension
-As described above, this extension builds upon the Resource Management extension for assigning resources to CiviCRM participants. After installing the extension, navigate to its settings page (/civicrm/admin/setting/resourceevent?reset=1) and define the positive and negative status that you want to be used by the extension when creating / updating your participant objects. The extension will create a special participant role Human Resource" which cannot be added when creating or editing a participant object via the UI. It will automatically create and update participant objects for resource assigments and vice versa: 
+As described above, this extension builds upon the Resource Management extension for assigning resources to CiviCRM participants. After installing the extension, navigate to its settings page (/civicrm/admin/setting/resourceevent?reset=1) and define the positive and negative status that you want to be used by the extension when creating / updating your participant objects. The extension will create a special participant role "Human Resource" which cannot be added when creating or editing a participant object via the UI. It will automatically create and update participant objects for resource assigments and vice versa: 
 - When assigning a resource to a demand, an existing participant object with Human Resource role would be updated, otherwise a new one would be created.
 - When unassigning a resource from a demand the connected participant object will be updated to your configured participant status with a negative class.
 - When creating a participant object with a positive status that has the role Human resource, and a connected demand a corresponding assignment will be created. Note that this is currently not possible via the UI but only via extensions (e.g. Event Invitation) or the API.
