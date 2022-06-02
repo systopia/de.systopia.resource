@@ -65,25 +65,89 @@ class CRM_Resource_Form_ResourceDemandAssign extends CRM_Core_Form
             $this->set('candidates', $candidates);
         }
 
-        // prep for display
-        $display_candidates = [];
-        foreach ($candidates as $candidate) {
-            /** @var CRM_Resource_BAO_Resource $candidate */
-            $display_candidate = $candidate->toArray();
-            $display_candidate['id'] = $candidate->id;
-            $display_candidate['field_name'] = "assign_{$candidate->id}";
-            $display_candidate['paths']['view'] = $candidate->getEntityUrl('view');
-            $display_candidates[] = $display_candidate;
-        }
-        $this->assign('candidates', $display_candidates);
+        $resource_entity_type = $this->resource_demand->getResourceEntityType();
+        $this->assign(
+            'resource_entity_type',
+            CRM_Core_DAO_AllCoreTables::getEntityNameForTable($resource_entity_type['entity_table'])
+        );
 
-        // add checkboxes
-        foreach ($display_candidates as $display_candidate) {
-            $this->add(
-                'checkbox',
-                $display_candidate['field_name'],
-                ''
+        // TODO: Use a contact selector and embed search result tasks selector for contact resources.
+        if ($resource_entity_type['entity_table'] == 'civicrm_contact') {
+            CRM_Core_Resources::singleton()
+                ->addScriptFile('civicrm', 'js/crm.searchForm.js', 1, 'html-header')
+                ->addStyleFile('civicrm', 'css/searchForm.css', 1, 'html-header');
+            $this->addClass('crm-search-form');
+
+            // Add search task menu.
+            $tasks = CRM_Contact_Task::permissionedTaskTitles(CRM_Core_Permission::getPermission(), ['deletedContacts' => FALSE]);
+            $taskMetaData = [];
+            foreach ($tasks as $key => $task) {
+                $taskMetaData[$key] = ['title' => $task];
+            }
+            $this->addTaskMenu($taskMetaData);
+
+            $selectedContactIds = [];
+            $qfKeyParam = $this->get('qfKey');
+            // We use ajax to handle selections only if the search results component_mode is set to "contacts"
+            if ($qfKeyParam) {
+                $this->addClass('crm-ajax-selection-form');
+                $qfKeyParam = "civicrm search {$qfKeyParam}";
+                $selectedContactIdsArr = Civi::service('prevnext')->getSelection($qfKeyParam);
+                $selectedContactIds = array_keys($selectedContactIdsArr[$qfKeyParam]);
+            }
+            $this->assign_by_ref('selectedContactIds', $selectedContactIds);
+
+            $formValues = ['id' => array_column($candidates, 'entity_id')];
+            $selector = new CRM_Contact_Selector(
+                'CRM_Contact_Selector',
+                $formValues,
+                CRM_Contact_BAO_Query::convertFormValues($formValues)
             );
+            $controller = new CRM_Core_Selector_Controller(
+                $selector,
+                $this->get(CRM_Utils_Pager::PAGE_ID),
+                $this->get(CRM_Utils_Sort::SORT_ID) . $this->get(CRM_Utils_Sort::SORT_DIRECTION),
+                CRM_Core_Action::VIEW,
+                $this,
+                CRM_Core_Selector_Controller::TEMPLATE
+            );
+            $controller->setEmbedded(TRUE);
+            $controller->run();
+
+            // Add row selection checkboxes.
+            $rows = $this->get_template_vars('rows');
+            $this->addElement('checkbox', 'toggleSelect', NULL, NULL, ['class' => 'select-rows']);
+            if (!empty($rows)) {
+                foreach ($rows as $row) {
+                    if (!empty($row['checkbox'])) {
+                        // TODO: Use those checkboxes for assigning resources, adapt previous code (see below).
+                        $this->addElement('checkbox', $row['checkbox'], NULL, NULL, ['class' => 'select-row']);
+                    }
+                }
+            }
+        }
+        else {
+            // prep for display
+            $display_candidates = [];
+            foreach ($candidates as $candidate) {
+                /** @var CRM_Resource_BAO_Resource $candidate */
+                $display_candidate = $candidate->toArray();
+                $display_candidate['id'] = $candidate->id;
+                $display_candidate['field_name'] = "assign_{$candidate->id}";
+                $display_candidate['paths']['view'] = $candidate->getEntityUrl('view');
+                $display_candidates[] = $display_candidate;
+            }
+            $this->assign('candidates', $display_candidates);
+
+            // add checkboxes
+            foreach ($display_candidates as $display_candidate) {
+                // TODO: Rename checkboxes to match selector table checkbox names (see above).
+                $this->add(
+                    'checkbox',
+                    $display_candidate['field_name'],
+                    ''
+                );
+            }
         }
 
         $this->addButtons([

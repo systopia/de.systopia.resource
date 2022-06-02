@@ -13,6 +13,7 @@
 +-------------------------------------------------------*}
 
 {crmScope extensionKey='de.systopia.resource'}
+<div class="crm-container">
   <h3 class="resource-view resource-assignment-status">
     {if $assigned_now}
         {if $assigned_missing}
@@ -27,33 +28,45 @@
     {ts}Here's a random list of some available resources currently matching the requirements:{/ts}
   </h3>
 
-  <div class="resource-view resource-matching-resources">
-      {if $candidates}
-        <table class="crm-table resource-resource-view resource-resource-view-unavailabilities">
-          <thead>
-          <tr>
-            <th>{ts}Name{/ts}</th>
-            <th>{ts}Entity ID{/ts}</th>
-            <th>{ts}Assign{/ts}&nbsp;<span class="resource resource-all">[{ts}all{/ts}]</span></th>
-          </tr>
-          </thead>
-          <tbody>
-            {foreach from=$candidates item=candidate}
-              <tr id="resource-{$candidate.id}" class="resource resource-view">
-                  {assign var="field_name" value=$candidate.field_name}
-                <td>
-                  <a href="{$candidate.paths.view}">
-                      {$candidate.label} [{$candidate.id}]
-                  </a>
-                </td>
-                <td>{$candidate.entity_id}</td>
-                <td>{$form.$field_name.html}</td>
-              </tr>
-            {/foreach}
-          </tbody>
-        </table>
+  <div class="resource-view resource-matching-resources crm-results-block">
+      {if $resource_entity_type == 'Contact'}
+
+        <div class="crm-search-tasks">
+            {include file="CRM/Contact/Form/Search/ResultTasks.tpl"}
+        </div>
+        
+        <div class="crm-search-results">
+            {include file="CRM/Contact/Form/Selector.tpl"}
+        </div>
+
       {else}
-        <div class="resource resource-missing">{ts}Sorry, no more available resources found for this requirement.{/ts}</div>
+          {if $candidates}
+            <table class="crm-table resource-resource-view resource-resource-view-unavailabilities">
+              <thead>
+              <tr>
+                <th>{ts}Name{/ts}</th>
+                <th>{ts}Entity ID{/ts}</th>
+                <th>{ts}Assign{/ts}&nbsp;<span class="resource resource-all">[{ts}all{/ts}]</span></th>
+              </tr>
+              </thead>
+              <tbody>
+              {foreach from=$candidates item=candidate}
+                <tr id="resource-{$candidate.id}" class="resource resource-view">
+                    {assign var="field_name" value=$candidate.field_name}
+                  <td>
+                    <a href="{$candidate.paths.view}">
+                        {$candidate.label} [{$candidate.id}]
+                    </a>
+                  </td>
+                  <td>{$candidate.entity_id}</td>
+                  <td>{$form.$field_name.html}</td>
+                </tr>
+              {/foreach}
+              </tbody>
+            </table>
+          {else}
+            <div class="resource resource-missing">{ts}Sorry, no more available resources found for this requirement.{/ts}</div>
+          {/if}
       {/if}
   </div>
 
@@ -65,4 +78,5 @@
       {include file="CRM/common/formButtons.tpl" location="bottom"}
   </div>
 
+</div>
 {/crmScope}
