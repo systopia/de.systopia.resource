@@ -365,6 +365,15 @@ class CRM_Resource_BAO_ResourceDemand extends CRM_Resource_DAO_ResourceDemand
     }
 
     /**
+     * Retrieves the entity type of resources with the demand's resource type.
+     *
+     * @return array|null
+     */
+    public function getResourceEntityType() {
+        return CRM_Resource_Types::getType($this->resource_type_id);
+    }
+
+    /**
      * Try to get a label of the linked entity
      *
      * @return string a label
