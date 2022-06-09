@@ -43,6 +43,7 @@ class ResourceTestBase extends TestCase implements HeadlessInterface, HookInterf
     public function setUpHeadless()
     {
         return Test::headless()
+            //->install('de.systopia.eck')
             ->installMe(__DIR__)
             ->apply();
     }
