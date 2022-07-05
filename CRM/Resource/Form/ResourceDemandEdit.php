@@ -46,7 +46,7 @@ class CRM_Resource_Form_ResourceDemandEdit extends CRM_Core_Form
             'text',
             'resource_count',
             E::ts('Count'),
-            true,
+            [],
             true
         );
         $this->addRule('resource_count', E::ts('The demand should require a least one resource'), 'positiveInteger');
