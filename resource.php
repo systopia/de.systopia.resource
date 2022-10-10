@@ -31,16 +31,6 @@ function resource_civicrm_config(&$config)
 }
 
 /**
- * Implements hook_civicrm_xmlMenu().
- *
- * @link https://docs.civicrm.org/dev/en/latest/hooks/hook_civicrm_xmlMenu
- */
-function resource_civicrm_xmlMenu(&$files)
-{
-    _resource_civix_civicrm_xmlMenu($files);
-}
-
-/**
  * Implements hook_civicrm_install().
  *
  * @link https://docs.civicrm.org/dev/en/latest/hooks/hook_civicrm_install
@@ -98,54 +88,6 @@ function resource_civicrm_disable()
 function resource_civicrm_upgrade($op, CRM_Queue_Queue $queue = null)
 {
     return _resource_civix_civicrm_upgrade($op, $queue);
-}
-
-/**
- * Implements hook_civicrm_managed().
- *
- * Generate a list of entities to create/deactivate/delete when this module
- * is installed, disabled, uninstalled.
- *
- * @link https://docs.civicrm.org/dev/en/latest/hooks/hook_civicrm_managed
- */
-function resource_civicrm_managed(&$entities)
-{
-    _resource_civix_civicrm_managed($entities);
-}
-
-/**
- * Implements hook_civicrm_caseTypes().
- *
- * Add CiviCase types provided by this extension.
- *
- * @link https://docs.civicrm.org/dev/en/latest/hooks/hook_civicrm_caseTypes
- */
-function resource_civicrm_caseTypes(&$caseTypes)
-{
-    _resource_civix_civicrm_caseTypes($caseTypes);
-}
-
-/**
- * Implements hook_civicrm_angularModules().
- *
- * Add Angular modules provided by this extension.
- *
- * @link https://docs.civicrm.org/dev/en/latest/hooks/hook_civicrm_angularModules
- */
-function resource_civicrm_angularModules(&$angularModules)
-{
-    // Auto-add module files from ./ang/*.ang.php
-    _resource_civix_civicrm_angularModules($angularModules);
-}
-
-/**
- * Implements hook_civicrm_alterSettingsFolders().
- *
- * @link https://docs.civicrm.org/dev/en/latest/hooks/hook_civicrm_alterSettingsFolders
- */
-function resource_civicrm_alterSettingsFolders(&$metaDataFolders = null)
-{
-    _resource_civix_civicrm_alterSettingsFolders($metaDataFolders);
 }
 
 /**
@@ -220,14 +162,6 @@ function resource_civicrm_searchTasks($objectType, &$tasks)
             ];
         }
     }
-}
-
-/**
- * Implements hook_civicrm_themes().
- */
-function resource_civicrm_themes(&$themes)
-{
-    _resource_civix_civicrm_themes($themes);
 }
 
 /**
