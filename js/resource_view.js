@@ -13,6 +13,15 @@
 +--------------------------------------------------------*/
 
 (function ($, _, ts) {
+  $(document).ready(function () {
+    $(document)
+      .off('crmPopupFormSuccess.resource-view')
+      .on('crmPopupFormSuccess.resource-view', function (event) {
+        CRM.refreshParent(event);
+        $('#' + $("#tab_resource").attr('aria-controls'))
+          .crmSnippet('refresh');
+      });
+  });
 
   $('.resource-view-unavailabilities .action--resource--unavailability-delete')
     .on('click', function(event, target) {

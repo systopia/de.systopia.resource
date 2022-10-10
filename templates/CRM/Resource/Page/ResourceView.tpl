@@ -14,7 +14,7 @@
 
 {crmScope extensionKey='de.systopia.resource'}
   <div class="crm-block crm-content-block">
-    <h3 class="header-dark resource-view">{ts}Resource Information{/ts}</h3>
+    <h3 class="header-dark resource-view">{ts}Resource Information{/ts} <a href="{$resource_edit_link}" title="{ts}Edit Resource{/ts}" class="crm-popup medium-popup" id="resource--resource--edit">[{ts}edit{/ts}]</a></h3>
     <div class="crm-container section-shown resource-view resource-view-info">
       <table class="no-border">
         <tr>
