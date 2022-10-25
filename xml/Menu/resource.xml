@@ -78,4 +78,10 @@
     <title>DemandAssignments</title>
     <access_arguments>access CiviCRM</access_arguments>
   </item>
+  <item>
+    <path>civicrm/resource/edit</path>
+    <page_callback>CRM_Resource_Form_ResourceEdit</page_callback>
+    <title>ResourceEdit</title>
+    <access_arguments>access CiviCRM</access_arguments>
+  </item>
 </menu>
