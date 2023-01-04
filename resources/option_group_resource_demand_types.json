@@ -1,0 +1,21 @@
+{
+  "_lookup": ["name"],
+  "_translate": ["title"],
+  "name": "resource_demand_types",
+  "title": "Resource Demand Types",
+  "is_reserved": "1",
+  "is_active": "1",
+  "_values": [
+    {
+      "_lookup": ["name"],
+      "_translate": ["label", "description"],
+      "name": "Event_Demand",
+      "label": "Event Demand",
+      "grouping": "civicrm_event",
+      "description": "A resource demand based on a event",
+      "filter": "0",
+      "is_reserved": "1",
+      "is_active": "1"
+    }
+  ]
+}

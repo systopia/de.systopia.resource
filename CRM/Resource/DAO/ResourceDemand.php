@@ -114,6 +114,17 @@ class CRM_Resource_DAO_ResourceDemand extends CRM_Core_DAO {
   }
 
   /**
+   * CAREFUL: DON'T DELETE THIS WHEN REBUILDING THE DAOs! */
+  public static function buildOptions($fieldName, $context = NULL, $props = []) {
+    if ($fieldName == 'entity_table') {
+      return CRM_Resource_BAO_ResourceDemand::getLinkedEntities();
+    }
+    else {
+      return parent::buildOptions($fieldName, $context, $props);
+    }
+  }
+
+  /**
    * Returns all the column names of this table
    *
    * @return array

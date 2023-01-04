@@ -455,4 +455,40 @@ class CRM_Resource_BAO_ResourceDemand extends CRM_Resource_DAO_ResourceDemand
             }
         }
     }
+
+    /**
+     * Get the linked entities
+     *
+     * This is currently based on the resource demand type specs,
+     *  which is an option group with the group_name field containing the table name
+     *
+     * @return array
+     *  table_name => entity_name
+     *
+     * @todo migrate to CRM_Resource_Types
+     */
+    public static function getLinkedEntities()
+    {
+        static $linked_entities = null;
+        if ($linked_entities === null) {
+            $linked_entities = [];
+            // use SQL since the API doesn't expose the grouping fields
+            $group_data = CRM_Core_DAO::executeQuery(
+                "
+                SELECT
+                 ov.grouping AS entity_table
+                FROM civicrm_option_value ov
+                INNER JOIN civicrm_option_group og
+                       ON ov.option_group_id = og.id
+                       AND og.name = 'resource_demand_types'
+                "
+            )->fetchAll();
+            foreach ($group_data as $group_datum) {
+                $linked_entities[$group_datum['entity_table']] =
+                    CRM_Core_DAO_AllCoreTables::getEntityNameForTable($group_datum['entity_table']);
+            }
+        }
+        return $linked_entities;
+    }
+
 }
