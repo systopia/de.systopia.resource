@@ -152,7 +152,6 @@ class CRM_Resource_DAO_Resource extends CRM_Core_DAO {
           'entity' => 'Resource',
           'bao' => 'CRM_Resource_DAO_Resource',
           'localizable' => 0,
-          'add' => NULL,
           'html' => [
             'type' => 'Select',
           ],

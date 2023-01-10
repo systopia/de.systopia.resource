@@ -11,7 +11,7 @@
       "_translate": ["label", "description"],
       "name": "Event_Demand",
       "label": "Event Demand",
-      "grouping": "civicrm_event",
+      "value": "civicrm_event",
       "description": "A resource demand based on a event",
       "filter": "0",
       "is_reserved": "1",
