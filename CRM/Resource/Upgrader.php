@@ -32,7 +32,6 @@ class CRM_Resource_Upgrader extends CRM_Resource_Upgrader_Base
         // install configurations
         $customData = new CRM_Resource_CustomData(E::LONG_NAME);
         $customData->syncOptionGroup(E::path('resources/option_group_resource_types.json'));
-        $customData->syncOptionGroup(E::path('resources/option_group_resource_demand_types.json'));
     }
 
     /**
