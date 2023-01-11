@@ -85,8 +85,9 @@ function resource_civicrm_disable()
  *
  * @link https://docs.civicrm.org/dev/en/latest/hooks/hook_civicrm_upgrade
  */
-function resource_civicrm_upgrade($op, CRM_Queue_Queue $queue = NULL) {
-  return _resource_civix_civicrm_upgrade($op, $queue);
+function resource_civicrm_upgrade($op, CRM_Queue_Queue $queue = null)
+{
+    return _resource_civix_civicrm_upgrade($op, $queue);
 }
 
 /**
