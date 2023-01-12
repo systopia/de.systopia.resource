@@ -22,6 +22,7 @@ return [
           'description',
         ],
       ],
+      'match' => ['name'],
     ],
   ],
   [
