@@ -50,6 +50,7 @@ return [
         'icon' => NULL,
         'color' => NULL,
       ],
+      'match' => ['option_group_id', 'name'],
     ],
   ],
 ];
