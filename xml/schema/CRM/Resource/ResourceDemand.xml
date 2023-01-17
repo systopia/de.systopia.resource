@@ -28,6 +28,9 @@
     <length>255</length>
     <localizable>true</localizable>
     <comment>Resource Demand Label</comment>
+    <html>
+      <type>Text</type>
+    </html>
   </field>
 
   <field>
