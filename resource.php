@@ -201,3 +201,13 @@ function resource_civicrm_alterAdminPanel(&$adminPanel) {
     }
 
 }
+
+/**
+ * Implements hook_civicrm_permission().
+ */
+function resource_civicrm_permission(&$permissions) {
+    $permissions['access CiviResource'] = [
+        E::ts('CiviResource: access CiviResource'),
+        E::ts('CiviResource: Allow creating, editing, (un-)assigning resources/resource demands.'),
+    ];
+}
