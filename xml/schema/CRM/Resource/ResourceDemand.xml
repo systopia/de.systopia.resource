@@ -28,6 +28,9 @@
     <length>255</length>
     <localizable>true</localizable>
     <comment>Resource Demand Label</comment>
+    <html>
+      <type>Text</type>
+    </html>
   </field>
 
   <field>
@@ -71,6 +74,9 @@
     <title>Entity Table</title>
     <required>true</required>
     <comment>Resource linked entity table name</comment>
+    <pseudoconstant>
+      <optionGroupName>resource_demand_types</optionGroupName>
+    </pseudoconstant>
   </field>
 
   <field>
