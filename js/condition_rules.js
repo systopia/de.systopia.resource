@@ -92,7 +92,6 @@
           $('#operator option[value="is not one of"').addClass('hiddenElement');
           $('#operator option[value="contains one or more"').addClass('hiddenElement');
           $('#operator option[value="not contains one or more"').addClass('hiddenElement');
-
       }
       else {
 
@@ -178,10 +177,18 @@
       } else {
         // TODO: Fill in more information here on what to hide
         $('#multi_value_parent .content.textarea').removeClass('hiddenElement');
-        $('#CRM_Resource_DemandCondition_Attribute__value').removeClass('hiddenElement');
+        resource_form_initialOperator = $('#CRM_Resource_DemandCondition_Attribute__operator').val();
+        if (resource_form_initialOperator === 'is empty' || resource_form_initialOperator === 'is not empty') {
+          //$('#CRM_Resource_DemandCondition_Attribute__value').addClass('hiddenElement');
+        }
+        else {
+          $('#CRM_Resource_DemandCondition_Attribute__value').removeClass('hiddenElement');
+        }
+
         if (!multiple) {
           $('textarea#CRM_Resource_DemandCondition_Attribute__multi_value').addClass('hiddenElement');
         }
+
       }
     }
 

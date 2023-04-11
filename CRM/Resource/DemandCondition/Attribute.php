@@ -150,7 +150,7 @@ class CRM_Resource_DemandCondition_Attribute extends CRM_Resource_BAO_ResourceDe
             ->setJoin([["{$entity_name} AS entity", TRUE, NULL, ['entity_id', '=', 'entity.id']]])
             ->addWhere("id", '=', $resource->id)
             ->setLimit(1);
-
+        // TODO: Fix the NULL vs empty
         if ($addOr && is_array($attribute_value)) {
           foreach ($attribute_value as $atrKey) {
             $clauseStatement[] = ["entity.{$attribute_name}", $sqlOp, $atrKey];
@@ -181,7 +181,16 @@ class CRM_Resource_DemandCondition_Attribute extends CRM_Resource_BAO_ResourceDe
         $params = $this->getParametersParsed();
 
         $optionLabel = $params[1];
-        $showOptions = FALSE;
+        $showOptions = $nullOp = FALSE;
+
+        $excludeOL = [
+          'is empty',
+          'is not empty',
+        ];
+
+        if (in_array($params[2], $excludeOL)) {
+          $nullOp = TRUE;
+        }
 
         $entity_name = self::getApi4Entity($this->getResourceDemand());
         // Workaround to support lookup on customfields coming as `custom_xxx`
@@ -201,7 +210,7 @@ class CRM_Resource_DemandCondition_Attribute extends CRM_Resource_BAO_ResourceDe
         $field_spec = $field_specs->first();
 
         // Prepare to display the optionvalue labels
-        if ($showOptions) {
+        if ($showOptions && !$nullOp) {
           if (is_array($params[1])) {
             $optionLabel = [];
             foreach ($params[1] as $ov) {
@@ -215,15 +224,29 @@ class CRM_Resource_DemandCondition_Attribute extends CRM_Resource_BAO_ResourceDe
               $optionLabel = $field_spec['options'][$params[1]];
             }
           }
+
+          $returnValue = E::ts("Attribute \"%1\" <code>%2</code> \"%3\"",
+          [
+              1 => $field_spec['label'],
+              2 => $params[2],
+              3 => trim(json_encode($optionLabel), '"'),
+          ]
+          );
+
+        }
+        else {
+          // Null operator, just display the rest
+          $returnValue = E::ts("Attribute \"%1\" <code>%2</code> \"%3\"",
+          [
+              1 => $field_spec['label'],
+              2 => $params[2],
+              3 => NULL,
+          ]
+          );
+
         }
 
-        return E::ts("Attribute \"%1\" <code>%2</code> \"%3\"",
-            [
-                1 => $field_spec['label'],
-                2 => $params[2],
-                3 => trim(json_encode($optionLabel), '"'),
-            ]
-        );
+        return $returnValue;
     }
 
     /*****************************************
