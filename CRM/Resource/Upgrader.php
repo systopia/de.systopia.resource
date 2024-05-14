@@ -18,7 +18,7 @@ use CRM_Resource_ExtensionUtil as E;
 /**
  * CiviResource installer / upgrader
  */
-class CRM_Resource_Upgrader extends CRM_Resource_Upgrader_Base
+class CRM_Resource_Upgrader extends CRM_Extension_Upgrader_Base
 {
 
     /**
