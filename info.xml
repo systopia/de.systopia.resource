@@ -18,7 +18,7 @@
   <version>1.0-dev</version>
   <develStage>dev</develStage>
   <compatibility>
-    <ver>5.0</ver>
+    <ver>5.45</ver>
   </compatibility>
   <comments></comments>
   <classloader>
@@ -27,10 +27,13 @@
   </classloader>
   <civix>
     <namespace>CRM/Resource</namespace>
-    <format>22.10.0</format>
+    <format>23.02.1</format>
   </civix>
   <mixins>
     <mixin>menu-xml@1.0.0</mixin>
     <mixin>mgd-php@1.0.0</mixin>
+    <mixin>smarty-v2@1.0.1</mixin>
+    <mixin>entity-types-php@1.0.0</mixin>
   </mixins>
+  <upgrader>CRM_Resource_Upgrader</upgrader>
 </extension>

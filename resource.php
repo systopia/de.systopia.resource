@@ -41,26 +41,6 @@ function resource_civicrm_install()
 }
 
 /**
- * Implements hook_civicrm_postInstall().
- *
- * @link https://docs.civicrm.org/dev/en/latest/hooks/hook_civicrm_postInstall
- */
-function resource_civicrm_postInstall()
-{
-    _resource_civix_civicrm_postInstall();
-}
-
-/**
- * Implements hook_civicrm_uninstall().
- *
- * @link https://docs.civicrm.org/dev/en/latest/hooks/hook_civicrm_uninstall
- */
-function resource_civicrm_uninstall()
-{
-    _resource_civix_civicrm_uninstall();
-}
-
-/**
  * Implements hook_civicrm_enable().
  *
  * @link https://docs.civicrm.org/dev/en/latest/hooks/hook_civicrm_enable
@@ -68,26 +48,6 @@ function resource_civicrm_uninstall()
 function resource_civicrm_enable()
 {
     _resource_civix_civicrm_enable();
-}
-
-/**
- * Implements hook_civicrm_disable().
- *
- * @link https://docs.civicrm.org/dev/en/latest/hooks/hook_civicrm_disable
- */
-function resource_civicrm_disable()
-{
-    _resource_civix_civicrm_disable();
-}
-
-/**
- * Implements hook_civicrm_upgrade().
- *
- * @link https://docs.civicrm.org/dev/en/latest/hooks/hook_civicrm_upgrade
- */
-function resource_civicrm_upgrade($op, CRM_Queue_Queue $queue = null)
-{
-    return _resource_civix_civicrm_upgrade($op, $queue);
 }
 
 /**
@@ -99,7 +59,6 @@ function resource_civicrm_upgrade($op, CRM_Queue_Queue $queue = null)
  */
 function resource_civicrm_entityTypes(&$entityTypes)
 {
-    _resource_civix_civicrm_entityTypes($entityTypes);
     $entityTypes['CRM_Resource_DAO_Resource'] = [
         'name'  => 'Resource',
         'class' => 'CRM_Resource_DAO_Resource',
@@ -207,7 +166,7 @@ function resource_civicrm_alterAdminPanel(&$adminPanel) {
  */
 function resource_civicrm_permission(&$permissions) {
     $permissions['access CiviResource'] = [
-        E::ts('CiviResource: access CiviResource'),
-        E::ts('CiviResource: Allow creating, editing, (un-)assigning resources/resource demands.'),
+        'label' => E::ts('CiviResource: access CiviResource'),
+        'description' => E::ts('CiviResource: Allow creating, editing, (un-)assigning resources/resource demands.'),
     ];
 }
