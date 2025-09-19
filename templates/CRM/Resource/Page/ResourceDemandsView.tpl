@@ -37,23 +37,23 @@
                     <td>{$resource_demand.type_label}</td>
                     <td>
                         {if $resource_demand.assignment_count}
-                          <a href="{$resource_demand.unassign_link}" class="action-item crm-hover-button crm-popup medium-popup" title="{ts}Manage Assignments{/ts}">{$resource_demand.assignment_count} / {$resource_demand.count}</a>
+                          <a href="{$resource_demand.unassign_link}" class="action-item crm-hover-button crm-popup medium-popup" title="{ts escape='htmlattribute'}Manage Assignments{/ts}">{$resource_demand.assignment_count} / {$resource_demand.count}</a>
                         {else}
-                          <span title="{ts}No Assignments{/ts}">{$resource_demand.assignment_count} / {$resource_demand.count}</span>
+                          <span title="{ts escape='htmlattribute'}No Assignments{/ts}">{$resource_demand.assignment_count} / {$resource_demand.count}</span>
                         {/if}
-                        {if $resource_demand.assignment_count gt $resource_demand.count}<i aria-hidden="true" class="crm-i fa-angle-double-up" title="{ts}more resources assigned than required{/ts}">{/if}
+                        {if $resource_demand.assignment_count gt $resource_demand.count}<i aria-hidden="true" class="crm-i fa-angle-double-up" title="{ts escape='htmlattribute'}more resources assigned than required{/ts}">{/if}
                     </td>
-                    <td>{$resource_demand.fulfilled_count} / {$resource_demand.count} {if $resource_demand.fulfilled_count gt $resource_demand.count}<i aria-hidden="true" class="crm-i fa-angle-double-up" title="{ts}more resources assigned than required{/ts}">{/if}</td>
+                    <td>{$resource_demand.fulfilled_count} / {$resource_demand.count} {if $resource_demand.fulfilled_count gt $resource_demand.count}<i aria-hidden="true" class="crm-i fa-angle-double-up" title="{ts escape='htmlattribute'}more resources assigned than required{/ts}">{/if}</td>
                     <td class="nowrap">
                         <span>
-                          <a href="{$resource_demand.conditions_link}" class="action-item crm-hover-button crm-popup medium-popup" title="{ts}Edit Conditions{/ts}">{ts 1=$resource_demand.condition_count}Modify (%1){/ts}</a>
+                          <a href="{$resource_demand.conditions_link}" class="action-item crm-hover-button crm-popup medium-popup" title="{ts escape='htmlattribute'}Edit Conditions{/ts}">{ts 1=$resource_demand.condition_count}Modify (%1){/ts}</a>
                         </span>
                     </td>
                     <td class="nowrap">
                       <span>
-                        <a href="{$resource_demand.assign_link}" class="action-item crm-hover-button crm-popup medium-popup" title="{ts}Assign New Resources{/ts}">{ts}Assign{/ts}</a>
-                        <a href="{$resource_demand.edit_link}" class="action-item crm-hover-button crm-popup small-popup" title="{ts}Edit Resource Demand{/ts}">{ts}Edit{/ts}</a>
-                        <a class="action-item crm-hover-button action--resource--demand-delete" data-demand-id="{$resource_demand.id}" title="{ts}Delete Resource Demand{/ts}">{ts}Delete{/ts}</a>
+                        <a href="{$resource_demand.assign_link}" class="action-item crm-hover-button crm-popup medium-popup" title="{ts escape='htmlattribute'}Assign New Resources{/ts}">{ts}Assign{/ts}</a>
+                        <a href="{$resource_demand.edit_link}" class="action-item crm-hover-button crm-popup small-popup" title="{ts escape='htmlattribute'}Edit Resource Demand{/ts}">{ts}Edit{/ts}</a>
+                        <a class="action-item crm-hover-button action--resource--demand-delete" data-demand-id="{$resource_demand.id}" title="{ts escape='htmlattribute'}Delete Resource Demand{/ts}">{ts}Delete{/ts}</a>
                       </span>
                     </td>
                 </tr>

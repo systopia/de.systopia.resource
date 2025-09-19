@@ -14,7 +14,7 @@
 
 {crmScope extensionKey='de.systopia.resource'}
   <div class="crm-block crm-content-block">
-    <h3 class="header-dark resource-view">{ts}Resource Information{/ts} <a href="{$resource_edit_link}" title="{ts}Edit Resource{/ts}" class="crm-popup medium-popup" id="resource--resource--edit">[{ts}edit{/ts}]</a></h3>
+    <h3 class="header-dark resource-view">{ts}Resource Information{/ts} <a href="{$resource_edit_link}" title="{ts escape='htmlattribute'}Edit Resource{/ts}" class="crm-popup medium-popup" id="resource--resource--edit">[{ts}edit{/ts}]</a></h3>
     <div class="crm-container section-shown resource-view resource-view-info">
       <table class="no-border">
         <tr>
@@ -32,7 +32,7 @@
       </table>
     </div>
 
-    <h3 class="header-dark resource-view">{ts}Availability Restrictions{/ts} <a href="{$unavailability_create_link}" title="{ts}Add Availability Restriction{/ts}" class="crm-popup medium-popup" id="resource--unavailability--add">[+]</a></h3>
+    <h3 class="header-dark resource-view">{ts}Availability Restrictions{/ts} <a href="{$unavailability_create_link}" title="{ts escape='htmlattribute'}Add Availability Restriction{/ts}" class="crm-popup medium-popup" id="resource--unavailability--add">[+]</a></h3>
     <div class="crm-container section-shown resource-view resource-view-availabilities">
           <table class="crm-table row-highlight resource-view resource-view-unavailabilities">
               {if $unavailabilities}
@@ -41,8 +41,8 @@
                   <td>{$unavailability.display_name}</td>
                   <td class="nowrap">
                     <span>
-                      <a href="{$unavailability.edit_link}" class="action-item crm-hover-button crm-popup medium-popup" title="{ts}Edit Unavailability{/ts}">{ts}Edit{/ts}</a>
-                      <a class="action-item crm-hover-button action--resource--unavailability-delete" title="{ts}Delete Unavailability{/ts}" data-unavailability-id="{$unavailability.id}">{ts}Delete{/ts}</a>
+                      <a href="{$unavailability.edit_link}" class="action-item crm-hover-button crm-popup medium-popup" title="{ts escape='htmlattribute'}Edit Unavailability{/ts}">{ts}Edit{/ts}</a>
+                      <a class="action-item crm-hover-button action--resource--unavailability-delete" title="{ts escape='htmlattribute'}Delete Unavailability{/ts}" data-unavailability-id="{$unavailability.id}">{ts}Delete{/ts}</a>
                     </span>
                   </td>
                 </tr>
@@ -55,7 +55,7 @@
           </table>
     </div>
 
-    <h3 class="header-dark resource-view">{ts}Assignments{/ts} <a href="{$assignment_create_link}" title="{ts}Assign to Other Demands{/ts}" class="crm-popup small-popup">[+]</a></h3>
+    <h3 class="header-dark resource-view">{ts}Assignments{/ts} <a href="{$assignment_create_link}" title="{ts escape='htmlattribute'}Assign to Other Demands{/ts}" class="crm-popup small-popup">[+]</a></h3>
     <div class="crm-container section-shown resource-view resource-view-assignments">
           <table class="crm-table row-highlight resource-view resource-view-unavailabilities">
               {if $assignments|count}
@@ -66,7 +66,7 @@
                   <td>{$assignment.status}</td>
                   <td class="nowrap">
                     <span>
-                      <a class="action-item crm-hover-button action--resource--assignment-delete" data-assignment-id="{$assignment.assignment_id}" title="{ts}Unassign{/ts}">{ts}Unassign{/ts}</a>
+                      <a class="action-item crm-hover-button action--resource--assignment-delete" data-assignment-id="{$assignment.assignment_id}" title="{ts escape='htmlattribute'}Unassign{/ts}">{ts}Unassign{/ts}</a>
                     </span>
                   </td>
                 </tr>
