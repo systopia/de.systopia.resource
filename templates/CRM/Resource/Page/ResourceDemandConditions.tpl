@@ -31,7 +31,7 @@
     </table>
   </div>
 
-  <h3 class="header-dark resource-demand-view">{ts}Conditions{/ts} <a href="{$condition_create_link}" title="{ts}Add Resource Condition{/ts}" class="crm-popup medium-popup">[+]</a></h3>
+  <h3 class="header-dark resource-demand-view">{ts}Conditions{/ts} <a href="{$condition_create_link}" title="{ts escape='htmlattribute'}Add Resource Condition{/ts}" class="crm-popup medium-popup">[+]</a></h3>
   <div class="resource-demand-view resource-demand-view-conditions">
       {if $conditions}
         <table class="crm-table resource-demand-view resource-demand-view-conditions">
@@ -41,8 +41,8 @@
                 <td>{$condition.display_name}</td>
                 <td class="nowrap">
                     <span>
-                      <a href="{$condition.edit_link}" class="action-item crm-hover-button crm-popup medium-popup" title="{ts}Edit Condition{/ts}">{ts}Edit{/ts}</a>
-                      <a class="action-item crm-hover-button action--resource--demand_condition-delete" data-condition-id="{$condition.id}" title="{ts}Delete Condition{/ts}" href="#">{ts}Delete{/ts}</a>
+                      <a href="{$condition.edit_link}" class="action-item crm-hover-button crm-popup medium-popup" title="{ts escape='htmlattribute'}Edit Condition{/ts}">{ts}Edit{/ts}</a>
+                      <a class="action-item crm-hover-button action--resource--demand_condition-delete" data-condition-id="{$condition.id}" title="{ts escape='htmlattribute'}Delete Condition{/ts}" href="#">{ts}Delete{/ts}</a>
                     </span>
                 </td>
               </tr>
