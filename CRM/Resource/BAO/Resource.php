@@ -137,7 +137,7 @@ class CRM_Resource_BAO_Resource extends CRM_Resource_DAO_Resource
 
         // use a sql query, apiv4 somehow didn't work - see below
         $query = CRM_Core_DAO::executeQuery("
-            SELECT 
+            SELECT
                    assignment.resource_demand_id AS demand_id,
                    assignment.id                 AS assignment_id
             FROM civicrm_resource_assignment assignment
@@ -174,16 +174,6 @@ class CRM_Resource_BAO_Resource extends CRM_Resource_DAO_Resource
     public static function add_resource_links($class, &$links)
     {
         $links[] = new CRM_Core_Reference_Dynamic(self::getTableName(), 'entity_id', null, 'id', 'entity_table');
-    }
-
-    /** TEMPLATE: COPY THIS TO CRM_Resource_DAO_Resource AFTER REBUILDING THE DAOs! */
-    public static function buildOptions($fieldName, $context = null, $props = [])
-    {
-        if ($fieldName == 'entity_table') {
-            return CRM_Resource_BAO_Resource::getLinkedEntities();
-        } else {
-            return parent::buildOptions($fieldName, $context, $props);
-        }
     }
 
     /**

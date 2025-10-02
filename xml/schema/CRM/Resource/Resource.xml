@@ -51,6 +51,9 @@
     <type>varchar</type>
     <length>64</length>
     <required>true</required>
+    <pseudoconstant>
+      <callback>CRM_Resource_BAO_Resource::getLinkedEntities</callback>
+    </pseudoconstant>
   </field>
   <field>
     <name>entity_id</name>
