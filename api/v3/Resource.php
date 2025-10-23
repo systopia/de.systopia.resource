@@ -36,7 +36,7 @@ function _civicrm_api3_resource_create_spec(&$spec)
  * @return array
  *   API result descriptor
  *
- * @throws API_Exception
+ * @throws CRM_Core_Exception
  */
 function civicrm_api3_resource_create($params)
 {
@@ -51,7 +51,7 @@ function civicrm_api3_resource_create($params)
  * @return array
  *   API result descriptor
  *
- * @throws API_Exception
+ * @throws CRM_Core_Exception
  */
 function civicrm_api3_resource_delete($params)
 {
@@ -66,7 +66,7 @@ function civicrm_api3_resource_delete($params)
  * @return array
  *   API result descriptor
  *
- * @throws API_Exception
+ * @throws CRM_Core_Exception
  */
 function civicrm_api3_resource_get($params)
 {
@@ -113,7 +113,7 @@ function _civicrm_api3_resource_meets_demand_spec(&$spec)
  * @return array
  *   API result descriptor
  *
- * @throws API_Exception
+ * @throws CRM_Core_Exception
  */
 function civicrm_api3_resource_meets_demand($params)
 {
@@ -125,14 +125,14 @@ function civicrm_api3_resource_meets_demand($params)
     $resource = new CRM_Resource_BAO_Resource();
     $resource->id = $params['id'];
     if (!$resource->find(true)) {
-        throw new CiviCRM_API3_Exception("A resource with ID [{$params['id']}] doesn't exist (any more).");
+        throw new CRM_Core_Exception("A resource with ID [{$params['id']}] doesn't exist (any more).");
     }
 
     // get demand
     $resource_demand = new CRM_Resource_BAO_ResourceDemand();
     $resource_demand->id = $params['resource_demand_id'];
     if (!$resource_demand->find(true)) {
-        throw new CiviCRM_API3_Exception("A resource demand with ID [{$params['resource_demand_id']}] doesn't exist (any more).");
+        throw new CRM_Core_Exception("A resource demand with ID [{$params['resource_demand_id']}] doesn't exist (any more).");
     }
 
     // check issues

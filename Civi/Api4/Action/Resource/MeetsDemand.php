@@ -75,14 +75,14 @@ class MeetsDemand extends AbstractAction
         $resource = new \CRM_Resource_BAO_Resource();
         $resource->id = $this->id;
         if (!$resource->find(true)) {
-            throw new \API_Exception("A resource with ID [{$this->id}] doesn't exist (any more).");
+            throw new \CRM_Core_Exception("A resource with ID [{$this->id}] doesn't exist (any more).");
         }
 
         // get demand
         $resource_demand = new \CRM_Resource_BAO_ResourceDemand();
         $resource_demand->id = $this->resource_demand_id;
         if (!$resource_demand->find(true)) {
-            throw new \API_Exception("A resource demand with ID [{$this->resource_demand_id}] doesn't exist (any more).");
+            throw new \CRM_Core_Exception("A resource demand with ID [{$this->resource_demand_id}] doesn't exist (any more).");
         }
 
         // check issues

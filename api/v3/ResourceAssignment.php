@@ -36,7 +36,7 @@ function _civicrm_api3_resource_assignment_create_spec(&$spec)
  * @return array
  *   API result descriptor
  *
- * @throws API_Exception
+ * @throws CRM_Core_Exception
  */
 function civicrm_api3_resource_assignment_create($params)
 {
@@ -51,7 +51,7 @@ function civicrm_api3_resource_assignment_create($params)
  * @return array
  *   API result descriptor
  *
- * @throws API_Exception
+ * @throws CRM_Core_Exception
  */
 function civicrm_api3_resource_assignment_delete($params)
 {
@@ -66,7 +66,7 @@ function civicrm_api3_resource_assignment_delete($params)
  * @return array
  *   API result descriptor
  *
- * @throws API_Exception
+ * @throws CRM_Core_Exception
  */
 function civicrm_api3_resource_assignment_get($params)
 {

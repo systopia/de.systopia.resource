@@ -94,7 +94,7 @@ class ResourceTestBase extends TestCase implements HeadlessInterface, HookInterf
                 // run with APIv4
                 try {
                     return civicrm_api4($entity, $action, $params);
-                } catch (API_Exception $ex) {
+                } catch (CRM_Core_Exception $ex) {
                     $this->fail("APIv4 error: ", $ex->getMessage());
                 }
             }
