@@ -121,7 +121,7 @@ class CRM_Resource_Form_ResourceAssignmentOptions extends CRM_Core_Form
                             'status' => CRM_Resource_BAO_ResourceAssignment::STATUS_CONFIRMED,
                         ]);
                         $success_count++;
-                    } catch (CiviCRM_API3_Exception $ex) {
+                    } catch (CRM_Core_Exception $ex) {
                         $error_messages[$resource_demand_id] = $ex->getMessage();
                     }
                 }
