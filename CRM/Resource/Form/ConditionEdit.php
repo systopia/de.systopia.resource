@@ -26,7 +26,7 @@ class CRM_Resource_Form_ConditionEdit extends CRM_Core_Form
     protected $condition_id = null;
 
     /** @var CRM_Resource_BAO_ResourceDemandCondition */
-    protected $condition;
+    protected $condition = null;
 
     /** @var CRM_Resource_BAO_ResourceDemand */
     protected $demand;
@@ -54,9 +54,36 @@ class CRM_Resource_Form_ConditionEdit extends CRM_Core_Form
 
         // get the labels
         $this->assign('current_label', $this->condition->getLabel());
-        $type_fields = call_user_func([$this->condition->class_name, 'addFormFields'], $this, '', $this->demand);
+        $type_fields = [];
+        foreach ($condition_types as $condition_type) {
+          // get the labels
+          $condition_type2label[$condition_type] = call_user_func([$condition_type, 'getTypeLabel']);
+
+          // add the fields
+          $new_fields = call_user_func([$condition_type, 'addFormFields'], $this, $condition_type . '_', $this->demand);
+          $type_fields = array_merge($type_fields, $new_fields);
+        }
+
         $this->assign('type_fields', $type_fields);
-        $this->setDefaults($this->condition->getCurrentFormValues());
+        $excludeLabelsPerID = [
+          'CRM_Resource_DemandCondition_Attribute__value',
+          'CRM_Resource_DemandCondition_Attribute__multi_value',
+        ];
+        $this->assign('exclude_labels', $excludeLabelsPerID);
+
+        // Extract the class name
+        $conditionClassName = $this->condition->class_name;
+        // We'll need this to filter the fields in the template
+        $this->assign('condition_type', $conditionClassName);
+
+        $this->add(
+          'select',
+          'condition_type',
+          E::ts("Type"),
+          $condition_type2label,
+          true,
+          ['class' => 'crm-select2']
+        );
 
         $this->addButtons([
               [
@@ -65,6 +92,12 @@ class CRM_Resource_Form_ConditionEdit extends CRM_Core_Form
                   'isDefault' => true,
               ],
           ]);
+
+        // Get the defaults
+        $this->setDefaults($this->condition->getCurrentFormValues($conditionClassName));
+
+        Civi::resources()->addScriptFile(E::LONG_NAME, 'js/condition_create.js', 10, 'page-header');
+        Civi::resources()->addScriptFile(E::LONG_NAME, 'js/condition_rules.js', 10, 'page-header');
 
         parent::buildQuickForm();
     }
@@ -86,7 +119,9 @@ class CRM_Resource_Form_ConditionEdit extends CRM_Core_Form
     public function postProcess()
     {
         $values = $this->exportValues();
-        $this->condition->parameters = json_encode(call_user_func([$this->condition->class_name, 'compileParameters'], $values));
+        $condition_type = $values['condition_type'];
+        $parameters = call_user_func([$condition_type, 'compileParameters'], $values, $condition_type . '_');
+        $this->condition->parameters = json_encode($parameters);
         $this->condition->save();
         parent::postProcess();
     }

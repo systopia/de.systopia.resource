@@ -20,14 +20,29 @@
     <div class="clear"></div>
   </div>
 
-{foreach from=$type_fields item=type_field}
-  <div class="crm-section condition-form-field {$type_field}">
-    <div class="label">{$form.$type_field.label}</div>
-    <div class="content">{$form.$type_field.html}</div>
+  {foreach from=$type_fields item=type_field}
+    <div class="crm-section condition-form-field {$type_field}">
+      {if !in_array($form.$type_field.id, $exclude_labels) }
+        <div class="label">{$form.$type_field.label}</div>
+      {/if}
+      <div class="content">{$form.$type_field.html}</div>
+      <div class="clear"></div>
+    </div>
+  {/foreach}
+
+  <div class="crm-section" id="value_parent">
+    <div class="content">
+      <select id="value_options" class="hiddenElement"></select>
+    </div>
     <div class="clear"></div>
   </div>
-{/foreach}
-
+  <div class="crm-section" id="multi_value_parent">
+    <div class="content textarea">
+    </div>
+    <div id="multi_value_options" class="hiddenElement content">
+    </div>
+    <div class="clear"></div>
+  </div>
 
   <div class="crm-submit-buttons">
       {include file="CRM/common/formButtons.tpl" location="bottom"}

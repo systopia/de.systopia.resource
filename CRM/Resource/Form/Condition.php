@@ -48,6 +48,12 @@ class CRM_Resource_Form_Condition extends CRM_Core_Form
         }
         $this->assign('type_fields', $type_fields);
 
+        $excludeLabelsPerID = [
+          'CRM_Resource_DemandCondition_Attribute__value',
+          'CRM_Resource_DemandCondition_Attribute__multi_value',
+        ];
+        $this->assign('exclude_labels', $excludeLabelsPerID);
+
         $this->add(
             'select',
             'condition_type',
@@ -66,6 +72,7 @@ class CRM_Resource_Form_Condition extends CRM_Core_Form
           ]);
 
         Civi::resources()->addScriptFile(E::LONG_NAME, 'js/condition_create.js', 10, 'page-header');
+        Civi::resources()->addScriptFile(E::LONG_NAME, 'js/condition_rules.js', 10, 'page-header');
 
         parent::buildQuickForm();
     }
